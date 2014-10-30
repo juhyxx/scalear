@@ -1,0 +1,194 @@
+@import "compass";
+@import "compass/css3/user-interface";
+
+@import url(http://fonts.googleapis.com/css?family=Electrolize);
+
+$baseColor: #dcaf4a;
+$markColor: adjust-hue($baseColor, -10deg);
+$rootColor: adjust-hue($baseColor, -50deg);
+$bgColor: lighten($baseColor, 25%);
+$stringColor: darken($baseColor, 10%);
+$margin: 1em;
+
+$mediaScreen: screen;
+$mediaPrint: print;
+
+/*$mediaScreen: print;
+$mediaPrint: screen;*/
+
+body {
+    margin: $margin;
+    padding: 0;
+    font-family: "Electrolize", "Segoe UI", sans-serif;
+    @media #{$mediaScreen} {
+        background-color: lighten($baseColor, 20%);
+    }
+    font-size: 100%;
+    @include user-select(none);
+}
+
+section {
+    position: relative;
+    button {
+       // position: absolute;
+        //left: -14px;
+       // @include border-radius(50%);
+       /* height: 3*$margin;
+        width: 3*$margin;*/
+        //top: 5px;;
+        /*&:nth-child(1){
+            top: 5*$margin;
+        }*/
+    }
+    @media #{$mediaScreen} {
+        padding: {
+            left: $margin;
+            right: $margin;
+            top: $margin/2;
+            bottom: 2*$margin;
+        };
+        //border:2px solid $baseColor;
+        overflow: hidden;
+        @include border-radius;
+        //background-color: $bgColor;
+    }
+    page-break-after: auto;
+    h1, {
+        margin: 0;
+        padding: {
+            bottom: $margin / 4;
+        };
+        background-color: transparent;
+        border: 0;
+        @media #{$mediaScreen} {
+            color: $baseColor;
+        }
+    }
+    margin: {
+        bottom: $margin;
+    };
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    clear: both;
+    li {
+        list-style: none;
+        font-size: $margin;
+        text-align: center;
+        width: 4 * $margin;
+    }
+}
+
+.bg {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+ul.frets {
+    >li {
+        border-right: 0.2 * $margin solid gray;
+        @media #{$mediaScreen} {
+            border-right: 0.2 * $margin solid lighten($baseColor, 20%);
+            background-color: rgba($baseColor, 0.8);
+        }
+        display: inline-block;
+        margin: 0;
+        position: relative;
+        &:nth-child(12n + 4),
+        &:nth-child(12n + 6),
+        &:nth-child(12n + 8),
+        &:nth-child(12n + 10) {
+            background-color: rgba(lightgrey, 0.2);
+            @media #{$mediaScreen} {
+                background-color: $markColor;
+            }
+            -webkit-print-color-adjust: exact;
+        }
+        &:nth-child(12n + 13) {
+            background-color: rgba(darken(lightgrey, 5%), 0.2);
+            @media #{$mediaScreen} {
+                background-color: darken($markColor, 3%);
+            }
+        }
+        &:first-child {
+            background-color: transparent !important;
+        }
+        &:after {
+            font-size: $margin * 0.7;
+            display: block;
+            content: attr(title);
+            position: absolute;
+            left: 2 * $margin;
+            @media #{$mediaScreen} {
+                color: $baseColor;
+            }
+        }
+        ul.notes {
+            li {
+                line-height: 2 * $margin;
+                cursor: pointer;
+                width: 2 * $margin;
+                height: 2 * $margin;
+                margin: {
+                    left: $margin;
+                    right: $margin;
+                    top: $margin / 2;
+                    bottom: $margin / 2;
+                };
+                @include border-radius(50%);
+                @include transition(background-color 2s, border-radius 2s);
+                display: block;
+                border: 1px solid black;
+                background-color: white;
+                @media #{$mediaScreen} {
+                    border: 0px solid black;
+                    background-color: lighten($bgColor, 10%);
+                    color: $markColor;
+                }
+                position: relative;
+                &.hidden {
+                    @media #{$mediaPrint} {
+                        background-color: transparent;
+                        color: transparent;
+                        border-color: transparent;
+                    }
+                    @media #{$mediaScreen} {
+                        background-color: rgba(lighten($bgColor, 10%), 0.2);
+                        &:hover {
+                            background-color: rgba(lighten($bgColor, 10%), 0.6);
+                        }
+                    }
+                }
+                &.root {
+                    background-color: black;
+                    color: white;
+                    @include border-radius(2px);
+                    @media #{$mediaScreen} {
+                        color: if(lightness($rootColor) < 50%, black, white);
+                        background-color: $rootColor !important;
+                    }
+                }
+                @media #{$mediaPrint} {
+                    &:after {
+                        display: block;
+                        position: absolute;
+                        content: ' ';
+                        border: {
+                            bottom: 2px solid gray;
+                        };
+                        z-index: -1;
+                        top: 0;
+                        left: -$margin;
+                        height: $margin;
+                        width: 5 * $margin;
+                        @media #{$mediaScreen} {
+                            color: $baseColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
