@@ -5,75 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title></title>
-    <link rel="stylesheet" href="">
-    <script src="lib/svg.js"></script>
-    <script src="lib/svg.element.js"></script>
-    <script src="lib/svg.group.js"></script>
-    <script src="lib/svg.line.js"></script>
-    <script src="lib/svg.text.js"></script>
-    <script src="lib/svg.rectangle.js"></script>
-    <script src="lib/svg.circle.js"></script>
-    <script src="script.js"></script>
-    <style>
-    body {
-        background-color: #EFEFEF;
-    }
-    circle {
-        fill: lightgray;
-        filter: url(#finger);
-        display: none;
-    }
-    rect.neck {
-        fill: url(#gradient);
-        stroke: gray;
-        stroke-width: 1;
-        filter: url(#f1);
 
-    }
-    .strings line {
-        filter: url(#f1);
-    }
-    text {
-        fill: #674100;
-        font-family: sans-serif;
-        font-size: 10px;
-    }
-    .strings line:nth-child(1) {
-        stroke: gray;
-        stroke-width: 1;
-    }
-    .strings line:nth-child(2) {
-        stroke: gray;
-        stroke-width: 1.2;
-    }
-    .strings line:nth-child(3) {
-        stroke: gray;
-        stroke-width: 1.5;
-    }
-    .strings line:nth-child(4) {
-        stroke: gray;
-        stroke-width: 2;
-    }
-    .strings line:nth-child(5) {
-        stroke: gray;
-        stroke-width: 2.5;
-    }
-    .strings line:nth-child(6) {
-        stroke: gray;
-        stroke-width: 3;
-    }
-    .frets line {
-        stroke: gray;
-        filter: url(#fret);
-    }
-    svg {
-        width: 100%;
-    }
-    .marks rect {
-        fill: rgba(255, 255, 255, 0.3);
-        stroke: transparent;
-    }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="svg.js"></script>
+    <script src="script.js"></script>
+
 </head>
 
 <body>
@@ -100,6 +36,7 @@
                 <stop offset="100%" style="stop-color:#674100;" />
             </linearGradient>
         </defs>
+        <line x1="42" x2="42" y1="0" y2="100"></line>
     </svg>
     <input type="number">
 </body>

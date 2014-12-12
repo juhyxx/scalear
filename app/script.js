@@ -1,4 +1,3 @@
-/***/
 Scalear = {};
 Scalear.Observable = {
 	_registredEvents: [],
@@ -96,6 +95,13 @@ Scalear.Neck.prototype.render = function(svgParent, fretCount, stringsCount) {
 			content: i
 		});
 	}
+	new Svg.Line(frets.el, {
+		className: 'zero',
+		x1: fretWidth,
+		x2: fretWidth,
+		y1: 0,
+		y2: neck.width
+	});
 	this._renderMarks(marks.el);
 	this._renderStrings(strings.el);
 	this._renderFingers(fingers.el);
@@ -116,8 +122,7 @@ Scalear.Neck.prototype._renderMarks = function(el) {
 Scalear.Neck.prototype._renderStrings = function(el) {
 	for (i = 1; i <= this.stringsCount; i++) {
 		new Svg.Line(el, {
-
-			x1: this.fretWidth,
+			x1: 0,
 			x2: this.neck.height + this.fretWidth,
 			y1: i * this.stringDistance,
 			y2: i * this.stringDistance

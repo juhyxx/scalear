@@ -1,0 +1,70 @@
+svg {
+    width: 100%;
+}
+
+.fingers {
+    circle {
+        fill: lightgray;
+        filter: url(#finger);
+        display: none;
+    }
+}
+
+rect.neck {
+    fill: url(#gradient);
+    stroke: gray;
+    stroke-width: 1;
+    filter: url(#f1);
+}
+
+text {
+    fill: #674100;
+    font-family: sans-serif;
+    font-size: 10px;
+}
+
+.strings {
+    line {
+        filter: url(#f1);
+    }
+    line:nth-child(n) {
+        stroke: gray;
+        stroke-width: 1;
+    }
+    line:nth-child(2) {
+        stroke: gray;
+        stroke-width: 1.2;
+    }
+    line:nth-child(3) {
+        stroke: gray;
+        stroke-width: 1.5;
+    }
+    line:nth-child(4) {
+        stroke: gray;
+        stroke-width: 2;
+    }
+    line:nth-child(5) {
+        stroke: gray;
+        stroke-width: 2.5;
+    }
+    line:nth-child(6) {
+        stroke: gray;
+        stroke-width: 3;
+    }
+}
+
+.frets {
+    line {
+        stroke: gray;
+        filter: url(#fret);
+        &.zero {
+            stroke: black;
+            stroke-width: 6;
+        }
+    }
+}
+
+.marks rect {
+    fill: rgba(255, 255, 255, 0.3);
+    stroke: transparent;
+}

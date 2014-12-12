@@ -1,19 +1,36 @@
 var gulp = require('gulp'),
 	connect = require('gulp-connect'),
 	open = require('gulp-open'),
-	watch = require('gulp-watch');
+	watch = require('gulp-watch'),
+	es6transpiler = require('gulp-es6-transpiler'),
+	concat = require('gulp-concat'),
+	sass = require('gulp-sass');
 
 gulp.task('watch', function() {
-	gulp.watch(['./app/*'], [ 'reload']);
+	gulp.watch(['./app/*'], ['build', 'reload']);
 });
 
 gulp.task('reload', function() {
 	gulp.src('app').pipe(connect.reload());
 });
 
+gulp.task('build', function() {
+	gulp.src('./app/*.scss')
+		.pipe(sass({
+			errLogToConsole: true
+		}))
+		.pipe(gulp.dest('./dist'));
+
+	return gulp.src(['app/lib/svg.js', 'app/lib/svg.element.js', 'app/lib/*.js'])
+		.pipe(concat('svg.js'))
+		.pipe(es6transpiler())
+		.pipe(gulp.dest('dist'));
+});
+
 gulp.task('serve', function() {
+
 	connect.server({
-		root: 'app',
+		root: ['app', 'dist'],
 		port: 8000,
 		livereload: true
 	});
@@ -24,4 +41,4 @@ gulp.task('serve', function() {
 		}));
 });
 
-gulp.task('default', ['serve',  'watch']);
+gulp.task('default', ['build', 'serve', 'watch']);

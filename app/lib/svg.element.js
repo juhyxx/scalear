@@ -22,8 +22,7 @@ Svg.Element = {
 
 	render: function() {
 		var self = this,
-			NS = "http://www.w3.org/2000/svg",
-			element = document.createElementNS(NS, this.name);
+			element = document.createElementNS(Svg.NS, this.name);
 
 		Object.keys(this).map(function(key) {
 			if (key === 'content') {
@@ -37,9 +36,8 @@ Svg.Element = {
 			}
 		});
 
-		this._el = element;
-
 		this.parent.appendChild(element);
+		this._el = element;
 		this._rendered = true;
 
 		return this;
