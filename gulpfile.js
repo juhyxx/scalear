@@ -21,9 +21,12 @@ gulp.task('build', function() {
 		}))
 		.pipe(gulp.dest('./dist'));
 
-	return gulp.src(['app/lib/svg.js', 'app/lib/svg.element.js', 'app/lib/*.js'])
+	console.log('Transpillig...');
+	gulp.src(['app/lib/svg.js', 'app/lib/svg.element.js', 'app/lib/*.js'])
 		.pipe(concat('svg.js'))
-		.pipe(es6transpiler())
+		.pipe(es6transpiler({
+			"environments": ["browser"],
+		}))
 		.pipe(gulp.dest('dist'));
 });
 

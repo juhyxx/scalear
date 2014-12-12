@@ -1,11 +1,18 @@
-Scalear = {};
+Scalear = {
+	notes: [
+		'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'Bb', 'H'
+	]
+};
 Scalear.Observable = {
 	_registredEvents: [],
 
 	fire: function(eventName) {
+		var args = Array.apply(null, arguments);
+		args.shift();
+
 		if (this._registredEvents[eventName]) {
 			this._registredEvents[eventName].map(function(ev) {
-				ev.handler.call(ev.scope);
+				ev.handler.apply(ev.scope, args);
 			});
 		}
 	},
@@ -24,12 +31,13 @@ Scalear.Model = function() {
 	return this;
 };
 Scalear.Model.prototype = Scalear.Observable;
-Scalear.Model.prototype.update = function() {
-	this.fire('update');
+Scalear.Model.prototype.setData = function(data) {
+	this._data = data;
+	this.fire('update', data);
 };
 /***/
 Scalear.View = function() {
-	return this;
+
 };
 Scalear.View.prototype = Scalear.Observable;
 Scalear.View.prototype.render = function() {
@@ -37,34 +45,29 @@ Scalear.View.prototype.render = function() {
 };
 
 /***/
-Scalear.Neck = function() {
-
-};
-Scalear.Neck.prototype = new Scalear.View();
-Scalear.Neck.prototype.render = function(svgParent, fretCount, stringsCount) {
-	var fretWidth = Math.round(500 / fretCount),
-		neck = {
-			width: 100,
-			height: fretWidth * fretCount
-		},
-		stringDistance = Math.round(neck.width / 7),
-		i;
-	this.fretWidth = fretWidth;
-	this.stringDistance = stringDistance;
+Scalear.Neck = function(tunning, fretCount, stringsCount) {
+	var noteNumber, notesMap = {};
+	this._tunning = tunning;
 	this.fretCount = fretCount;
-	this.stringsCount = stringsCount;
-
+	this.fretWidth = Math.round(500 / fretCount);
 	this.neck = {
 		width: 100,
 		height: this.fretWidth * this.fretCount
 	};
+	this.stringDistance = Math.round(this.neck.width / 7);
+	this.stringsCount = stringsCount;
+	return this;
+};
+Scalear.Neck.prototype = new Scalear.View();
+Scalear.Neck.prototype.render = function(svgParent) {
+	var i;
 
-	frets = new Svg.Rectangle(svgParent, {
+	new Svg.Rectangle(svgParent, {
 		className: 'neck',
-		x: fretWidth,
+		x: this.fretWidth,
 		y: 0,
-		width: neck.height,
-		height: neck.width
+		width: this.neck.height,
+		height: this.neck.width
 	});
 
 	frets = new Svg.Group(svgParent, {
@@ -82,31 +85,12 @@ Scalear.Neck.prototype.render = function(svgParent, fretCount, stringsCount) {
 		className: 'fingers'
 	});
 
-	for (i = 0; i <= fretCount; i++) {
-		new Svg.Line(frets.el, {
-			x1: i * fretWidth + fretWidth,
-			x2: i * fretWidth + fretWidth,
-			y1: 0,
-			y2: neck.width
-		});
-		new Svg.Text(frets.el, {
-			x: i * fretWidth - ((fretWidth + 7) / 2) + fretWidth,
-			y: 115,
-			content: i
-		});
-	}
-	new Svg.Line(frets.el, {
-		className: 'zero',
-		x1: fretWidth,
-		x2: fretWidth,
-		y1: 0,
-		y2: neck.width
-	});
 	this._renderMarks(marks.el);
+	this._renderFrets(frets.el);
 	this._renderStrings(strings.el);
 	this._renderFingers(fingers.el);
+	this._mapNotes();
 };
-
 Scalear.Neck.prototype._renderMarks = function(el) {
 	var self = this;
 	[3, 5, 7, 9, 12].map(function(i) {
@@ -117,6 +101,43 @@ Scalear.Neck.prototype._renderMarks = function(el) {
 			width: self.fretWidth - 2 * 5
 		});
 	});
+};
+Scalear.Neck.prototype._renderFrets = function(el) {
+	for (i = 0; i <= this.fretCount; i++) {
+		new Svg.Line(el, {
+			x1: i * this.fretWidth + this.fretWidth,
+			x2: i * this.fretWidth + this.fretWidth,
+			y1: 0,
+			y2: this.neck.width
+		});
+		new Svg.Text(el, {
+			x: i * this.fretWidth - ((this.fretWidth + 7) / 2) + this.fretWidth,
+			y: 115,
+			content: i
+		});
+	}
+	new Svg.Line(el, {
+		className: 'zero',
+		x1: this.fretWidth,
+		x2: this.fretWidth,
+		y1: 0,
+		y2: this.neck.width
+	});
+};
+
+Scalear.Neck.prototype._mapNotes = function(el) {
+	var notesMap = [];
+
+	for (i = 0; i < this._tunning.length; i++) {
+		noteNumber = this._tunning[i];
+		for (var fret = 0; fret <= this.fretCount; fret++) {
+			notesMap[noteNumber] = notesMap[noteNumber] || [];
+			notesMap[noteNumber].push(this.getFinger(i + 1, fret));
+			noteNumber++;
+			noteNumber = noteNumber % Scalear.notes.length;
+		}
+	}
+	this._notesMap = notesMap;
 };
 
 Scalear.Neck.prototype._renderStrings = function(el) {
@@ -154,52 +175,52 @@ Scalear.Neck.prototype.setRootFinger = function(string, fret) {
 	this.getFinger(string, fret).addClass('root');
 };
 
+Scalear.Neck.prototype.showAllNotes = function(note) {
+	for (var i = 0; i < this._notesMap[note].length; i++) {
+		this._notesMap[note][i].show();
+	}
+};
+
+Scalear.Neck.prototype.showScale = function(scale) {
+	this._clear();
+	for (var j = 0; j < scale.length; j++) {
+		this.showAllNotes(scale[j]);
+	}
+};
+
+Scalear.Neck.prototype._clear = function() {
+	for (var i = 0; i < this.stringsCount; i++) {
+		for (var j = 0; j < this.fingers[i].length; j++) {
+			this.fingers[i][j].hide();
+		}
+	}
+};
+
 onload = function() {
 	var stringCount = 6,
 		fretCount = 12,
-		neckView = new Scalear.Neck(),
 		tunning = [4, 11, 7, 2, 9, 4],
-		notesMap = {};
+		scales = [{
+			name: "Aeolioan",
+			notes: [0, 2, 4, 5, 7, 9, 11]
+		}, {
+			name: "Dorian",
+			notes: [2, 4, 5, 7, 9, 11, 0]
+		}, {
+			name: "Pentat",
+			notes: [0, 2, 4, 7, 9]
+		}],
+		neckView = new Scalear.Neck(tunning, fretCount, stringCount),
+		model = new Scalear.Model();
 
-	neckView.render(Svg.get('svg'), fretCount, stringCount);
+	neckView.on('update', function(data) {
+		neckView.showScale(data);
+	}, this);
+	neckView.render(Svg.get('svg'));
+	model.setData(scales[1].notes);
 
-	var notes = [
-		'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'Bb', 'H'
-	];
-
-	for (var i = 0; i < tunning.length; i++) {
-		noteNumber = tunning[i];
-		for (var fret = 0; fret <= fretCount; fret++) {
-			notesMap[noteNumber] = notesMap[noteNumber] || [];
-			notesMap[noteNumber].push(neckView.getFinger(i + 1, fret));
-			noteNumber++;
-			noteNumber = noteNumber % notes.length;
-		}
-	}
-
-	function showAllNotes(note) {
-		for (i = 0; i < notesMap[note].length; i++) {
-			notesMap[note][i].show();
-		}
-	}
-
-	function showScale(scale) {
-		for (j = 0; j < scale.notes.length; j++) {
-			showAllNotes(scale.notes[j]);
-		}
-	}
-
-	var scales = [{
-		name: "aeolioan",
-		notes: [0, 2, 4, 5, 7, 9, 11]
-	}, {
-		name: "dorian",
-		notes: [2, 4, 5, 7, 9, 11, 0]
-	}, {
-		name: "pentat",
-		notes: [0, 2, 4, 7, 9]
-	}];
-
-	showScale(scales[0]);
-
+	document.querySelector('select').addEventListener('change', function() {
+		var id = parseInt(document.querySelector('select').value, 10);
+		model.setData(scales[id].notes);
+	});
 };
