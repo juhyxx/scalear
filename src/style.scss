@@ -10,17 +10,19 @@ svg {
     }
 }
 
+.labels {
+    text {
+        fill: black;
+        font-family: sans-serif;
+        font-size: 8px;
+    }
+}
+
 rect.neck {
     fill: url(#gradient);
     stroke: gray;
     stroke-width: 1;
     filter: url(#f1);
-}
-
-text {
-    fill: #674100;
-    font-family: sans-serif;
-    font-size: 10px;
 }
 
 .strings {
@@ -61,6 +63,11 @@ text {
             stroke: black;
             stroke-width: 6;
         }
+    }
+    text {
+        fill: #674100;
+        font-family: sans-serif;
+        font-size: 10px;
     }
 }
 

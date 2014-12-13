@@ -37,11 +37,15 @@ Scalear.Neck.prototype.render = function(svgParent) {
 	fingers = new Svg.Group(svgParent, {
 		className: 'fingers'
 	});
+	this.labels = new Svg.Group(svgParent, {
+		className: 'labels'
+	});
 
 	this._renderMarks(marks.el);
 	this._renderFrets(frets.el);
 	this._renderStrings(strings.el);
 	this._renderFingers(fingers.el);
+	this._renderLabels(this.labels.el);
 	this._mapNotes();
 };
 Scalear.Neck.prototype._renderMarks = function(el) {
@@ -120,6 +124,19 @@ Scalear.Neck.prototype._renderFingers = function(svgParent) {
 	}
 };
 
+Scalear.Neck.prototype._renderLabels = function(svgParent) {
+	for (var string = 0; string < this.stringsCount; string++) {
+		noteNumber = this._tunning[string];
+		for (var i = 0; i <= this.fretCount; i++) {
+			new Svg.Text(svgParent, {
+				x: i * this.fretWidth + (this.fretWidth / 2) - 3,
+				y: this.stringDistance * string + this.stringDistance + 3,
+				content: Scalear.notes[(noteNumber + i) % Scalear.notes.length]
+			});
+		}
+	}
+};
+
 Scalear.Neck.prototype.getFinger = function(string, fret) {
 	return this.fingers[string - 1][fret];
 };
@@ -147,4 +164,11 @@ Scalear.Neck.prototype._clear = function() {
 			this.fingers[i][j].hide();
 		}
 	}
+};
+
+Scalear.Neck.prototype.modelUpdate = function(model) {
+	this.showScale(model.data.notes);
+};
+Scalear.Neck.prototype.setNoteNamesVisibility = function(visible) {
+	this.labels[visible ? 'show' : 'hide']();
 };

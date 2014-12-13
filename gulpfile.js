@@ -7,7 +7,7 @@ var gulp = require('gulp'),
 	sass = require('gulp-sass');
 
 gulp.task('watch', function() {
-	gulp.watch(['./src/*'], ['build', 'reload']);
+	gulp.watch(['./src/**/*'], ['build', 'reload']);
 });
 
 gulp.task('reload', function() {
