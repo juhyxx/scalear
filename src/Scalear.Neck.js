@@ -1,50 +1,3 @@
-Scalear = {
-	notes: [
-		'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab', 'A', 'Bb', 'H'
-	]
-};
-Scalear.Observable = {
-	_registredEvents: [],
-
-	fire: function(eventName) {
-		var args = Array.apply(null, arguments);
-		args.shift();
-
-		if (this._registredEvents[eventName]) {
-			this._registredEvents[eventName].map(function(ev) {
-				ev.handler.apply(ev.scope, args);
-			});
-		}
-	},
-
-	on: function(eventName, fn, scope) {
-		this._registredEvents[eventName] = this._registredEvents[eventName] || [];
-
-		this._registredEvents[eventName].push({
-			handler: fn,
-			scope: scope
-		});
-	}
-};
-
-Scalear.Model = function() {
-	return this;
-};
-Scalear.Model.prototype = Scalear.Observable;
-Scalear.Model.prototype.setData = function(data) {
-	this._data = data;
-	this.fire('update', data);
-};
-/***/
-Scalear.View = function() {
-
-};
-Scalear.View.prototype = Scalear.Observable;
-Scalear.View.prototype.render = function() {
-	console.warn('virtual method "render", has to be implemented');
-};
-
-/***/
 Scalear.Neck = function(tunning, fretCount, stringsCount) {
 	var noteNumber, notesMap = {};
 	this._tunning = tunning;
@@ -58,7 +11,7 @@ Scalear.Neck = function(tunning, fretCount, stringsCount) {
 	this.stringsCount = stringsCount;
 	return this;
 };
-Scalear.Neck.prototype = new Scalear.View();
+Scalear.Neck.prototype = new Mvc.View();
 Scalear.Neck.prototype.render = function(svgParent) {
 	var i;
 
@@ -194,33 +147,4 @@ Scalear.Neck.prototype._clear = function() {
 			this.fingers[i][j].hide();
 		}
 	}
-};
-
-onload = function() {
-	var stringCount = 6,
-		fretCount = 12,
-		tunning = [4, 11, 7, 2, 9, 4],
-		scales = [{
-			name: "Aeolioan",
-			notes: [0, 2, 4, 5, 7, 9, 11]
-		}, {
-			name: "Dorian",
-			notes: [2, 4, 5, 7, 9, 11, 0]
-		}, {
-			name: "Pentat",
-			notes: [0, 2, 4, 7, 9]
-		}],
-		neckView = new Scalear.Neck(tunning, fretCount, stringCount),
-		model = new Scalear.Model();
-
-	neckView.on('update', function(data) {
-		neckView.showScale(data);
-	}, this);
-	neckView.render(Svg.get('svg'));
-	model.setData(scales[1].notes);
-
-	document.querySelector('select').addEventListener('change', function() {
-		var id = parseInt(document.querySelector('select').value, 10);
-		model.setData(scales[id].notes);
-	});
 };
