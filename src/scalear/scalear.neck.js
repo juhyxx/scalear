@@ -1,4 +1,4 @@
-Scalear.Neck = function(tunning, fretCount, stringsCount) {
+Scalear.Neck = function(tunning, fretCount, stringsCount, rootNote) {
 	var noteNumber, notesMap = {};
 	this._tunning = tunning;
 	this.fretCount = fretCount;
@@ -7,6 +7,7 @@ Scalear.Neck = function(tunning, fretCount, stringsCount) {
 		width: 100,
 		height: this.fretWidth * this.fretCount
 	};
+	this._rootNote = rootNote;
 	this.stringDistance = Math.round(this.neck.width / 7);
 	this.stringsCount = stringsCount;
 	return this;
@@ -141,13 +142,22 @@ Scalear.Neck.prototype.getFinger = function(string, fret) {
 	return this.fingers[string - 1][fret];
 };
 
-Scalear.Neck.prototype.setRootFinger = function(string, fret) {
-	this.getFinger(string, fret).addClass('root');
-};
-
 Scalear.Neck.prototype.showAllNotes = function(note) {
 	for (var i = 0; i < this._notesMap[note].length; i++) {
 		this._notesMap[note][i].show();
+	}
+};
+
+Scalear.Neck.prototype.setNotesRoot = function(note) {
+	var i, scale = this._model.data.notes.slice();
+
+	for (i = 0; i < scale.length; i++) {
+		scale[i] = (scale[i] + note) % Scalear.notes.length;
+	}
+	this.showScale(scale);
+	this._clearStyle();
+	for (i = 0; i < this._notesMap[note].length; i++) {
+		this._notesMap[note][i].className = 'root';
 	}
 };
 
@@ -165,9 +175,17 @@ Scalear.Neck.prototype._clear = function() {
 		}
 	}
 };
+Scalear.Neck.prototype._clearStyle = function() {
+	for (var i = 0; i < this.stringsCount; i++) {
+		for (var j = 0; j < this.fingers[i].length; j++) {
+			this.fingers[i][j].className = '';
+		}
+	}
+};
 
 Scalear.Neck.prototype.modelUpdate = function(model) {
 	this.showScale(model.data.notes);
+	this._model = model;
 };
 Scalear.Neck.prototype.setNoteNamesVisibility = function(visible) {
 	this.labels[visible ? 'show' : 'hide']();

@@ -6,6 +6,9 @@ Svg.Element = {
 	},
 	set className(name) {
 		this._className = name;
+		if (this._el) {
+			this._el.setAttribute('class', name);
+		}
 	},
 
 	get el() {

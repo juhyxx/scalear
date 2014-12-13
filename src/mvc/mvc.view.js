@@ -1,5 +1,5 @@
 Mvc.View = function() {};
-Mvc.View.prototype = new Object;
+Mvc.View.prototype = new Object();
 Mvc.View.prototype.render = function() {
 	console.warn('Virtual method "render", has to be implemented.');
 };

@@ -12,15 +12,22 @@
     <script src="scalear/scalear.js"></script>
     <script src="scalear/scalear.neck.js"></script>
     <script src="scalear/scalear.scaleselect.js"></script>
+    <script src="scalear/scalear.rootselect.js"></script>
     <script src="script.js"></script>
 </head>
 
 <body>
-    <select id="scale-selector">
-    </select>
-   
-    <input type=number id="frets-count">
-    <label><input type="checkbox" id="note-names"> Note names</label>
+    <div class="ui">
+        <select id="root-selector">
+        </select>
+        <select id="scale-selector">
+        </select>
+       
+        <input type=number id="frets-count">
+        <label><input type="checkbox" id="note-names"> Note names</label>
+    </div>
+
+    <h1><span id="root"></span> <span id="name"></span></h1>
 
     <svg height="300" width="500" viewBox="0 0 600 120">
         <defs>
