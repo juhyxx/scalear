@@ -69,8 +69,8 @@ Scalear.Neck.prototype._renderFrets = function(el) {
 			y2: this.neck.width
 		});
 		new Svg.Text(el, {
-			x: i * this.fretWidth - ((this.fretWidth + 7) / 2) + this.fretWidth,
-			y: 115,
+			x: i * this.fretWidth - this.fretWidth + 2* this.fretWidth - 2,
+			y: 110,
 			content: i
 		});
 	}

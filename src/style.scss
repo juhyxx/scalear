@@ -1,9 +1,11 @@
 svg {
     width: 100%;
 }
+
 h1 {
     margin: 0;
 }
+
 body {
     margin: 0;
     padding: 0;
@@ -21,8 +23,13 @@ body {
 
 .fingers {
     circle {
-        fill: lightgray;
-        filter: url(#finger);
+        fill: white;
+        @media screen {
+            filter: url(#finger);
+        }
+        @media print {
+            stroke: black;
+        }
         display: none;
         &.root {
             fill: red;
@@ -39,38 +46,43 @@ body {
 }
 
 rect.neck {
-    fill: url(#gradient);
+    @media screen {
+        fill: url(#gradient);
+        filter: url(#f1);
+    }
+    @media print {
+        fill: white;
+    }
     stroke: gray;
     stroke-width: 1;
-    filter: url(#f1);
 }
 
 .strings {
     line {
-        filter: url(#f1);
+        @media screen {
+            filter: url(#f1);
+            stroke: gray;
+        }
+        @media print {
+            stroke: black;
+        }
     }
     line:nth-child(n) {
-        stroke: gray;
         stroke-width: 1;
     }
     line:nth-child(2) {
-        stroke: gray;
         stroke-width: 1.2;
     }
     line:nth-child(3) {
-        stroke: gray;
         stroke-width: 1.5;
     }
     line:nth-child(4) {
-        stroke: gray;
         stroke-width: 2;
     }
     line:nth-child(5) {
-        stroke: gray;
         stroke-width: 2.5;
     }
     line:nth-child(6) {
-        stroke: gray;
         stroke-width: 3;
     }
 }
@@ -78,7 +90,9 @@ rect.neck {
 .frets {
     line {
         stroke: gray;
-        filter: url(#fret);
+        @media screen {
+            filter: url(#fret);
+        }
         &.zero {
             stroke: black;
             stroke-width: 6;
@@ -87,11 +101,17 @@ rect.neck {
     text {
         fill: #674100;
         font-family: sans-serif;
-        font-size: 10px;
+        font-size: 8px;
     }
 }
 
 .marks rect {
-    fill: rgba(255, 255, 255, 0.3);
+    @media screen {
+        fill: rgba(255, 255, 255, 0.3);
+    }
+    @media print {
+        fill: #EEEEEE;
+    }
     stroke: transparent;
+
 }
