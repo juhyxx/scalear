@@ -8,6 +8,7 @@ h1 {
     color: #732C2C;
     text-shadow: 0 1px 0 black;
 }
+
 select,label {
     opacity: 0.5;
 }
@@ -19,28 +20,36 @@ body {
     background-color: #BFA98E;
 }
 
-.ui {
+footer, header {
     background-color: #732C2C;
     color: white;
     padding: 1em;
     @media print {
         display: none;
     }
-    box-shadow: 0 2px 2px gray;
+    position: absolute;
+    width: 98%;
+}
+
+header {
+    position: static;
 }
 
 footer {
-    background-color: #732C2C;
-    color: white;
-    padding: 1em;
-    @media print {
-        display: none;
+    select, input, label, input {
+        font-size: 2em;
+        border-radius: 8px;
     }
-    box-shadow: 0 -2px 2px gray;
-    position: fixed;
-    bottom:0;
-    width: 100%;
-    text-transform: uppercase;
+    label {
+        margin-left: 1em;
+    }
+    input[type="checkbox"] {
+        -webkit-transform: scale(3.5);
+        margin-right: 0.25em;
+        position: relative;
+        top: -2px;
+    }
+    bottom: 0;
 }
 
 .fingers {

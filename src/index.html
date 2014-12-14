@@ -17,15 +17,11 @@
 </head>
 
 <body>
-    <div class="ui">
+    
+    <header>
+       <img src="logo.svg">
+    </header>
 
-        <select id="root-selector">
-        </select>
-        <select id="scale-selector">
-        </select>
-        <!--input type=number id="frets-count"-->
-        <label><input type="checkbox" id="note-names"> Note names</label>
-    </div>
 
     <h1><span id="root"></span> <span id="name"></span></h1>
 
@@ -55,8 +51,14 @@
         <line x1="42" x2="42" y1="0" y2="100"></line>
     </svg>
 
-    <footer>
-       <img src="logo.svg">
+    <footer class="ui">
+
+        <select id="root-selector">
+        </select>
+        <select id="scale-selector">
+        </select>
+        <!--input type=number id="frets-count"-->
+        <label><input type="checkbox" id="note-names"> Note names</label>
     </footer>
 
 </body>
