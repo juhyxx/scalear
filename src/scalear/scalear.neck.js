@@ -1,27 +1,24 @@
 Scalear.Neck = function(tunning, fretCount, stringsCount, rootNote) {
-	var noteNumber, notesMap = {};
 	this._tunning = tunning;
-	this.fretCount = fretCount;
-	this.fretWidth = Math.round(500 / fretCount);
-	this.neck = {
+	this._fretCount = fretCount;
+	this._fretWidth = Math.round(500 / fretCount);
+	this._neck = {
 		width: 100,
-		height: this.fretWidth * this.fretCount
+		height: this._fretWidth * this._fretCount
 	};
 	this._rootNote = rootNote;
-	this.stringDistance = Math.round(this.neck.width / 7);
-	this.stringsCount = stringsCount;
+	this._stringDistance = Math.round(this._neck.width / 7);
+	this._stringsCount = stringsCount;
 	return this;
 };
 Scalear.Neck.prototype = new Mvc.View();
 Scalear.Neck.prototype.render = function(svgParent) {
-	var i;
-
 	new Svg.Rectangle(svgParent, {
 		className: 'neck',
-		x: this.fretWidth,
+		x: this._fretWidth,
 		y: 0,
-		width: this.neck.height,
-		height: this.neck.width
+		width: this._neck.height,
+		height: this._neck.width
 	});
 
 	frets = new Svg.Group(svgParent, {
@@ -53,33 +50,33 @@ Scalear.Neck.prototype._renderMarks = function(el) {
 	var self = this;
 	[3, 5, 7, 9, 12].map(function(i) {
 		new Svg.Rectangle(el, {
-			x: (i - 1) * self.fretWidth + 5 + self.fretWidth,
+			x: (i - 1) * self._fretWidth + 5 + self._fretWidth,
 			y: 5,
-			height: self.neck.width - 2 * 5,
-			width: self.fretWidth - 2 * 5
+			height: self._neck.width - 2 * 5,
+			width: self._fretWidth - 2 * 5
 		});
 	});
 };
 Scalear.Neck.prototype._renderFrets = function(el) {
-	for (i = 0; i <= this.fretCount; i++) {
+	for (i = 0; i <= this._fretCount; i++) {
 		new Svg.Line(el, {
-			x1: i * this.fretWidth + this.fretWidth,
-			x2: i * this.fretWidth + this.fretWidth,
+			x1: i * this._fretWidth + this._fretWidth,
+			x2: i * this._fretWidth + this._fretWidth,
 			y1: 0,
-			y2: this.neck.width
+			y2: this._neck.width
 		});
 		new Svg.Text(el, {
-			x: i * this.fretWidth - this.fretWidth + 2* this.fretWidth - 2,
+			x: i * this._fretWidth - this._fretWidth + 2 * this._fretWidth - 2,
 			y: 110,
 			content: i
 		});
 	}
 	new Svg.Line(el, {
 		className: 'zero',
-		x1: this.fretWidth,
-		x2: this.fretWidth,
+		x1: this._fretWidth,
+		x2: this._fretWidth,
 		y1: 0,
-		y2: this.neck.width
+		y2: this._neck.width
 	});
 };
 
@@ -88,7 +85,7 @@ Scalear.Neck.prototype._mapNotes = function(el) {
 
 	for (i = 0; i < this._tunning.length; i++) {
 		noteNumber = this._tunning[i];
-		for (var fret = 0; fret <= this.fretCount; fret++) {
+		for (var fret = 0; fret <= this._fretCount; fret++) {
 			notesMap[noteNumber] = notesMap[noteNumber] || [];
 			notesMap[noteNumber].push(this.getFinger(i + 1, fret));
 			noteNumber++;
@@ -99,12 +96,12 @@ Scalear.Neck.prototype._mapNotes = function(el) {
 };
 
 Scalear.Neck.prototype._renderStrings = function(el) {
-	for (i = 1; i <= this.stringsCount; i++) {
+	for (i = 1; i <= this._stringsCount; i++) {
 		new Svg.Line(el, {
 			x1: 0,
-			x2: this.neck.height + this.fretWidth,
-			y1: i * this.stringDistance,
-			y2: i * this.stringDistance
+			x2: this._neck.height + this._fretWidth,
+			y1: i * this._stringDistance,
+			y2: i * this._stringDistance
 		});
 	}
 };
@@ -112,26 +109,26 @@ Scalear.Neck.prototype._renderStrings = function(el) {
 Scalear.Neck.prototype._renderFingers = function(svgParent) {
 	this.fingers = [];
 
-	for (var string = 1; string <= this.stringsCount; string++) {
+	for (var string = 1; string <= this._stringsCount; string++) {
 		this.fingers.push([]);
 
-		for (var i = 0; i <= this.fretCount; i++) {
+		for (var i = 0; i <= this._fretCount; i++) {
 			this.fingers[string - 1].push(new Svg.Circle(svgParent, {
-				x: i * this.fretWidth + this.fretWidth / 2,
-				y: this.stringDistance * string,
-				radius: this.stringDistance / 2.5
+				x: i * this._fretWidth + this._fretWidth / 2,
+				y: this._stringDistance * string,
+				radius: this._stringDistance / 2.5
 			}));
 		}
 	}
 };
 
 Scalear.Neck.prototype._renderLabels = function(svgParent) {
-	for (var string = 0; string < this.stringsCount; string++) {
+	for (var string = 0; string < this._stringsCount; string++) {
 		noteNumber = this._tunning[string];
-		for (var i = 0; i <= this.fretCount; i++) {
+		for (var i = 0; i <= this._fretCount; i++) {
 			new Svg.Text(svgParent, {
-				x: i * this.fretWidth + (this.fretWidth / 2) - 3,
-				y: this.stringDistance * string + this.stringDistance + 3,
+				x: i * this._fretWidth + (this._fretWidth / 2) - 3,
+				y: this._stringDistance * string + this._stringDistance + 3,
 				content: Scalear.notes[(noteNumber + i) % Scalear.notes.length]
 			});
 		}
@@ -145,6 +142,9 @@ Scalear.Neck.prototype.getFinger = function(string, fret) {
 Scalear.Neck.prototype.showAllNotes = function(note) {
 	for (var i = 0; i < this._notesMap[note].length; i++) {
 		this._notesMap[note][i].show();
+		if (note === this._rootNote) {
+			this._notesMap[note][i].className = 'root';
+		}
 	}
 };
 
@@ -154,11 +154,8 @@ Scalear.Neck.prototype.setNotesRoot = function(note) {
 	for (i = 0; i < scale.length; i++) {
 		scale[i] = (scale[i] + note) % Scalear.notes.length;
 	}
+	this._rootNote = note;
 	this.showScale(scale);
-	this._clearStyle();
-	for (i = 0; i < this._notesMap[note].length; i++) {
-		this._notesMap[note][i].className = 'root';
-	}
 };
 
 Scalear.Neck.prototype.showScale = function(scale) {
@@ -169,16 +166,10 @@ Scalear.Neck.prototype.showScale = function(scale) {
 };
 
 Scalear.Neck.prototype._clear = function() {
-	for (var i = 0; i < this.stringsCount; i++) {
-		for (var j = 0; j < this.fingers[i].length; j++) {
-			this.fingers[i][j].hide();
-		}
-	}
-};
-Scalear.Neck.prototype._clearStyle = function() {
-	for (var i = 0; i < this.stringsCount; i++) {
+	for (var i = 0; i < this._stringsCount; i++) {
 		for (var j = 0; j < this.fingers[i].length; j++) {
 			this.fingers[i][j].className = '';
+			this.fingers[i][j].hide();
 		}
 	}
 };
