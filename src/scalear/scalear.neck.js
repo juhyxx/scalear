@@ -9,9 +9,36 @@ Scalear.Neck = function(tunning, fretCount, stringsCount, rootNote) {
 	this._rootNote = rootNote;
 	this._stringDistance = Math.round(this._neck.width / 7);
 	this._stringsCount = stringsCount;
-	return this;
+
+	Mvc.View.call(this);
 };
 Scalear.Neck.prototype = new Mvc.View();
+
+Object.defineProperty(Scalear.Neck.prototype, 'fretCount', {
+	get: function() {
+		return this._fretCount;
+	},
+	set: function(fretCount) {
+		this._fretCount = fretCount;
+		this._updateFretCount();
+	}
+});
+
+Object.defineProperty(Scalear.Neck.prototype, 'rootNote', {
+	get: function() {
+		return this._RootNote;
+	},
+	set: function(rootNote) {
+		var i, scale = this._model.data.notes.slice();
+
+		for (i = 0; i < scale.length; i++) {
+			scale[i] = (scale[i] + rootNote) % Scalear.notes.length;
+		}
+		this._rootNote = rootNote;
+		this.showScale(scale);
+	}
+});
+
 Scalear.Neck.prototype.render = function(svgParent) {
 	new Svg.Rectangle(svgParent, {
 		className: 'neck',
@@ -107,13 +134,13 @@ Scalear.Neck.prototype._renderStrings = function(el) {
 };
 
 Scalear.Neck.prototype._renderFingers = function(svgParent) {
-	this.fingers = [];
+	this._fingers = [];
 
 	for (var string = 1; string <= this._stringsCount; string++) {
-		this.fingers.push([]);
+		this._fingers.push([]);
 
 		for (var i = 0; i <= this._fretCount; i++) {
-			this.fingers[string - 1].push(new Svg.Circle(svgParent, {
+			this._fingers[string - 1].push(new Svg.Circle(svgParent, {
 				x: i * this._fretWidth + this._fretWidth / 2,
 				y: this._stringDistance * string,
 				radius: this._stringDistance / 2.5
@@ -136,47 +163,39 @@ Scalear.Neck.prototype._renderLabels = function(svgParent) {
 };
 
 Scalear.Neck.prototype.getFinger = function(string, fret) {
-	return this.fingers[string - 1][fret];
+	return this._fingers[string - 1][fret];
 };
 
 Scalear.Neck.prototype.showAllNotes = function(note) {
-	for (var i = 0; i < this._notesMap[note].length; i++) {
-		this._notesMap[note][i].show();
-		if (note === this._rootNote) {
-			this._notesMap[note][i].className = 'root';
+	var self = this;
+	this._notesMap[note].forEach(function(item) {
+		item.show();
+		if (note === self._rootNote) {
+			item.className = 'root';
 		}
-	}
-};
-
-Scalear.Neck.prototype.setNotesRoot = function(note) {
-	var i, scale = this._model.data.notes.slice();
-
-	for (i = 0; i < scale.length; i++) {
-		scale[i] = (scale[i] + note) % Scalear.notes.length;
-	}
-	this._rootNote = note;
-	this.showScale(scale);
+	});
 };
 
 Scalear.Neck.prototype.showScale = function(scale) {
+	var self = this;
 	this._clear();
-	for (var j = 0; j < scale.length; j++) {
-		this.showAllNotes(scale[j]);
-	}
+	scale.forEach(function(scale) {
+		self.showAllNotes(scale);
+	});
 };
 
 Scalear.Neck.prototype._clear = function() {
 	for (var i = 0; i < this._stringsCount; i++) {
-		for (var j = 0; j < this.fingers[i].length; j++) {
-			this.fingers[i][j].className = '';
-			this.fingers[i][j].hide();
+		for (var j = 0; j < this._fingers[i].length; j++) {
+			this._fingers[i][j].className = '';
+			this._fingers[i][j].hide();
 		}
 	}
 };
 
 Scalear.Neck.prototype.modelUpdate = function(model) {
-	this.showScale(model.data.notes);
 	this._model = model;
+	this.showScale(model.data.notes);
 };
 Scalear.Neck.prototype.setNoteNamesVisibility = function(visible) {
 	this.labels[visible ? 'show' : 'hide']();

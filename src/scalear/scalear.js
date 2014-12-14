@@ -2,6 +2,12 @@ Scalear = {
 	notes: [
 		'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'H'
 	],
+	defaults: {
+		stringCount: 6,
+		fretCount: 12,
+		tunning: [4, 11, 7, 2, 9, 4],
+		rootNote: 0
+	},
 	scales: [{
 		name: "Aeolioan",
 		notes: [0, 2, 4, 5, 7, 9, 11]
