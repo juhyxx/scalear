@@ -3,7 +3,9 @@ Scalear.RootSelect = function() {
 };
 Scalear.RootSelect.prototype = new Mvc.View();
 Scalear.RootSelect.prototype.modelUpdate = function(model) {
-	for (var i = 0; i < model.length; i++) {
+	var i, element;
+
+	for (i = 0; i < model.length; i++) {
 		if (!document.querySelector('#root-selector option[value="' + i + '"]')) {
 			element = document.createElement('option');
 			element.value = i;

@@ -1,57 +1,3 @@
-svg {
-    width: 100%;
-}
-
-h1 {
-    margin-top: 1em;
-    margin-left: 1em;
-    color: #732C2C;
-    text-shadow: 0 1px 0 black;
-}
-
-select,label {
-    opacity: 0.5;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
-    background-color: #BFA98E;
-}
-
-footer, header {
-    background-color: #732C2C;
-    color: white;
-    padding: 1em;
-    @media print {
-        display: none;
-    }
-    position: absolute;
-    width: 98%;
-}
-
-header {
-    position: static;
-}
-
-footer {
-    select, input, label, input {
-        font-size: 2em;
-        border-radius: 8px;
-    }
-    label {
-        margin-left: 1em;
-    }
-    input[type="checkbox"] {
-        -webkit-transform: scale(3.5);
-        margin-right: 0.25em;
-        position: relative;
-        top: -2px;
-    }
-    bottom: 0;
-}
-
 .fingers {
     circle {
         fill: white;
@@ -72,7 +18,7 @@ footer {
     text {
         fill: black;
         font-family: sans-serif;
-        font-size: 8px;
+        font-size: 7px;
     }
 }
 
@@ -91,7 +37,6 @@ rect.neck {
 .strings {
     line {
         @media screen {
-            filter: url(#f1);
             stroke: #aba3a1;
         }
         @media print {
@@ -122,7 +67,6 @@ rect.neck {
     line {
         @media screen {
             stroke: #EEEEEE;
-            filter: url(#fret);
         }
         @media print {
             stroke: black;
@@ -135,9 +79,9 @@ rect.neck {
         }
     }
     text {
-        fill: #732C2C;
+        fill: #555F73;
         font-family: sans-serif;
-        font-size: 8px;
+        font-size: 6px;
     }
 }
 

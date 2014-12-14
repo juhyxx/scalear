@@ -1,6 +1,6 @@
-Scalear = {
+var Scalear = {
 	notes: [
-		'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'H'
+		'C', 'C♯ ', 'D', 'D♯ ', 'E', 'F', 'F♯ ', 'G', 'G♯ ', 'A', 'A♯ ', 'H'
 	],
 	defaults: {
 		stringCount: 6,
@@ -28,7 +28,7 @@ Scalear = {
 		notes: [0, 4, 7]
 	}, {
 		name: "Major 7th chord",
-		notes: [0, 4, 7, 9]
+		notes: [0, 4, 7, 11]
 	}, {
 		name: "Minor chord",
 		notes: [0, 3, 7]

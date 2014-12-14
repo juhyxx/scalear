@@ -1,0 +1,87 @@
+@import url(//fonts.googleapis.com/css?family=Ubuntu:500);
+
+svg {
+    width: 100%;
+}
+
+h1 {
+    margin-top: 1em;
+    margin-left: 1em;
+    color: #732C2C;
+    text-shadow: 0 1px 0 black;
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: #BFA98E;
+}
+
+footer, header {
+    background-color: #732C2C;
+    color: white;
+    padding: 1em;
+    @media print {
+        display: none;
+    }
+    position: absolute;
+    width: 98%;
+    box-shadow: 0 0px 20px rgba(black, 0.8), inset 0 0 50px rgba(black, 0.5);
+}
+
+header {
+    position: static;
+    border-bottom: solid;
+    border-bottom: 2px solid white;
+    h1 {
+        color:white;
+        display: inline-block;
+        position: relative;
+        top: -17px;
+        margin: 0;
+        margin-left: 1em;
+        text-transform: uppercase;
+        opacity: 0.8;
+    }
+}
+select,label {
+    opacity: 0.4;
+}
+
+footer {
+    select, input, label, input, option {
+        font-size: 2em;
+        border-radius: 8px;
+        font-family: 'Ubuntu', sans-serif;
+        transition: opacity 0.8s;
+    }
+    option {
+        background-color: #732C2C;
+        color: white;
+        margin: 0.5em;
+    }
+    select, input[type="checkbox"]  {
+        &:hover {
+            opacity: 1;
+        }
+    }
+    label {
+        margin-left: 1em;
+    }
+    input[type="checkbox"] {
+        -webkit-transform: scale(3.5);
+        margin-right: 0.25em;
+        position: relative;
+        top: -2px;
+    }
+    bottom: 0;
+    border-top: 2px solid white;
+}
+
+::-webkit-selection,
+::selection {
+    color: white;
+    background: #BFA98E;
+}
