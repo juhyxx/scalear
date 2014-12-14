@@ -40,6 +40,7 @@ Object.defineProperty(Scalear.Neck.prototype, 'rootNote', {
 });
 
 Scalear.Neck.prototype.render = function(svgParent) {
+	this._svgParent = svgParent;
 	new Svg.Rectangle(svgParent, {
 		className: 'neck',
 		x: this._fretWidth,
@@ -78,8 +79,8 @@ Scalear.Neck.prototype._renderMarks = function(el) {
 	[3, 5, 7, 9, 12].map(function(i) {
 		new Svg.Rectangle(el, {
 			x: (i - 1) * self._fretWidth + 5 + self._fretWidth,
-			y: 5,
-			height: self._neck.width - 2 * 5,
+			y: 4 * 5,
+			height: self._neck.width - 8 * 5,
 			width: self._fretWidth - 2 * 5
 		});
 	});
@@ -199,4 +200,10 @@ Scalear.Neck.prototype.modelUpdate = function(model) {
 };
 Scalear.Neck.prototype.setNoteNamesVisibility = function(visible) {
 	this.labels[visible ? 'show' : 'hide']();
+};
+
+Scalear.Neck.prototype._updateFretCount = function(visible) {
+	this._svgParent.content = '';
+	this.render(this._svgParent);
+
 };

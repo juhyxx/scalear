@@ -3,22 +3,44 @@ svg {
 }
 
 h1 {
-    margin: 0;
+    margin-top: 1em;
+    margin-left: 1em;
+    color: #732C2C;
+    text-shadow: 0 1px 0 black;
+}
+select,label {
+    opacity: 0.5;
 }
 
 body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    background-color: #BFA98E;
 }
 
 .ui {
-    background-color: black;
+    background-color: #732C2C;
     color: white;
     padding: 1em;
     @media print {
         display: none;
     }
+    box-shadow: 0 2px 2px gray;
+}
+
+footer {
+    background-color: #732C2C;
+    color: white;
+    padding: 1em;
+    @media print {
+        display: none;
+    }
+    box-shadow: 0 -2px 2px gray;
+    position: fixed;
+    bottom:0;
+    width: 100%;
+    text-transform: uppercase;
 }
 
 .fingers {
@@ -32,7 +54,7 @@ body {
         }
         display: none;
         &.root {
-            fill: red;
+            fill: lighten(#732c2c, 10%);
         }
     }
 }
@@ -53,7 +75,7 @@ rect.neck {
     @media print {
         fill: white;
     }
-    stroke: gray;
+    stroke: white;
     stroke-width: 1;
 }
 
@@ -61,45 +83,50 @@ rect.neck {
     line {
         @media screen {
             filter: url(#f1);
-            stroke: gray;
+            stroke: #aba3a1;
         }
         @media print {
             stroke: black;
         }
     }
     line:nth-child(n) {
-        stroke-width: 1;
+        stroke-width: 0.8;
     }
     line:nth-child(2) {
-        stroke-width: 1.2;
+        stroke-width: 0.8;
     }
     line:nth-child(3) {
-        stroke-width: 1.5;
+        stroke-width: 1;
     }
     line:nth-child(4) {
-        stroke-width: 2;
+        stroke-width: 1.5;
     }
     line:nth-child(5) {
-        stroke-width: 2.5;
+        stroke-width: 1.8;
     }
     line:nth-child(6) {
-        stroke-width: 3;
+        stroke-width: 2;
     }
 }
 
 .frets {
     line {
-        stroke: gray;
         @media screen {
+            stroke: #EEEEEE;
             filter: url(#fret);
         }
-        &.zero {
+        @media print {
             stroke: black;
+        }
+        &.zero {
+            @media screen {
+                stroke: #DDDDDD;
+            }
             stroke-width: 6;
         }
     }
     text {
-        fill: #674100;
+        fill: #732C2C;
         font-family: sans-serif;
         font-size: 8px;
     }
@@ -107,11 +134,10 @@ rect.neck {
 
 .marks rect {
     @media screen {
-        fill: rgba(255, 255, 255, 0.3);
+        fill: rgba(#d6d7cf, 0.5);
     }
     @media print {
         fill: #EEEEEE;
     }
     stroke: transparent;
-
 }

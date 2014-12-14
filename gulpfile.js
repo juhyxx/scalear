@@ -7,19 +7,19 @@ var gulp = require('gulp'),
 	sass = require('gulp-sass');
 
 gulp.task('watch', function() {
-	gulp.watch(['./src/**/*'], ['build', 'reload']);
+	gulp.watch(['./src/**/*'], ['temp', 'reload']);
 });
 
 gulp.task('reload', function() {
 	gulp.src('src').pipe(connect.reload());
 });
 
-gulp.task('build', function() {
+gulp.task('temp', function() {
 	gulp.src('./src/*.scss')
 		.pipe(sass({
 			errLogToConsole: true
 		}))
-		.pipe(gulp.dest('./dist'));
+		.pipe(gulp.dest('./tmp'));
 
 	console.log('Transpillig...');
 	gulp.src(['src/svg/svg.js', 'src/svg/svg.element.js', 'src/svg/*.js'])
@@ -27,16 +27,16 @@ gulp.task('build', function() {
 		.pipe(es6transpiler({
 			"environments": ["browser"],
 		}))
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest('tmp'));
 
 	gulp.src(['src/mvc/mvc.js', 'src/mvc/mvc.observable.js', 'src/mvc/*.js'])
 		.pipe(concat('mvc.js'))
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest('tmp'));
 });
 
 gulp.task('serve', function() {
 	connect.server({
-		root: ['src', 'dist'],
+		root: ['src', 'tmp'],
 		port: 8000,
 		livereload: true
 	});
@@ -47,4 +47,4 @@ gulp.task('serve', function() {
 		}));
 });
 
-gulp.task('default', ['build', 'serve', 'watch']);
+gulp.task('default', ['temp', 'serve', 'watch']);

@@ -18,18 +18,18 @@
 
 <body>
     <div class="ui">
+
         <select id="root-selector">
         </select>
         <select id="scale-selector">
         </select>
-       
-        <input type=number id="frets-count">
+        <!--input type=number id="frets-count"-->
         <label><input type="checkbox" id="note-names"> Note names</label>
     </div>
 
     <h1><span id="root"></span> <span id="name"></span></h1>
 
-    <svg height="300" width="500" viewBox="0 0 600 120">
+    <svg  viewBox="0 0 560 120">
         <defs>
             <filter id="f1" x="-1" y="-1" width="300%" height="300%">
                 <feOffset result="offOut" in="SourceAlpha" dx="1" dy="1" />
@@ -46,16 +46,18 @@
                 <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
             </filter>
             <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#674100" />
-                <stop offset="40%" style="stop-color:#8F5B01;" />
-                <stop offset="60%" style="stop-color:#8F5B01;" />
-                <stop offset="100%" style="stop-color:#674100;" />
+                <stop offset="0%" style="stop-color:#3b2b2b" />
+                <stop offset="40%" style="stop-color:#573a34;" />
+                <stop offset="60%" style="stop-color:#573a34;" />
+                <stop offset="100%" style="stop-color:#3b2b2b;" />
             </linearGradient>
         </defs>
         <line x1="42" x2="42" y1="0" y2="100"></line>
     </svg>
 
-
+    <footer>
+       <img src="logo.svg">
+    </footer>
 
 </body>
 

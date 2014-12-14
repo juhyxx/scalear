@@ -14,7 +14,7 @@ onload = function() {
 	rootSelect.model = Scalear.notes;
 	scaleSelect.model = Scalear.scales;
 
-	document.querySelector('#frets-count').value = Scalear.defaults.fretCount;
+	//document.querySelector('#frets-count').value = Scalear.defaults.fretCount;
 	document.querySelector('#scale-selector').addEventListener('change', function() {
 		var id = parseInt(this.value, 10);
 		neckViewModel.data = Scalear.scales[id];
@@ -27,9 +27,9 @@ onload = function() {
 	document.querySelector('#note-names').addEventListener('change', function() {
 		neckView.setNoteNamesVisibility(this.checked);
 	});
-	document.querySelector('#frets-count').addEventListener('change', function() {
+	/*document.querySelector('#frets-count').addEventListener('change', function() {
 		neckView.fretCount = this.value;
-	});
+	});*/
 	Object.observe(neckViewModel, function(changes) {
 		document.querySelector('#name').innerHTML = changes[0].object.data.name;
 	});
