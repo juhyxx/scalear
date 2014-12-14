@@ -29,7 +29,7 @@ Svg.Element = {
 
 		Object.keys(this).map(function(key) {
 			if (key === 'content') {
-				element.innerHTML = self[key];
+				element.textContent = self[key];
 			} else if (key === '_className') {
 				if (self[key] !== undefined) {
 					element.setAttribute('class', self[key]);

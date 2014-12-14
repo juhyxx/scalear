@@ -2,7 +2,7 @@
     circle {
         fill: white;
         @media screen {
-            filter: url(#finger);
+           // filter: url(#finger);
         }
         @media print {
             stroke: black;
@@ -23,10 +23,6 @@
 }
 
 rect.neck {
-    @media screen {
-        fill: url(#gradient);
-        filter: url(#f1);
-    }
     @media print {
         fill: white;
     }

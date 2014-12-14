@@ -3,6 +3,7 @@ Svg.Circle = function(parent, coords) {
 	this.cx = coords.x;
 	this.cy = coords.y;
 	this.r = coords.radius;
+	this.filter = coords.filter;
 	this.render();
 
 	return this;

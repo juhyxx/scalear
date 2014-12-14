@@ -1,6 +1,6 @@
 var Scalear = {
 	notes: [
-		'C', 'C♯ ', 'D', 'D♯ ', 'E', 'F', 'F♯ ', 'G', 'G♯ ', 'A', 'A♯ ', 'H'
+		'C', 'C♯ ', 'D', 'D♯ ', 'E', 'F', 'F♯ ', 'G', 'G♯ ', 'A', 'A♯ ', 'B'
 	],
 	defaults: {
 		stringCount: 6,

@@ -57,12 +57,8 @@ footer {
         font-family: 'Ubuntu', sans-serif;
         transition: opacity 0.8s;
     }
-    option {
-        background-color: #732C2C;
-        color: white;
-        margin: 0.5em;
-    }
-    select, input[type="checkbox"]  {
+    
+    select, label  {
         &:hover {
             opacity: 1;
         }
@@ -75,6 +71,9 @@ footer {
         margin-right: 0.25em;
         position: relative;
         top: -2px;
+        &:checked {
+            opacity: 1;
+        }
     }
     bottom: 0;
     border-top: 2px solid white;

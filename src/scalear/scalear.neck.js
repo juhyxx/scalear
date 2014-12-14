@@ -41,12 +41,15 @@ Object.defineProperty(Scalear.Neck.prototype, 'rootNote', {
 
 Scalear.Neck.prototype.render = function(svgParent) {
 	this._svgParent = svgParent;
+
 	new Svg.Rectangle(svgParent, {
 		className: 'neck',
 		x: this._fretWidth,
 		y: 0,
 		width: this._neck.height,
-		height: this._neck.width
+		height: this._neck.width,
+		fill: 'url(#gradient)',
+		filter: 'url(#f1)'
 	});
 
 	var frets = new Svg.Group(svgParent, {
@@ -144,7 +147,8 @@ Scalear.Neck.prototype._renderFingers = function(svgParent) {
 			this._fingers[string - 1].push(new Svg.Circle(svgParent, {
 				x: i * this._fretWidth + this._fretWidth / 2,
 				y: this._stringDistance * string,
-				radius: this._stringDistance / 2.5
+				radius: this._stringDistance / 2.5,
+				filter: 'url(#finger)'
 			}));
 		}
 	}
@@ -152,6 +156,8 @@ Scalear.Neck.prototype._renderFingers = function(svgParent) {
 
 Scalear.Neck.prototype._renderLabels = function(svgParent) {
 	var string, noteNumber;
+
+	this._labels = [];
 
 	for (string = 0; string < this._stringsCount; string++) {
 		noteNumber = this._tunning[string];

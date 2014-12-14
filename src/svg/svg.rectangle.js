@@ -5,6 +5,12 @@ Svg.Rectangle = function(parent, params) {
 	this.className = params.className;
 	this.width = params.width;
 	this.height = params.height;
+	if (params.fill) {
+		this.fill = params.fill;
+	}
+	if (params.filter) {
+		this.filter = params.filter;
+	}
 	this.render();
 
 	return this;
