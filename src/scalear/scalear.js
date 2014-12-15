@@ -6,7 +6,9 @@ var Scalear = {
 		stringCount: 6,
 		fretCount: 12,
 		tunning: [4, 11, 7, 2, 9, 4],
-		rootNote: 0
+		rootNote: 0,
+		scale: 0,
+		namesVisible: true
 	},
 	scales: [{
 		name: "Aeolioan",

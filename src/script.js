@@ -1,39 +1,57 @@
 onload = function() {
-	var neckViewModel = {
-			data: Scalear.scales[0]
+	var q = function(q) {
+			return document.querySelector(q);
 		},
-		neckView = new Scalear.Neck(Scalear.defaults.tunning, Scalear.defaults.fretCount, Scalear.defaults.stringCount, Scalear.defaults.rootNote),
+		defaults = JSON.parse(localStorage.getItem('defaults')) || Scalear.defaults,
+		neckViewModel = {
+			data: Scalear.scales[defaults.scale]
+		},
+		neckView = new Scalear.Neck(defaults.tunning, defaults.fretCount, defaults.stringCount, defaults.rootNote),
 		scaleSelect = new Scalear.ScaleSelect(),
 		rootSelect = new Scalear.RootSelect();
 
 	neckView.render(Svg.get('svg'));
-	neckView.setNoteNamesVisibility(false);
 	neckView.model = neckViewModel;
-	neckView.rootNote = Scalear.defaults.rootNote;
+	neckView.rootNote = defaults.rootNote || 0;
+	neckView.setNoteNamesVisibility(defaults.namesVisible);
 
 	rootSelect.model = Scalear.notes;
 	scaleSelect.model = Scalear.scales;
 
 	//document.querySelector('#frets-count').value = Scalear.defaults.fretCount;
-	document.querySelector('#scale-selector').addEventListener('change', function() {
-		var id = parseInt(this.value, 10);
-		neckViewModel.data = Scalear.scales[id];
+	q('#scale-selector').addEventListener('change', function() {
+		defaults.scale = parseInt(this.value, 10);
 	});
-	document.querySelector('#root-selector').addEventListener('change', function() {
-		var id = parseInt(this.value, 10);
-		neckView.rootNote = id;
-		document.querySelector('#root').innerHTML = Scalear.notes[id];
+	q('#root-selector').addEventListener('change', function() {
+		defaults.rootNote = parseInt(this.value, 10);
 	});
-	document.querySelector('#note-names').addEventListener('change', function() {
-		neckView.setNoteNamesVisibility(this.checked);
+	q('#note-names').addEventListener('change', function() {
+		defaults.namesVisible = this.checked;
 	});
-	/*document.querySelector('#frets-count').addEventListener('change', function() {
+	/*q('#frets-count').addEventListener('change', function() {
 		neckView.fretCount = this.value;
 	});*/
-	Object.observe(neckViewModel, function(changes) {
-		document.querySelector('#name').innerHTML = changes[0].object.data.name;
+	Object.observe(defaults, function(changes) {
+		changes.forEach(function(change) {
+			switch (change.name) {
+				case 'rootNote':
+					neckView.rootNote = change.object.rootNote;
+					q('#root').innerHTML = Scalear.notes[change.object.rootNote];
+					break;
+				case 'scale':
+					neckViewModel.data = Scalear.scales[change.object.scale];
+					q('#name').innerHTML = Scalear.scales[change.object.scale].name;
+					break;
+				case 'namesVisible':
+					neckView.setNoteNamesVisibility(change.object.namesVisible);
+					break;
+			}
+		});
+		localStorage.defaults = JSON.stringify(defaults);
 	});
-	document.querySelector('#name').innerHTML = Scalear.scales[0].name;
-	document.querySelector('#root').innerHTML = Scalear.notes[0];
-
+	q('#name').innerHTML = Scalear.scales[defaults.scale].name;
+	q('#root').innerHTML = Scalear.notes[defaults.rootNote];
+	q('#note-names').checked = defaults.namesVisible;
+	q('#root-selector option[value="' + defaults.rootNote + '"]').selected = 'selected';
+	q('#scale-selector option[value="' + defaults.scale + '"]').selected = 'selected';
 };
