@@ -30,7 +30,6 @@ Scalear.Neck.prototype._render = function() {
 	this._mainGroup = new Svg.Group(this._parentEl, {
 		id: 'neck'
 	});
-
 	new Svg.Rectangle(this._mainGroup.el, {
 		className: 'neck',
 		x: this._fretWidth,
@@ -64,7 +63,6 @@ Scalear.Neck.prototype._renderGroups = function(el) {
 	this.labels = new Svg.Group(el, {
 		className: 'labels'
 	});
-
 	this._renderShading(shading.el);
 	this._renderMarks(marks.el);
 	this._renderFrets(frets.el);
@@ -154,15 +152,14 @@ Scalear.Neck.prototype._renderStrings = function(el) {
 };
 
 Scalear.Neck.prototype._renderFingers = function(parentEl) {
-	var string, i;
-
-	this._fingers = [];
+	var string, i,
+		fingers = [];
 
 	for (string = 0; string < this._stringsCount; string++) {
-		this._fingers.push([]);
+		fingers.push([]);
 
 		for (i = 0; i <= this._fretCount; i++) {
-			this._fingers[string].push(new Svg.Circle(parentEl, {
+			fingers[string].push(new Svg.Circle(parentEl, {
 				x: i * this._fretWidth + this._fretWidth / 2,
 				y: (this._stringDistance * string) + this._stringDistance / 2,
 				radius: this._stringDistance / 3,
@@ -170,20 +167,20 @@ Scalear.Neck.prototype._renderFingers = function(parentEl) {
 			}));
 		}
 	}
+	this._fingers = fingers;
 };
 
 Scalear.Neck.prototype._renderLabels = function(parentEl) {
-	var string, noteNumber;
-
-	this._labels = [];
+	var string, noteNumber, content, correction,
+		labels = [];
 
 	for (string = 0; string < this._stringsCount; string++) {
 		noteNumber = this._tunning[string];
-		this._labels.push([]);
+		labels.push([]);
 		for (var i = 0; i <= this._fretCount; i++) {
-			var content = Scalear.notes[(noteNumber + i) % Scalear.notes.length],
-				correction = content.length > 1 ? 2 : 0;
-			this._labels[string].push(
+			content = Scalear.notes[(noteNumber + i) % Scalear.notes.length];
+			correction = content.length > 1 ? 2 : 0;
+			labels[string].push(
 				new Svg.Text(parentEl, {
 					x: i * this._fretWidth + (this._fretWidth / 2) - 2 - correction,
 					y: this._stringDistance * string + (this._stringDistance / 2) + 3,
@@ -192,6 +189,7 @@ Scalear.Neck.prototype._renderLabels = function(parentEl) {
 			);
 		}
 	}
+	this._labels = labels;
 };
 
 Scalear.Neck.prototype.showAllNotes = function(note) {
