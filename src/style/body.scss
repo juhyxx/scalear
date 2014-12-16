@@ -57,30 +57,45 @@ header {
     }
 }
 
-select,label ,input {
-    opacity: 0.4;
-}
-
 footer {
-    select, input, label, input, option {
+    padding-top: 6px;
+    select,label ,input {
+        opacity: 0.4;
+    }
+    select, input,  input, option {
+        outline: none;
         font-size: 2em;
         border-radius: 8px;
         font-family: 'Ubuntu', sans-serif;
-        transition: opacity 0.8s;
+        transition: opacity 1s;
     }
-    select, label, input {
+    select,  input {
         &:hover {
             opacity: 1;
         }
     }
     label {
         margin-left: 1em;
+        display: inline-block;
+        div {
+            font-size: 11px;
+            margin-bottom: 2px;
+            opacity: 0.2;
+            transition: opacity 1s;
+        }
+        &:hover {
+            div {
+                opacity: 1;
+            }
+             opacity: 1;
+        }
     }
     input[type="checkbox"] {
         -webkit-transform: scale(3.5);
-        margin-right: 0.25em;
+        margin-top: 20px;
         position: relative;
         top: -2px;
+        left: 9px;
         &:checked {
             opacity: 1;
         }

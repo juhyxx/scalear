@@ -46,27 +46,27 @@ gulp.task('tmp', function() {
 	console.log('Transpillig...');
 	gulp.src(paths.svg)
 		.pipe(concat('svg.js'))
-		.pipe(es6transpiler({
+		/*.pipe(es6transpiler({
 			"environments": ["browser"],
-		}))
+		}))*/
 		.pipe(gulp.dest('.tmp'));
 
 	gulp.src(paths.mvc)
 		.pipe(concat('mvc.js'))
-		.pipe(es6transpiler({
+		/*.pipe(es6transpiler({
 			"environments": ["browser"],
-		}))
+		}))*/
 		.pipe(gulp.dest('.tmp'));
 
 	gulp.src(paths.scalear)
 		.pipe(concat('scalear.js'))
-		.pipe(es6transpiler({
+		/*.pipe(es6transpiler({
 			"globals": {
 				"Svg": false,
 				"Mvc": false
 			},
 			"environments": ["browser"],
-		}))
+		}))*/
 		.pipe(gulp.dest('.tmp'));
 });
 

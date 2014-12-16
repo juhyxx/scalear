@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Scalear 0.3.3</title>
+    <title>Scalear 0.3.4</title>
     <script src="http://cdn.rawgit.com/jdarling/Object.observe/master/Object.observe.poly.js"></script>
     <link rel="stylesheet" href="style.css">
     <script src="svg.js"></script>
@@ -23,7 +23,8 @@
 
 
     <h1 class="title"><span id="root"></span> <span id="name"></span></h1>
-    <br><br>
+    <br>
+    <br>
     <svg viewBox="0 0 560 150">
         <defs>
             <filter id="f1" x="-1" y="-1" width="300%" height="300%">
@@ -59,14 +60,24 @@
     </svg>
 
     <footer class="ui">
-
-        <select id="root-selector" title="Root note">
-        </select>
-        <select id="scale-selector" title="Scale name">
-        </select>
-        <input type=number id="frets-count" min=10 max=24 title="Fret count">
         <label>
-            <input type="checkbox" id="note-names" title="Show/hide note names"> Note names</label>
+            <div>Root note</div>
+            <select id="root-selector">
+            </select>
+        </label>
+        <label>
+            <div>Scale name</div>
+            <select id="scale-selector">
+            </select>
+        </label>
+        <label>
+            <div>Fret count</div>
+            <input type=number id="frets-count" min=10 max=25>
+        </label>
+        <label>
+            <div>Names</div>
+            <input type="checkbox" id="note-names">
+        </label>
     </footer>
 
 </body>
