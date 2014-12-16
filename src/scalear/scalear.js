@@ -4,7 +4,6 @@ var Scalear = {
 	],
 	defaults: {
 		fretCount: 12,
-		tunning: [4, 11, 7, 2, 9, 4],
 		rootNote: 0,
 		scale: 0,
 		namesVisible: true,
@@ -43,7 +42,7 @@ var Scalear = {
 		notes: [0, 2, 4, 5, 7, 9, 11]
 	}, {
 		name: "Harmonic minor",
-		notes: [4, 2, 3, 5, 7, 8, 11]
+		notes: [0, 2, 3, 5, 7, 8, 11]
 	}, {
 		name: "Pentatonic major",
 		notes: [0, 2, 4, 7, 9]

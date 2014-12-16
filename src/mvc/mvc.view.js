@@ -8,7 +8,7 @@ Mvc.View = function() {
 
 			this._model = model;
 			Object.observe(this._model, function(changes) {
-				self.modelUpdate(self._model);
+				self.modelUpdate(self._model, changes);
 			});
 			this.modelUpdate(self._model);
 		}

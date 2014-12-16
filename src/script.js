@@ -8,18 +8,18 @@ onload = function() {
 	defaults.rootNote = defaults.rootNote || 0;
 
 	var neckViewModel = {
-			data: Scalear.scales[defaults.scale]
+			scale: Scalear.scales[defaults.scale],
+			rootNote: defaults.rootNote,
+			namesVisible: defaults.namesVisible,
+			fretCount: defaults.fretCount,
+			tunning: Scalear.instruments[defaults.instrument].tunning
 		},
-		neckView = new Scalear.Neck(Scalear.instruments[defaults.instrument].tunning, defaults.fretCount, defaults.rootNote),
+		neckView = new Scalear.Neck(Svg.get('svg')),
 		scaleSelect = new Scalear.ScaleSelect(),
 		rootSelect = new Scalear.RootSelect(),
 		instrumentSelect = new Scalear.InstrumentSelect();
 
-	neckView.render(Svg.get('svg'));
 	neckView.model = neckViewModel;
-	neckView.rootNote = defaults.rootNote || 0;
-	neckView.setNoteNamesVisibility(defaults.namesVisible);
-
 	rootSelect.model = Scalear.notes;
 	scaleSelect.model = Scalear.scales;
 	instrumentSelect.model = Scalear.instruments;
@@ -51,21 +51,21 @@ onload = function() {
 		changes.forEach(function(change) {
 			switch (change.name) {
 				case 'rootNote':
-					neckView.rootNote = change.object.rootNote;
+					neckViewModel.rootNote = change.object.rootNote;
 					q('#root').innerHTML = Scalear.notes[change.object.rootNote];
 					break;
 				case 'scale':
-					neckViewModel.data = Scalear.scales[change.object.scale];
+					neckViewModel.scale = Scalear.scales[change.object.scale];
 					q('#name').innerHTML = Scalear.scales[change.object.scale].name;
 					break;
 				case 'namesVisible':
-					neckView.setNoteNamesVisibility(change.object.namesVisible);
+					neckViewModel.namesVisible = change.object.namesVisible;
 					break;
 				case 'fretCount':
-					neckView.updateFretCount(change.object.fretCount);
+					neckViewModel.fretCount = change.object.fretCount;
 					break;
 				case 'instrument':
-					neckView.setTunning(Scalear.instruments[change.object.instrument].tunning);
+					neckViewModel.tunning = Scalear.instruments[change.object.instrument].tunning;
 					break;
 			}
 		});
