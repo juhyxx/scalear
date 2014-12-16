@@ -3,23 +3,16 @@ var q = function(q) {
 };
 
 onload = function() {
-	var defaults = JSON.parse(localStorage.getItem('defaults')) || Scalear.defaults;
-	defaults.instrument = defaults.instrument || 0;
-	defaults.rootNote = defaults.rootNote || 0;
-
-	var neckViewModel = {
-			scale: Scalear.scales[defaults.scale],
-			rootNote: defaults.rootNote,
-			namesVisible: defaults.namesVisible,
-			fretCount: defaults.fretCount,
-			tunning: Scalear.instruments[defaults.instrument].tunning
-		},
+	var defaults = JSON.parse(localStorage.getItem('defaults')) || Scalear.defaults,
 		neckView = new Scalear.Neck(Svg.get('svg')),
 		scaleSelect = new Scalear.ScaleSelect(),
 		rootSelect = new Scalear.RootSelect(),
 		instrumentSelect = new Scalear.InstrumentSelect();
 
-	neckView.model = neckViewModel;
+	defaults.instrument = defaults.instrument || 0;
+	defaults.rootNote = defaults.rootNote || 0;
+
+	neckView.model = defaults;
 	rootSelect.model = Scalear.notes;
 	scaleSelect.model = Scalear.scales;
 	instrumentSelect.model = Scalear.instruments;
@@ -51,25 +44,13 @@ onload = function() {
 		changes.forEach(function(change) {
 			switch (change.name) {
 				case 'rootNote':
-					neckViewModel.rootNote = change.object.rootNote;
 					q('#root').innerHTML = Scalear.notes[change.object.rootNote];
 					break;
 				case 'scale':
-					neckViewModel.scale = Scalear.scales[change.object.scale];
 					q('#name').innerHTML = Scalear.scales[change.object.scale].name;
-					break;
-				case 'namesVisible':
-					neckViewModel.namesVisible = change.object.namesVisible;
-					break;
-				case 'fretCount':
-					neckViewModel.fretCount = change.object.fretCount;
-					break;
-				case 'instrument':
-					neckViewModel.tunning = Scalear.instruments[change.object.instrument].tunning;
 					break;
 			}
 		});
 		localStorage.defaults = JSON.stringify(defaults);
 	});
-
 };

@@ -15,7 +15,9 @@ Mvc.View = function() {
 	});
 	return this;
 };
+
 Mvc.View.prototype = {};
+
 Mvc.View.prototype.render = function() {
 	console.warn('Virtual method "render", has to be implemented.');
 };

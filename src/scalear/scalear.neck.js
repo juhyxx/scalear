@@ -11,8 +11,8 @@ Scalear.Neck.prototype.modelUpdate = function(model, changes) {
 	this._fretCount = model.fretCount;
 	this._namesVisible = model.namesVisible;
 	this._rootNote = model.rootNote;
-	this._scale = model.scale.notes;
-	this._tunning = model.tunning;
+	this._scale = Scalear.scales[model.scale].notes.slice();
+	this._tunning = Scalear.instruments[model.instrument].tunning;
 
 	this._stringsCount = this._tunning.length;
 	this._stringDistance = Math.round(this._neck.width / this._stringsCount);
@@ -43,6 +43,7 @@ Scalear.Neck.prototype._render = function() {
 	this._renderGroups(this._mainGroup.el);
 	this._mapNotes();
 };
+
 Scalear.Neck.prototype._renderGroups = function(el) {
 	var shading = new Svg.Group(el, {
 			className: 'shading'
@@ -97,6 +98,7 @@ Scalear.Neck.prototype._renderMarks = function(el) {
 		}
 	});
 };
+
 Scalear.Neck.prototype._renderFrets = function(el) {
 	for (var i = 0; i <= this._fretCount; i++) {
 		new Svg.Line(el, {
