@@ -1,13 +1,14 @@
 Scalear.Neck = function(tunning, fretCount, stringsCount, rootNote) {
 	this._tunning = tunning;
 	this._fretCount = fretCount;
-	this._fretWidth = Math.round(500 / fretCount);
 	this._neck = {
 		width: 130,
-		height: this._fretWidth * this._fretCount
+		height: 500
 	};
+	this._stringDistance = Math.round(this._neck.width / stringsCount);
+	this._neck.width = this._stringDistance * stringsCount;
+	this._fretWidth = Math.round(this._neck.height / fretCount);
 	this._rootNote = rootNote;
-	this._stringDistance = Math.round(this._neck.width / 7);
 	this._stringsCount = stringsCount;
 
 	Mvc.View.call(this);
@@ -41,35 +42,42 @@ Object.defineProperty(Scalear.Neck.prototype, 'rootNote', {
 
 Scalear.Neck.prototype.render = function(svgParent) {
 	this._svgParent = svgParent;
+	this._mainGroup = new Svg.Group(svgParent, {
+		id: 'neck'
+	});
 
-	new Svg.Rectangle(svgParent, {
+	new Svg.Rectangle(this._mainGroup.el, {
 		className: 'neck',
 		x: this._fretWidth,
 		y: 0,
-		width: this._neck.height,
+		width: this._fretCount * this._fretWidth,
 		height: this._neck.width,
 		fill: 'url(#gradient)',
 		filter: 'url(#f1)'
 	});
 
-	var frets = new Svg.Group(svgParent, {
+	var shading = new Svg.Group(this._mainGroup.el, {
+			className: 'shading'
+		}),
+		frets = new Svg.Group(this._mainGroup.el, {
 			className: 'frets'
 		}),
-		marks = new Svg.Group(svgParent, {
+		marks = new Svg.Group(this._mainGroup.el, {
 			className: 'marks'
 		}),
 
-		strings = new Svg.Group(svgParent, {
+		strings = new Svg.Group(this._mainGroup.el, {
 			className: 'strings'
 		}),
-		fingers = new Svg.Group(svgParent, {
+		fingers = new Svg.Group(this._mainGroup.el, {
 			className: 'fingers'
 		});
 
-	this.labels = new Svg.Group(svgParent, {
+	this.labels = new Svg.Group(this._mainGroup.el, {
 		className: 'labels'
 	});
 
+	this._renderShading(shading.el);
 	this._renderMarks(marks.el);
 	this._renderFrets(frets.el);
 	this._renderStrings(strings.el);
@@ -77,15 +85,31 @@ Scalear.Neck.prototype.render = function(svgParent) {
 	this._renderLabels(this.labels.el);
 	this._mapNotes();
 };
+Scalear.Neck.prototype._renderShading = function(el) {
+	for (var i = 0; i < this._fretCount; i++) {
+		new Svg.Rectangle(el, {
+			x: i * this._fretWidth + this._fretWidth,
+			y: 0,
+			width: this._fretWidth,
+			height: this._neck.width,
+			fill: 'url(#shading)'
+		});
+
+	}
+};
 Scalear.Neck.prototype._renderMarks = function(el) {
 	var self = this;
-	[3, 5, 7, 9, 12].map(function(i) {
-		new Svg.Rectangle(el, {
-			x: (i - 1) * self._fretWidth + 5 + self._fretWidth,
-			y: 4 * 5,
-			height: self._neck.width - 8 * 5,
-			width: self._fretWidth - 2 * 5
-		});
+	[3, 5, 7, 9, 12, 3 + 12, 5 + 12, 7 + 12, 9 + 12, 12 + 12].map(function(i) {
+
+		if (i <= self._fretCount) {
+			new Svg.Rectangle(el, {
+				x: (i - 1) * self._fretWidth + 5 + self._fretWidth,
+				y: 4 * 5,
+				height: self._neck.width - 8 * 5,
+				width: self._fretWidth - 2 * 5
+			});
+
+		}
 	});
 };
 Scalear.Neck.prototype._renderFrets = function(el) {
@@ -104,10 +128,10 @@ Scalear.Neck.prototype._renderFrets = function(el) {
 	}
 	new Svg.Line(el, {
 		className: 'zero',
-		x1: this._fretWidth,
-		x2: this._fretWidth,
+		x1: this._fretWidth - 2,
+		x2: this._fretWidth - 2,
 		y1: 0,
-		y2: this._neck.width
+		y2: this._neck.width + 0.6
 	});
 };
 
@@ -127,12 +151,12 @@ Scalear.Neck.prototype._mapNotes = function(el) {
 };
 
 Scalear.Neck.prototype._renderStrings = function(el) {
-	for (var i = 1; i <= this._stringsCount; i++) {
+	for (var i = 0; i < this._stringsCount; i++) {
 		new Svg.Line(el, {
 			x1: 0,
-			x2: this._neck.height + this._fretWidth,
-			y1: i * this._stringDistance,
-			y2: i * this._stringDistance
+			x2: this._fretWidth + this._fretCount * this._fretWidth,
+			y1: i * this._stringDistance + this._stringDistance / 2,
+			y2: i * this._stringDistance + this._stringDistance / 2
 		});
 	}
 };
@@ -146,8 +170,8 @@ Scalear.Neck.prototype._renderFingers = function(svgParent) {
 		for (var i = 0; i <= this._fretCount; i++) {
 			this._fingers[string - 1].push(new Svg.Circle(svgParent, {
 				x: i * this._fretWidth + this._fretWidth / 2,
-				y: this._stringDistance * string,
-				radius: this._stringDistance / 2.5,
+				y: (this._stringDistance * string) - this._stringDistance / 2,
+				radius: this._stringDistance / 3,
 				filter: 'url(#finger)'
 			}));
 		}
@@ -167,7 +191,7 @@ Scalear.Neck.prototype._renderLabels = function(svgParent) {
 
 			new Svg.Text(svgParent, {
 				x: i * this._fretWidth + (this._fretWidth / 2) - 2 - correction,
-				y: this._stringDistance * string + this._stringDistance + 3,
+				y: this._stringDistance * string + (this._stringDistance / 2) + 3,
 				content: content
 			});
 		}
@@ -191,6 +215,10 @@ Scalear.Neck.prototype.showAllNotes = function(note) {
 Scalear.Neck.prototype.showScale = function(scale) {
 	var self = this;
 	this._clear();
+
+	scale = scale || this._displayedScale;
+	this._displayedScale = scale;
+
 	scale.forEach(function(scale) {
 		self.showAllNotes(scale);
 	});
@@ -214,7 +242,12 @@ Scalear.Neck.prototype.setNoteNamesVisibility = function(visible) {
 	this.labels[visible ? 'show' : 'hide']();
 };
 
-Scalear.Neck.prototype._updateFretCount = function(visible) {
-	this._svgParent.content = '';
+Scalear.Neck.prototype.updateFretCount = function(fretCount) {
+	this._fretCount = fretCount;
+	this._mainGroup.remove();
+
+	this._fretWidth = Math.round(this._neck.height / fretCount);
 	this.render(this._svgParent);
+	this._rootNote = this._rootNote;
+	this.showScale();
 };

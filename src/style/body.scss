@@ -9,14 +9,24 @@ h1 {
     margin-left: 1em;
     color: #732C2C;
     text-shadow: 0 1px 0 black;
+    &.title {
+        @media screen {
+            display: none;
+        }
+    }
 }
 
+html {
+    height: 100%;
+}
 
 body {
     margin: 0;
     padding: 0;
     font-family: 'Ubuntu', sans-serif;
     background-color: #BFA98E;
+    background: linear-gradient(lighten(#bfa98e, 20%), #bfa98e);
+    min-height: 100%;
 }
 
 footer, header {
@@ -36,7 +46,7 @@ header {
     border-bottom: solid;
     border-bottom: 2px solid white;
     h1 {
-        color:white;
+        color: white;
         display: inline-block;
         position: relative;
         top: -17px;
@@ -46,7 +56,8 @@ header {
         opacity: 0.8;
     }
 }
-select,label {
+
+select,label ,input {
     opacity: 0.4;
 }
 
@@ -57,8 +68,7 @@ footer {
         font-family: 'Ubuntu', sans-serif;
         transition: opacity 0.8s;
     }
-    
-    select, label  {
+    select, label, input {
         &:hover {
             opacity: 1;
         }
@@ -74,6 +84,9 @@ footer {
         &:checked {
             opacity: 1;
         }
+    }
+    input[type="number"] {
+        width: 2em;
     }
     bottom: 0;
     border-top: 2px solid white;

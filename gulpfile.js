@@ -8,6 +8,7 @@ var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
 	manifest = require('gulp-manifest'),
 	del = require('del'),
+	jshint = require('gulp-jshint'),
 	paths = {
 		svg: ['src/svg/svg.js', 'src/svg/svg.element.js', 'src/svg/*.js'],
 		mvc: ['src/mvc/mvc.js', 'src/mvc/mvc.observable.js', 'src/mvc/*.js'],
@@ -21,6 +22,14 @@ gulp.task('watch', function() {
 
 gulp.task('reload', function() {
 	gulp.src('src').pipe(connect.reload());
+});
+
+gulp.task('lint', function() {
+	return gulp.src('./src/**/*.js')
+		.pipe(jshint())
+		.pipe(jshint.reporter('jshint-stylish', {
+			verbose: true
+		}));
 });
 
 gulp.task('scss', function() {

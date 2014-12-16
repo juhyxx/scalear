@@ -1,9 +1,6 @@
 .fingers {
     circle {
         fill: white;
-        @media screen {
-           // filter: url(#finger);
-        }
         @media print {
             stroke: black;
         }
@@ -17,8 +14,15 @@
 .labels {
     text {
         fill: black;
-        font-family: sans-serif;
+        font-family: 'Ubuntu' sans-serif;
         font-size: 7px;
+    }
+    display: none;
+}
+
+.shading {
+    @media print {
+        display: none;
     }
 }
 
@@ -62,7 +66,7 @@ rect.neck {
 .frets {
     line {
         @media screen {
-            stroke: #EEEEEE;
+            stroke: #ffffcc;
         }
         @media print {
             stroke: black;
@@ -76,7 +80,7 @@ rect.neck {
     }
     text {
         fill: #555F73;
-        font-family: sans-serif;
+        font-family: 'Ubuntu' sans-serif;
         font-size: 6px;
     }
 }

@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Scalear 0.3.2</title>
+    <title>Scalear 0.3.3</title>
     <script src="http://cdn.rawgit.com/jdarling/Object.observe/master/Object.observe.poly.js"></script>
     <link rel="stylesheet" href="style.css">
     <script src="svg.js"></script>
@@ -15,22 +15,23 @@
 </head>
 
 <body>
-    
+
     <header>
-       <img src="logo.svg"> 
-       <h1>Visual guitar</h1>
+        <img src="logo.svg">
+        <h1>Visual printable guitar</h1>
     </header>
 
 
-    <h1><span id="root"></span> <span id="name"></span></h1>
-
-    <svg  viewBox="0 0 560 150">
+    <h1 class="title"><span id="root"></span> <span id="name"></span></h1>
+    <br><br>
+    <svg viewBox="0 0 560 150">
         <defs>
             <filter id="f1" x="-1" y="-1" width="300%" height="300%">
-                <feOffset result="offOut" in="SourceAlpha" dx="1" dy="1" />
+                <feOffset result="offOut" in="SourceAlpha" dx="0" dy="0" />
                 <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
                 <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
             </filter>
+
             <filter id="fret" x="0" y="0" width="200%" height="200%">
                 <feOffset result="offOut" in="SourceAlpha" dx="1" dy="0" />
                 <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
@@ -46,17 +47,26 @@
                 <stop offset="60%" style="stop-color:#573a34;" />
                 <stop offset="100%" style="stop-color:#3b2b2b;" />
             </linearGradient>
+            <linearGradient id="shading" x1="0%" y1="0%" x2="100%" y2="">
+                <stop offset="5%" style="stop-color:rgba(0,0,0, 0.5)" />
+                <stop offset="5%" style="stop-color:rgba(0,0,0, 0.2)" />
+                <stop offset="40%" style="stop-color:transparent;" />
+                <stop offset="60%" style="stop-color:transparent;" />
+                <stop offset="95%" style="stop-color:rgba(0,0,0, 0.2);" />
+                <stop offset="100%" style="stop-color:rgba(0,0,0, 0.5)" />
+            </linearGradient>
         </defs>
     </svg>
 
     <footer class="ui">
 
-        <select id="root-selector">
+        <select id="root-selector" title="Root note">
         </select>
-        <select id="scale-selector">
+        <select id="scale-selector" title="Scale name">
         </select>
-        <!--input type=number id="frets-count"-->
-        <label><input type="checkbox" id="note-names"> Note names</label>
+        <input type=number id="frets-count" min=10 max=24 title="Fret count">
+        <label>
+            <input type="checkbox" id="note-names" title="Show/hide note names"> Note names</label>
     </footer>
 
 </body>

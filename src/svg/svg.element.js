@@ -15,6 +15,10 @@ Svg.Element = {
 		return this._el;
 	},
 
+	remove: function() {
+		this._el.remove();
+	},
+
 	show: function() {
 		this._el.style.display = 'block';
 	},
