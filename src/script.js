@@ -3,13 +3,17 @@ var q = function(q) {
 };
 
 onload = function() {
-	var defaults = JSON.parse(localStorage.getItem('defaults')) || Scalear.defaults,
-		neckViewModel = {
+	var defaults = JSON.parse(localStorage.getItem('defaults')) || Scalear.defaults;
+	defaults.instrument = defaults.instrument || 0;
+	defaults.rootNote = defaults.rootNote || 0;
+
+	var neckViewModel = {
 			data: Scalear.scales[defaults.scale]
 		},
-		neckView = new Scalear.Neck(defaults.tunning, defaults.fretCount, defaults.stringCount, defaults.rootNote),
+		neckView = new Scalear.Neck(Scalear.instruments[defaults.instrument].tunning, defaults.fretCount, defaults.rootNote),
 		scaleSelect = new Scalear.ScaleSelect(),
-		rootSelect = new Scalear.RootSelect();
+		rootSelect = new Scalear.RootSelect(),
+		instrumentSelect = new Scalear.InstrumentSelect();
 
 	neckView.render(Svg.get('svg'));
 	neckView.model = neckViewModel;
@@ -18,12 +22,14 @@ onload = function() {
 
 	rootSelect.model = Scalear.notes;
 	scaleSelect.model = Scalear.scales;
+	instrumentSelect.model = Scalear.instruments;
 
 	q('#name').innerHTML = Scalear.scales[defaults.scale].name;
 	q('#root').innerHTML = Scalear.notes[defaults.rootNote];
 	q('#note-names').checked = defaults.namesVisible;
 	q('#root-selector option[value="' + defaults.rootNote + '"]').selected = 'selected';
 	q('#scale-selector option[value="' + defaults.scale + '"]').selected = 'selected';
+	q('#instrument-selector option[value="' + defaults.instrument + '"]').selected = 'selected';
 	q('#frets-count').value = defaults.fretCount;
 
 	q('#scale-selector').addEventListener('change', function() {
@@ -31,6 +37,9 @@ onload = function() {
 	});
 	q('#root-selector').addEventListener('change', function() {
 		defaults.rootNote = parseInt(this.value, 10);
+	});
+	q('#instrument-selector').addEventListener('change', function() {
+		defaults.instrument = parseInt(this.value, 10);
 	});
 	q('#note-names').addEventListener('change', function() {
 		defaults.namesVisible = this.checked;
@@ -54,6 +63,9 @@ onload = function() {
 					break;
 				case 'fretCount':
 					neckView.updateFretCount(change.object.fretCount);
+					break;
+				case 'instrument':
+					neckView.setTunning(Scalear.instruments[change.object.instrument].tunning);
 					break;
 			}
 		});

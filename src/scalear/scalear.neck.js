@@ -1,4 +1,5 @@
-Scalear.Neck = function(tunning, fretCount, stringsCount, rootNote) {
+Scalear.Neck = function(tunning, fretCount, rootNote) {
+	var stringsCount = tunning.length;
 	this._tunning = tunning;
 	this._fretCount = fretCount;
 	this._neck = {
@@ -258,6 +259,18 @@ Scalear.Neck.prototype.updateFretCount = function(fretCount) {
 	this._mainGroup.remove();
 	this._fretCount = fretCount;
 	this._fretWidth = Math.round(this._neck.height / fretCount);
+	this.render(this._svgParent);
+	this._rootNote = this._rootNote;
+	this.showScale();
+};
+
+Scalear.Neck.prototype.setTunning = function(tunning) {
+	this._tunning = tunning;
+	this._stringsCount = tunning.length;
+	this._stringDistance = Math.round(this._neck.width / this._stringsCount);
+	this._neck.width = this._stringDistance * this._stringsCount;
+
+	this._mainGroup.remove();
 	this.render(this._svgParent);
 	this._rootNote = this._rootNote;
 	this.showScale();
