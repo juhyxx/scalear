@@ -5,7 +5,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Scalear 0.3.5</title>
+    <title>Scalear 0.3.6</title>
     <script src="http://cdn.rawgit.com/jdarling/Object.observe/master/Object.observe.poly.js"></script>
     <link rel="stylesheet" href="style.css">
     <script src="svg.js"></script>
@@ -16,16 +16,14 @@
 
 <body>
 
-    <header>
+    <header class="loading">
         <img src="logo.svg">
         <h1>Visual printable guitar</h1>
     </header>
 
-
     <h1 class="title"><span id="root"></span> <span id="name"></span></h1>
-    <br>
-    <br>
-    <svg viewBox="0 0 560 150">
+    <div class="separator"></div>
+    <svg viewBox="0 0 560 150" class="loading">
         <defs>
             <filter id="f1" x="-1" y="-1" width="300%" height="300%">
                 <feOffset result="offOut" in="SourceAlpha" dx="0" dy="0" />
@@ -59,7 +57,7 @@
         </defs>
     </svg>
 
-    <footer class="ui">
+    <footer class="loading">
         <label>
             <div>Root note</div>
             <select id="root-selector">

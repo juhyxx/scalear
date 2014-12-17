@@ -38,7 +38,7 @@ var Scalear = {
 		tunning: [4, 9, 2, 7]
 	}],
 	scales: [{
-		name: "Aeolioan",
+		name: "Ionian",
 		notes: [0, 2, 4, 5, 7, 9, 11]
 	}, {
 		name: "Harmonic minor",

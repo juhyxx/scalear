@@ -50,4 +50,8 @@ onload = function() {
 		});
 		localStorage.defaults = JSON.stringify(defaults);
 	});
+
+	q('footer').className = '';
+	q('header').className = '';
+	q('svg').setAttribute('class', '');
 };

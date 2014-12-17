@@ -2,6 +2,11 @@
 
 svg {
     width: 100%;
+    opacity: 1;
+    transition: opacity 2s;
+    &.loading {
+        opacity: 0;
+    }
 }
 
 h1 {
@@ -12,8 +17,12 @@ h1 {
     &.title {
         @media screen {
             display: none;
+
         }
     }
+}
+.separator {
+    margin-bottom: 140px;
 }
 
 html {
@@ -45,6 +54,10 @@ header {
     position: static;
     border-bottom: solid;
     border-bottom: 2px solid white;
+    position: absolute;
+    top: 0;
+    transition: top 2s;
+    transition-delay: 0.5s;
     h1 {
         color: white;
         display: inline-block;
@@ -55,6 +68,9 @@ header {
         text-transform: uppercase;
         opacity: 0.8;
     }
+    &.loading {
+        top: -100px;
+    }
 }
 
 footer {
@@ -64,7 +80,7 @@ footer {
     }
     select, input,  input, option {
         outline: none;
-        font-size: 2em;
+        font-size: 1.5em;
         border-radius: 8px;
         font-family: 'Ubuntu', sans-serif;
         transition: opacity 1s;
@@ -87,14 +103,14 @@ footer {
             div {
                 opacity: 1;
             }
-             opacity: 1;
+            opacity: 1;
         }
     }
     input[type="checkbox"] {
-        -webkit-transform: scale(3.5);
-        margin-top: 20px;
+        -webkit-transform: scale(2.6);
+        margin-top: 12px;
         position: relative;
-        top: -2px;
+        top: 0px;
         left: 9px;
         &:checked {
             opacity: 1;
@@ -105,6 +121,11 @@ footer {
     }
     bottom: 0;
     border-top: 2px solid white;
+    transition: bottom 2s;
+    transition-delay: 0.5s;
+    &.loading {
+        bottom: -100px;
+    }
 }
 
 ::-webkit-selection,

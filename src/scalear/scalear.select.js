@@ -1,26 +1,27 @@
 Scalear.Select = function(selector, defaultValue, propertyName) {
 	this._selector = selector;
-	this._el = document.querySelector(this._selector);
 	this._defaultValue = defaultValue;
 	this._propertyName = propertyName;
+	this._el = document.querySelector(this._selector);
 };
 
 Scalear.Select.prototype = new Mvc.View();
 
 Scalear.Select.prototype.modelUpdate = function(model) {
-	var i, element;
+	var element, self = this;
 
-	for (i = 0; i < model.length; i++) {
-		if (!document.querySelector(this._selector + ' option[value="' + i + '"]')) {
+	model.forEach(function(option, id) {
+		if (!document.querySelector(self._selector + ' option[value="' + id + '"]')) {
 			element = document.createElement('option');
-			element.value = i;
-			element.innerHTML = this._propertyName ? model[i][this._propertyName] : model[i];
-			if (i === this._defaultValue) {
+			element.value = id;
+			element.innerHTML = self._propertyName ? option[self._propertyName] : option;
+			if (id === self._defaultValue) {
 				element.setAttribute('selected', 'selected');
 			}
-			this._el.appendChild(element);
+			self._el.appendChild(element);
 		}
-	}
+
+	});
 };
 
 Scalear.Select.prototype.on = function(eventName, fn) {
