@@ -96,12 +96,16 @@ rect.neck {
     stroke: transparent;
 }
 
+#scale-box {
 .interval {
     fill:gray;
     font-size: 8px;
 }
-#scale-box {
     .root {
          fill: #732c2c; 
+    }
+    polyline, line {
+        stroke:gray;
+        fill:transparent;
     }
 }

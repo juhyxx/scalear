@@ -8,7 +8,7 @@ onload = function() {
 		scaleBox = new Scalear.Box(Svg.get('svg')),
 		scaleSelect = new Scalear.Select('#scale-selector', defaults.scale, 'name'),
 		rootSelect = new Scalear.Select('#root-selector', defaults.rootNote),
-		instrumentSelect = new Scalear.Select('#instrument-selector', defaults.instrument, 'name');
+		instrumentSelect = new Scalear.SelectTwoLevel('#instrument-selector', defaults.instrument, 'name');
 
 	defaults.instrument = defaults.instrument || 0;
 	defaults.rootNote = defaults.rootNote || 0;
@@ -18,7 +18,7 @@ onload = function() {
 	scaleBox.model = defaults;
 	rootSelect.model = Scalear.notes;
 	scaleSelect.model = Scalear.scales;
-	instrumentSelect.model = Scalear.instruments;
+	instrumentSelect.model = Scalear.instrumentsGrouped;
 
 	q('#name').innerHTML = Scalear.scales[defaults.scale].name;
 	q('#root').innerHTML = Scalear.notes[defaults.rootNote];
