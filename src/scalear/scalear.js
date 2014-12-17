@@ -9,6 +9,21 @@ var Scalear = {
 		namesVisible: true,
 		instrument: 0
 	},
+	intervals: [
+		'1', //0
+		'2♭', //1
+		'2♯', //2
+		'3♭', //3
+		'3♯', //4
+		'4', //5
+		'4♯', //6
+		'5', //7
+		'6♭', //8
+		'6♯', //9
+		'7♭', //10
+		'7♯', //11
+		'8', //12
+	],
 	instruments: [{
 		name: 'Guitar',
 		tunning: [4, 11, 7, 2, 9, 4]

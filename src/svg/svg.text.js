@@ -3,6 +3,10 @@ Svg.Text = function(parent, params) {
 	this.x = params.x;
 	this.y = params.y;
 	this.content = params.content;
+	if (params.className) {
+		this.className = params.className;
+	}
+
 	this.render();
 
 	return this;

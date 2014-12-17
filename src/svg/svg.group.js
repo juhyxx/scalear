@@ -4,6 +4,9 @@ Svg.Group = function(parent, params) {
 	if (params.id) {
 		this.id = params.id;
 	}
+	if (params.transform) {
+		this.transform = params.transform;
+	}
 	this.render();
 	return this;
 };

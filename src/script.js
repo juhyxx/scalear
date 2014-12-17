@@ -5,6 +5,7 @@ var q = function(q) {
 onload = function() {
 	var defaults = JSON.parse(localStorage.getItem('defaults')) || Scalear.defaults,
 		neckView = new Scalear.Neck(Svg.get('svg')),
+		scaleBox = new Scalear.Box(Svg.get('svg')),
 		scaleSelect = new Scalear.Select('#scale-selector', defaults.scale, 'name'),
 		rootSelect = new Scalear.Select('#root-selector', defaults.rootNote),
 		instrumentSelect = new Scalear.Select('#instrument-selector', defaults.instrument, 'name');
@@ -12,7 +13,9 @@ onload = function() {
 	defaults.instrument = defaults.instrument || 0;
 	defaults.rootNote = defaults.rootNote || 0;
 
+
 	neckView.model = defaults;
+	scaleBox.model = defaults;
 	rootSelect.model = Scalear.notes;
 	scaleSelect.model = Scalear.scales;
 	instrumentSelect.model = Scalear.instruments;
