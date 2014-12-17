@@ -17,16 +17,20 @@ h1 {
     &.title {
         @media screen {
             display: none;
-
         }
     }
 }
+
 .separator {
-    margin-bottom: 140px;
+    @media screen {
+        margin-bottom: 140px;
+    }
 }
 
 html {
-    height: 100%;
+    @media screen {
+        height: 100%;
+    }
 }
 
 body {
@@ -35,7 +39,9 @@ body {
     font-family: 'Ubuntu', sans-serif;
     background-color: #BFA98E;
     background: linear-gradient(lighten(#bfa98e, 20%), #bfa98e);
-    min-height: 100%;
+    @media screen {
+        min-height: 100%;
+    }
 }
 
 footer, header {

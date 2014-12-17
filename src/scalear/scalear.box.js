@@ -24,18 +24,19 @@ Scalear.Box.prototype.showScale = function(scaleId, rootNote) {
 	scale.forEach(function(item, index) {
 		new Svg.Text(self._mainGroup.el, {
 			x: 10 + 30 * index,
-			y: 200,
+			y: 165,
+			className: index === 0 ? 'root' : undefined,
 			content: Scalear.notes[item]
 		});
 		new Svg.Text(self._mainGroup.el, {
-			x: 10 + 30 * index,
-			y: 220,
+			x: 13 + 30 * index,
+			y: 180,
 			className: 'interval',
 			content: Scalear.intervals[item]
 		});
 		new Svg.Text(self._mainGroup.el, {
-			x: 30 + 30 * index,
-			y: 180,
+			x: 25 + 30 * index,
+			y: 150,
 			className: 'interval',
 			content: Scalear.intervals[scale[index + 1] - item]
 		});
