@@ -1,31 +1,15 @@
-Svg.Circle = function(parent, coords) {
-	this.parent = parent;
-	this.cx = coords.x;
-	this.cy = coords.y;
-	this.r = coords.radius;
-	this.filter = coords.filter;
-	this.render();
+Svg.Circle = function(parent, params) {
+	params.r = params.radius;
+	params.cx = params.x;
+	params.cy = params.y;
 
-	return this;
+	delete params.radius;
+	delete params.x;
+	delete params.y;
+
+	return Svg.Element.call(this, parent, params);
 };
-Svg.Circle.prototype = Object.create(Svg.Element, {
-	name: {
-		value: 'circle'
-	},
-	parent: {
-		value: null,
-		writable: true
-	},
-	cx: {
-		value: 0,
-		writable: true
-	},
-	cy: {
-		value: 0,
-		writable: true
-	},
-	r: {
-		value: 0,
-		writable: true
-	}
-});
+
+Svg.Circle.prototype = new Svg.Element();
+
+Svg.Circle.prototype.name = 'circle';

@@ -1,42 +1,7 @@
 Svg.Rectangle = function(parent, params) {
-	this.parent = parent;
-	this.x = params.x;
-	this.y = params.y;
-	this.className = params.className;
-	this.width = params.width;
-	this.height = params.height;
-	if (params.fill) {
-		this.fill = params.fill;
-	}
-	if (params.filter) {
-		this.filter = params.filter;
-	}
-	this.render();
-
-	return this;
+	return Svg.Element.call(this, parent, params);
 };
-Svg.Rectangle.prototype = Object.create(Svg.Element, {
-	name: {
-		value: 'rect'
-	},
-	parent: {
-		value: null,
-		writable: true
-	},
-	x: {
-		value: 0,
-		writable: true
-	},
-	y: {
-		value: 0,
-		writable: true
-	},
-	height: {
-		value: 0,
-		writable: true
-	},
-	width: {
-		value: 0,
-		writable: true
-	}
-});
+
+Svg.Rectangle.prototype = new Svg.Element();
+
+Svg.Rectangle.prototype.name = 'rect';
