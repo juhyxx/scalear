@@ -9,6 +9,11 @@ var gulp = require('gulp'),
 	manifest = require('gulp-manifest'),
 	del = require('del'),
 	jshint = require('gulp-jshint'),
+	sourcemaps = require('gulp-sourcemaps'),
+	cssmin = require('gulp-cssmin'),
+	rename = require("gulp-rename"),
+	addsrc = require('gulp-add-src'),
+	htmlreplace = require('gulp-html-replace'),
 	paths = {
 		svg: ['src/svg/svg.js', 'src/svg/svg.element.js', 'src/svg/*.js'],
 		mvc: ['src/mvc/mvc.js', 'src/mvc/mvc.observable.js', 'src/mvc/*.js'],
@@ -45,11 +50,13 @@ gulp.task('tmp', function() {
 
 	console.log('Transpillig...');
 	gulp.src(paths.svg)
-		.pipe(concat('svg.js'))
+
+	.pipe(concat('svg.js'))
 		/*.pipe(es6transpiler({
 			"environments": ["browser"],
 		}))*/
-		.pipe(gulp.dest('.tmp'));
+
+	.pipe(gulp.dest('.tmp'));
 
 	gulp.src(paths.mvc)
 		.pipe(concat('mvc.js'))
@@ -72,7 +79,7 @@ gulp.task('tmp', function() {
 
 gulp.task('serve', function() {
 	connect.server({
-		root: ['src', '.tmp'],
+		root: ['src', '.tmp', 'bower_components'],
 		port: 8000,
 		livereload: true
 	});
@@ -83,63 +90,71 @@ gulp.task('serve', function() {
 		}));
 });
 
-gulp.task('dist', function() {
-	del(['dist'], function() {
-		gulp.src(paths.svg)
-			.pipe(concat('svg.js'))
-			.pipe(es6transpiler({
-				"environments": ["browser"],
-			}))
-			.pipe(uglify({
-				mangle: false
-			}))
-			.pipe(gulp.dest('dist'));
+gulp.task('dist-html', function() {
+	return gulp.src('src/index.html')
+		.pipe(htmlreplace({
+			'css': 'style.min.css',
+			'js': 'script.min.js'
+		}))
+		.pipe(gulp.dest('dist'));
+});
 
-		gulp.src(paths.mvc)
-			.pipe(concat('mvc.js'))
-			.pipe(es6transpiler({
-				"environments": ["browser"],
-			}))
-			.pipe(uglify({
-				mangle: false
-			}))
-			.pipe(gulp.dest('dist'));
-
-		gulp.src(paths.scalear)
-			.pipe(concat('scalear.js'))
-			.pipe(es6transpiler({
-				"globals": {
-					"Svg": false,
-					"Mvc": false
-				},
-				"environments": ["browser"],
-			}))
-			.pipe(uglify({
-				mangle: false
-			}))
-			.pipe(gulp.dest('dist'));
-
-		gulp.src(['src/*.*'])
-			.pipe(gulp.dest('dist'));
-
-		gulp.src('./src/style/*.scss')
-			.pipe(sass({
-				errLogToConsole: true
-			}))
-			.pipe(concat('style.css'))
-			.pipe(gulp.dest('./dist'));
-
-		gulp.src(['dist/*'])
-			.pipe(manifest({
-				hash: true,
-				preferOnline: true,
-				network: ['http://*', 'https://*', '*'],
-				filename: 'app.manifest',
-				exclude: 'app.manifest'
-			}))
+gulp.task('dist-js', function() {
+	del(['dist/*'], function() {
+		return gulp.src([].concat(
+				['bower_components/Object.observe.poly/index.js'],
+				paths.svg,
+				paths.mvc,
+				paths.scalear, ['src/*.js']
+			))
+			.pipe(sourcemaps.init())
+			.pipe(concat('script.min.js'))
+			.pipe(uglify())
+			.pipe(sourcemaps.write('./'))
+			.pipe(addsrc(['src/*.svg']))
 			.pipe(gulp.dest('dist'));
 	});
+});
 
+gulp.task('clean', function() {
+	del(['dist/*']);
+});
+gulp.task('dist-sass', function() {
+	return gulp.src(['./src/style/body.scss', './src/style/*.scss'])
+		.pipe(sass({
+			errLogToConsole: true
+		}))
+		.pipe(concat('style.min.css'))
+		.pipe(cssmin())
+		.pipe(gulp.dest('./dist'));
+});
+
+gulp.task('manifest', function() {
+	return gulp.src('./src/style/*.scss')
+		.pipe(sass({
+			errLogToConsole: true
+		}))
+		.pipe(concat('style.css'))
+		.pipe(cssmin())
+		.pipe(rename({
+			suffix: '.min'
+		}))
+		.pipe(gulp.dest('./dist'));
+});
+
+gulp.task('serve-dist', function() {
+	connect.server({
+		root: ['dist'],
+		port: 8000,
+		livereload: false
+	});
+	gulp.src('./src/index.html')
+		.pipe(open('', {
+			url: 'http://localhost:8000',
+			src: 'chrome'
+		}));
 });
 
 gulp.task('default', ['tmp', 'serve', 'watch']);
+gulp.task('build', ['clean', 'dist-html', 'dist-js', 'dist-sass', 'manifest']);
+gulp.task('test', ['build', 'serve-dist']);

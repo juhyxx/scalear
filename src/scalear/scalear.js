@@ -11,7 +11,7 @@ var Scalear = {
 		'G♯', //8
 		'A', //9
 		'A♯', //10
-		'B' //1
+		'B' //11
 	],
 	defaults: {
 		fretCount: 12,
@@ -38,106 +38,167 @@ var Scalear = {
 	instruments: [{
 		id: 0,
 		name: 'Standard',
+		group: 'guitar',
 		tunning: [4, 11, 7, 2, 9, 4]
 	}, {
 		id: 1,
 		name: 'Open D',
+		group: 'guitar',
 		tunning: [2, 9, 2, 6, 9, 2]
 	}, {
 		id: 2,
 		name: 'Open C',
+		group: 'guitar',
 		tunning: [0, 4, 7, 0, 4, 7]
 	}, {
 		id: 3,
 		name: 'Open G',
+		group: 'guitar',
 		tunning: [2, 7, 2, 7, 11, 2]
 	}, {
 		id: 4,
+		group: 'bass',
 		name: 'Standard',
 		tunning: [7, 2, 9, 4]
 	}, {
 		id: 5,
+		group: 'bass',
 		name: '5-string',
 		tunning: [7, 2, 9, 4, 11]
 	}, {
 		id: 6,
+		group: 'bass',
 		name: '6-string',
 		tunning: [0, 7, 2, 9, 4, 11]
 	}, {
 		id: 7,
+		group: 'other',
 		name: 'Ukulele GCEA',
 		tunning: [4, 9, 0, 7]
 	}, {
 		id: 8,
+		group: 'other',
 		name: 'Violin',
 		tunning: [4, 9, 2, 7]
 	}],
 	scales: [{
-		name: "Ionian",
-		notes: [0, 2, 4, 5, 7, 9, 11]
+		id: 0,
+		name: 'Ionian',
+		notes: [0, 2, 4, 5, 7, 9, 11],
+		group: 'scales'
 	}, {
-		name: "Dorian",
-		notes: [0, 2, 3, 5, 7, 9, 10]
+		id: 1,
+		name: 'Dorian',
+		notes: [0, 2, 3, 5, 7, 9, 10],
+		group: 'scales'
 	}, {
-		name: "Aeolian",
-		notes: [0, 2, 3, 5, 7, 8, 10]
+		name: 'Aeolian',
+		id: 2,
+		notes: [0, 2, 3, 5, 7, 8, 10],
+		group: 'scales'
 	}, {
-		name: "Harmonic minor",
-		notes: [0, 2, 3, 5, 7, 8, 11]
+		id: 3,
+		name: 'Harmonic minor',
+		notes: [0, 2, 3, 5, 7, 8, 11],
+		group: 'scales'
 	}, {
-		name: "Pentatonic major",
-		notes: [0, 2, 4, 7, 9]
+		id: 4,
+		name: 'Pentatonic major',
+		notes: [0, 2, 4, 7, 9],
+		group: 'scales'
 	}, {
-		name: "Pentatonic minor",
-		notes: [0, 3, 5, 7, 10]
+		id: 5,
+		name: 'Pentatonic minor',
+		notes: [0, 3, 5, 7, 10],
+		group: 'scales'
 	}, {
-		name: "Pentatonic blues",
-		notes: [0, 3, 5, 6, 7, 10]
+		id: 6,
+		name: 'Pentatonic blues',
+		notes: [0, 3, 5, 6, 7, 10],
+		group: 'scales'
 	}, {
-		name: "Major chord",
-		notes: [0, 4, 7]
+		id: 7,
+		name: 'Major chord',
+		notes: [0, 4, 7],
+		group: 'chords'
 	}, {
-		name: "Major 7th chord",
-		notes: [0, 4, 7, 11]
+		id: 8,
+		name: 'Major 7th chord',
+		notes: [0, 4, 7, 11],
+		group: 'chords'
 	}, {
-		name: "Minor chord",
-		notes: [0, 3, 7]
+		id: 9,
+		name: 'Minor chord',
+		notes: [0, 3, 7],
+		group: 'chords'
 	}, {
-		name: "Dim chord",
-		notes: [0, 3, 6]
+		id: 10,
+		name: 'Dim chord',
+		notes: [0, 3, 6],
+		group: 'chords'
 	}, {
-		name: "Dim 7 chord",
-		notes: [0, 3, 6, 9]
+		id: 11,
+		name: 'Dim 7 chord',
+		notes: [0, 3, 6, 9],
+		group: 'chords'
 	}, {
-		name: "Whole tone",
-		notes: [0, 2, 4, 6, 8, 10]
+		id: 12,
+		name: 'Whole tone',
+		notes: [0, 2, 4, 6, 8, 10],
+		group: 'scales'
 	}, {
-		name: "Chromatic",
-		notes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-	}]
+		id: 13,
+		name: 'Chromatic',
+		notes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+		group: 'scales'
+	}],
+
 };
 
 Scalear.instrumentsGrouped = [{
-		name: "Guitar",
-		options: [
-			Scalear.instruments[0],
-			Scalear.instruments[1],
-			Scalear.instruments[2],
-			Scalear.instruments[3]
-		]
-	}, {
-		name: "Bass",
-		options: [
-			Scalear.instruments[4],
-			Scalear.instruments[5],
-			Scalear.instruments[6]
-		]
-	}, {
-		name: "Other",
-		options: [
-			Scalear.instruments[7],
-			Scalear.instruments[8]
-		]
-	}
+	name: 'Guitar',
+	group: 'guitar',
+	options: function() {
+		return Scalear.instruments.filter(function(item) {
+			return item.group === 'guitar' ? item : undefined;
+		});
 
-];
+	}()
+}, {
+	name: 'Bass',
+	group: 'bass',
+	options: function() {
+		return Scalear.instruments.filter(function(item) {
+			return item.group === 'bass' ? item : undefined;
+		});
+
+	}()
+}, {
+	name: 'Other',
+	group: 'other',
+	options: function() {
+		return Scalear.instruments.filter(function(item) {
+			return item.group === 'other' ? item : undefined;
+		});
+
+	}()
+}];
+
+Scalear.scalesGrouped = [{
+	name: 'Scales',
+	group: 'scales',
+	options: function() {
+		return Scalear.scales.filter(function(item) {
+			return item.group === 'scales' ? item : undefined;
+		});
+
+	}()
+}, {
+	name: 'Chords',
+	group: 'chords',
+	options: function() {
+		return Scalear.scales.filter(function(item) {
+			return item.group === 'chords' ? item : undefined;
+		});
+	}()
+}];

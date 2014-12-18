@@ -1,15 +1,11 @@
 Scalear.SelectTwoLevel = function(selector, defaultValue, propertyName) {
-	this._selector = selector;
-	this._defaultValue = defaultValue;
-	this._propertyName = propertyName;
-	this._el = document.querySelector(this._selector);
+	return Scalear.Select.apply(this, arguments);
 };
 
-Scalear.SelectTwoLevel.prototype = new Mvc.View();
+Scalear.SelectTwoLevel.prototype = new Scalear.Select();
 
 Scalear.SelectTwoLevel.prototype.modelUpdate = function(model) {
 	var element, optgroupElement, self = this, id;
-
 
 	model.forEach(function(optgroup) {
 		optgroupElement = document.createElement('optgroup');
@@ -29,9 +25,4 @@ Scalear.SelectTwoLevel.prototype.modelUpdate = function(model) {
 			}
 		});
 	});
-
-};
-
-Scalear.SelectTwoLevel.prototype.on = function(eventName, fn) {
-	this._el.addEventListener(eventName, fn);
 };

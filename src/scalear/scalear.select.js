@@ -20,7 +20,6 @@ Scalear.Select.prototype.modelUpdate = function(model) {
 			}
 			self._el.appendChild(element);
 		}
-
 	});
 };
 

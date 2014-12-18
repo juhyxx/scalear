@@ -14,7 +14,7 @@
 .labels {
     text {
         fill: black;
-        font-family: 'Ubuntu' sans-serif;
+        font-family: 'Ubuntu', sans-serif;
         font-size: 7px;
         display: none;
     }
@@ -81,7 +81,7 @@ rect.neck {
     }
     text {
         fill: #555F73;
-        font-family: 'Ubuntu' sans-serif;
+        font-family: 'Ubuntu', sans-serif;
         font-size: 6px;
     }
 }
@@ -97,15 +97,15 @@ rect.neck {
 }
 
 #scale-box {
-.interval {
-    fill:gray;
-    font-size: 8px;
-}
+    .interval {
+        fill: gray;
+        font-size: 8px;
+    }
     .root {
-         fill: #732c2c; 
+        fill: #732c2c;
     }
     polyline, line {
-        stroke:gray;
-        fill:transparent;
+        stroke: gray;
+        fill: transparent;
     }
 }

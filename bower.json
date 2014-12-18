@@ -1,0 +1,19 @@
+{
+  "name": "scalear",
+  "version": "0.0.0",
+  "homepage": "https://github.com/juhyxx/scalear",
+  "authors": [
+    "juhyxx <juhy@rezatyrakety.cz>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "Object.observe.poly": "http://cdn.rawgit.com/jdarling/Object.observe/master/Object.observe.poly.js"
+  }
+}

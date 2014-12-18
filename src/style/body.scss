@@ -74,6 +74,10 @@ header {
         margin-left: 1em;
         text-transform: uppercase;
         opacity: 0.8;
+        @media screen and (max-width: 650px) {
+            display: block;
+            font-size: 15px;
+        }
     }
     &.loading {
         top: -100px;
@@ -82,7 +86,17 @@ header {
 
 footer {
     padding-top: 6px;
-    select, input,  input, option {
+    select {
+        optgroup {
+            background-color: #732C2C;
+            color: white;
+        }
+        option {
+            color: #732C2C;
+            background-color: white;
+        }
+    }
+    select, input,  input {
         outline: none;
         font-size: 1.5em;
         border-radius: 8px;
