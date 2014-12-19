@@ -21,6 +21,18 @@ Mvc.Application.prototype.run = function() {
 		window.removeEventListener("load", onload, false);
 		this.onBoot.call(this);
 	}.bind(this));
+
+	window.addEventListener('hashchange', function() {
+		var params = (location.hash.slice(1) || '/').split('/');
+
+		params.shift();
+		params.pop();
+		this.onRouteChange(params);
+	}.bind(this));
+};
+
+Mvc.Application.prototype.onRouteChange = function() {
+	console.warn('Virtual method "boot", has to be implemented.');
 };
 
 Mvc.Application.prototype.onBoot = function() {

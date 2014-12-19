@@ -42,41 +42,56 @@ var Scalear = {
 		tunning: [4, 11, 7, 2, 9, 4]
 	}, {
 		id: 1,
+		name: '7-string (Guitar)',
+		group: 'guitar',
+		tunning: [4, 11, 7, 2, 9, 4, 11]
+	}, {
+		id: 2,
 		name: 'Open D (Guitar)',
 		group: 'guitar',
 		tunning: [2, 9, 2, 6, 9, 2]
 	}, {
-		id: 2,
+		id: 3,
 		name: 'Open C (Guitar)',
 		group: 'guitar',
 		tunning: [0, 4, 7, 0, 4, 7]
 	}, {
-		id: 3,
+		id: 4,
 		name: 'Open G (Guitar)',
 		group: 'guitar',
 		tunning: [2, 7, 2, 7, 11, 2]
 	}, {
-		id: 4,
+		id: 5,
 		group: 'bass',
-		name: 'Standard  (Bass)',
+		name: 'Standard (Bass)',
 		tunning: [7, 2, 9, 4]
 	}, {
-		id: 5,
+		id: 6,
 		group: 'bass',
 		name: '5-string (Bass)',
 		tunning: [7, 2, 9, 4, 11]
 	}, {
-		id: 6,
+		id: 7,
 		group: 'bass',
 		name: '6-string (Bass)',
 		tunning: [0, 7, 2, 9, 4, 11]
 	}, {
-		id: 7,
-		group: 'other',
-		name: 'Ukulele GCEA',
-		tunning: [4, 9, 0, 7]
-	}, {
 		id: 8,
+		group: 'ukulele',
+		name: 'Ukulele GCEA',
+		tunning: [9, 4, 0, 7]
+	}, {
+		id: 9,
+		group: 'ukulele',
+		name: 'Ukulele DGBE',
+		tunning: [4, 11, 7, 2]
+	}, {
+		id: 10,
+		group: 'ukulele',
+		name: 'Ukulele ADG♭B',
+		tunning: [11, 6, 2, 9]
+	}, {
+		id: 11,
 		group: 'other',
 		name: 'Violin',
 		tunning: [4, 9, 2, 7]
@@ -92,65 +107,75 @@ var Scalear = {
 		notes: [0, 2, 3, 5, 7, 9, 10],
 		group: 'scales'
 	}, {
-		name: 'Aeolian',
 		id: 2,
+		name: 'Myxolidian',
+		notes: [0, 2, 4, 5, 7, 9, 10],
+		group: 'scales'
+	}, {
+		name: 'Aeolian',
+		id: 3,
 		notes: [0, 2, 3, 5, 7, 8, 10],
 		group: 'scales'
 	}, {
-		id: 3,
+		id: 4,
 		name: 'Harmonic minor',
 		notes: [0, 2, 3, 5, 7, 8, 11],
 		group: 'scales'
 	}, {
-		id: 4,
+		id: 5,
 		name: 'Pentatonic major',
 		notes: [0, 2, 4, 7, 9],
 		group: 'scales'
 	}, {
-		id: 5,
+		id: 6,
 		name: 'Pentatonic minor',
 		notes: [0, 3, 5, 7, 10],
 		group: 'scales'
 	}, {
-		id: 6,
+		id: 7,
 		name: 'Pentatonic blues',
 		notes: [0, 3, 5, 6, 7, 10],
 		group: 'scales'
 	}, {
-		id: 7,
+		id: 8,
 		name: 'Major chord',
 		notes: [0, 4, 7],
 		group: 'chords'
 	}, {
-		id: 8,
+		id: 9,
 		name: 'Major 7th chord',
 		notes: [0, 4, 7, 11],
 		group: 'chords'
 	}, {
-		id: 9,
+		id: 10,
 		name: 'Minor chord',
 		notes: [0, 3, 7],
 		group: 'chords'
 	}, {
-		id: 10,
+		id: 11,
 		name: 'Dim chord',
 		notes: [0, 3, 6],
 		group: 'chords'
 	}, {
-		id: 11,
+		id: 12,
 		name: 'Dim 7 chord',
 		notes: [0, 3, 6, 9],
 		group: 'chords'
 	}, {
-		id: 12,
+		id: 13,
 		name: 'Whole tone',
 		notes: [0, 2, 4, 6, 8, 10],
 		group: 'scales'
 	}, {
-		id: 13,
+		id: 14,
 		name: 'Chromatic',
 		notes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 		group: 'scales'
+	}, {
+		id: 15,
+		name: 'Maj/Min Pentatonic',
+		notes: [0, 2, 3, 4, 5, 7, 9, 10],
+		group: 'hybrid'
 	}],
 
 };
@@ -170,6 +195,15 @@ Scalear.instrumentsGrouped = [{
 	options: function() {
 		return Scalear.instruments.filter(function(item) {
 			return item.group === 'bass' ? item : undefined;
+		});
+
+	}()
+},{
+	name: 'Ukulele',
+	group: 'ukulele',
+	options: function() {
+		return Scalear.instruments.filter(function(item) {
+			return item.group === 'ukulele' ? item : undefined;
 		});
 
 	}()
@@ -199,6 +233,14 @@ Scalear.scalesGrouped = [{
 	options: function() {
 		return Scalear.scales.filter(function(item) {
 			return item.group === 'chords' ? item : undefined;
+		});
+	}()
+}, {
+	name: 'Hybrid scales',
+	group: 'hybrid',
+	options: function() {
+		return Scalear.scales.filter(function(item) {
+			return item.group === 'hybrid' ? item : undefined;
 		});
 	}()
 }];

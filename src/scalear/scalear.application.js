@@ -16,7 +16,6 @@ Scalear.Application.prototype.onBoot = function() {
 		}
 	});
 	this.model = defaults;
-
 	this.createUi();
 	this.setDefaults();
 	this.setModels();
@@ -83,5 +82,36 @@ Scalear.Application.prototype.modelUpdate = function(model, changes) {
 				break;
 		}
 	}.bind(this));
+	window.location.hash = this._prepareHashString(['',
+		Scalear.instruments[model.instrument].name,
+		Scalear.scales[model.scale].name,
+		Scalear.notes[model.rootNote],
+		''
+	].join('/'));
+
 	localStorage.defaults = JSON.stringify(this.model);
+};
+
+Scalear.Application.prototype._prepareHashString = function(text) {
+	return text.toLowerCase().replace(/ /g, '-').replace(/[ \(\)]/g, '').replace(/♯/g, '#');
+};
+
+Scalear.Application.prototype.onRouteChange = function(params) {
+	var item, note;
+
+	for (note = 0; note < Scalear.notes.length; note++) {
+		item = Scalear.notes[note];
+		if (this._prepareHashString(item) === params[2]) {
+			break;
+		}
+	}
+	this.model.instrument = Scalear.instruments.filter(function(item) {
+		return this._prepareHashString(item.name) === params[0];
+	}.bind(this))[0].id;
+
+	this.model.scale = scale = Scalear.scales.filter(function(item) {
+		return this._prepareHashString(item.name) === params[1];
+	}.bind(this))[0].id;
+
+	this.model.rootNote = note;
 };
