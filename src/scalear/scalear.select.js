@@ -3,6 +3,8 @@ Scalear.Select = function(selector, defaultValue, propertyName) {
 	this._defaultValue = defaultValue;
 	this._propertyName = propertyName;
 	this._el = document.querySelector(this._selector);
+
+	return Mvc.View.call(this);
 };
 
 Scalear.Select.prototype = new Mvc.View();

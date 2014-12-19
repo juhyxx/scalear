@@ -4,7 +4,7 @@ Scalear.Neck = function(svgParent) {
 		width: 130,
 		height: 500
 	};
-	Mvc.View.call(this);
+	return Mvc.View.call(this);
 };
 
 Scalear.Neck.prototype.modelUpdate = function(model, changes) {

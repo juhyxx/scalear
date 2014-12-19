@@ -22,7 +22,7 @@ var gulp = require('gulp'),
 
 gulp.task('watch', function() {
 	gulp.watch(['./src/style/*.scss'], ['scss', 'reload']);
-	gulp.watch(['./src/**/*'], ['tmp', 'reload']);
+	gulp.watch(['./src/**/*'], ['lint', 'tmp', 'reload']);
 });
 
 gulp.task('reload', function() {
@@ -47,33 +47,16 @@ gulp.task('scss', function() {
 });
 
 gulp.task('tmp', function() {
-
-	console.log('Transpillig...');
 	gulp.src(paths.svg)
-
-	.pipe(concat('svg.js'))
-		/*.pipe(es6transpiler({
-			"environments": ["browser"],
-		}))*/
-
-	.pipe(gulp.dest('.tmp'));
+		.pipe(concat('svg.js'))
+		.pipe(gulp.dest('.tmp'));
 
 	gulp.src(paths.mvc)
 		.pipe(concat('mvc.js'))
-		/*.pipe(es6transpiler({
-			"environments": ["browser"],
-		}))*/
 		.pipe(gulp.dest('.tmp'));
 
 	gulp.src(paths.scalear)
 		.pipe(concat('scalear.js'))
-		/*.pipe(es6transpiler({
-			"globals": {
-				"Svg": false,
-				"Mvc": false
-			},
-			"environments": ["browser"],
-		}))*/
 		.pipe(gulp.dest('.tmp'));
 });
 
@@ -155,6 +138,6 @@ gulp.task('serve-dist', function() {
 		}));
 });
 
-gulp.task('default', ['tmp', 'serve', 'watch']);
+gulp.task('default', ['lint', 'tmp', 'serve', 'watch']);
 gulp.task('build', ['clean', 'dist-html', 'dist-js', 'dist-sass', 'manifest']);
 gulp.task('test', ['build', 'serve-dist']);

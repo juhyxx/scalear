@@ -1,6 +1,6 @@
 Scalear.Box = function(svgParent) {
 	this._parentEl = svgParent;
-	Mvc.View.call(this);
+	return Mvc.View.call(this);
 };
 
 Scalear.Box.prototype.modelUpdate = function(model, changes) {

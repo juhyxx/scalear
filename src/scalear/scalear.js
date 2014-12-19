@@ -37,38 +37,38 @@ var Scalear = {
 	],
 	instruments: [{
 		id: 0,
-		name: 'Standard',
+		name: 'Standard (Guitar)',
 		group: 'guitar',
 		tunning: [4, 11, 7, 2, 9, 4]
 	}, {
 		id: 1,
-		name: 'Open D',
+		name: 'Open D (Guitar)',
 		group: 'guitar',
 		tunning: [2, 9, 2, 6, 9, 2]
 	}, {
 		id: 2,
-		name: 'Open C',
+		name: 'Open C (Guitar)',
 		group: 'guitar',
 		tunning: [0, 4, 7, 0, 4, 7]
 	}, {
 		id: 3,
-		name: 'Open G',
+		name: 'Open G (Guitar)',
 		group: 'guitar',
 		tunning: [2, 7, 2, 7, 11, 2]
 	}, {
 		id: 4,
 		group: 'bass',
-		name: 'Standard',
+		name: 'Standard  (Bass)',
 		tunning: [7, 2, 9, 4]
 	}, {
 		id: 5,
 		group: 'bass',
-		name: '5-string',
+		name: '5-string (Bass)',
 		tunning: [7, 2, 9, 4, 11]
 	}, {
 		id: 6,
 		group: 'bass',
-		name: '6-string',
+		name: '6-string (Bass)',
 		tunning: [0, 7, 2, 9, 4, 11]
 	}, {
 		id: 7,
