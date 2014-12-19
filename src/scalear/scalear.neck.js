@@ -8,22 +8,44 @@ Scalear.Neck = function(svgParent) {
 };
 
 Scalear.Neck.prototype.modelUpdate = function(model, changes) {
-	this._fretCount = model.fretCount;
-	this._namesVisible = model.namesVisible;
-	this._rootNote = model.rootNote;
-	this._scale = Scalear.scales[model.scale].notes.slice();
-	this._tunning = Scalear.instruments[model.instrument].tunning;
 
-	this._stringsCount = this._tunning.length;
-	this._stringDistance = Math.round(this._neck.width / this._stringsCount);
-	this._neck.width = this._stringDistance * this._stringsCount;
-	this._fretWidth = Math.round(this._neck.height / this._fretCount);
-	if (changes) {
-		this._mainGroup.remove();
+	var changeName = changes ? changes[0].name : 'instrument';
+
+	switch (changeName) {
+
+		case 'namesVisible':
+			this.labels[model.namesVisible ? 'showWithOpacity' : 'hideWithOpacity']();
+			q('svg .labels animate#' + (model.namesVisible ? 'fadein' : 'fadeout')).beginElement();
+			break;
+
+		case 'rootNote':
+		case 'scale':
+			this._rootNote = model.rootNote;
+			this._scale = Scalear.scales[model.scale].notes.slice();
+			this._showScale();
+			break;
+
+		case 'instrument':
+		case 'fretCount':
+			if (this._mainGroup) {
+				this._mainGroup.remove();
+			}
+
+			this._fretCount = model.fretCount;
+			this._namesVisible = model.namesVisible;
+			this._rootNote = model.rootNote;
+			this._scale = Scalear.scales[model.scale].notes.slice();
+			this._tunning = Scalear.instruments[model.instrument].tunning;
+			this._stringsCount = this._tunning.length;
+			this._stringDistance = Math.round(this._neck.width / this._stringsCount);
+			this._neck.width = this._stringDistance * this._stringsCount;
+			this._fretWidth = Math.round(this._neck.height / this._fretCount);
+			this._render();
+			this._showScale();
+			this.labels[model.namesVisible ? 'showWithOpacity' : 'hideWithOpacity']();
+
+			break;
 	}
-	this._render();
-	this._showScale();
-	this.labels[this._namesVisible ? 'show' : 'hide']();
 };
 
 Scalear.Neck.prototype._render = function() {
@@ -61,7 +83,27 @@ Scalear.Neck.prototype._renderGroups = function(el) {
 		});
 
 	this.labels = new Svg.Group(el, {
-		className: 'labels'
+		className: 'labels',
+		animate: [{
+			id: 'fadein',
+			attributeType: 'CSS',
+			attributeName: 'opacity',
+			from: '0',
+			to: '1',
+			dur: '1s',
+			fill: "freeze",
+			begin: 'indefinite'
+		}, {
+			id: 'fadeout',
+			attributeType: 'CSS',
+			attributeName: 'opacity',
+			from: '1',
+			to: '0',
+			dur: '1s',
+			fill: "freeze",
+			begin: 'indefinite'
+
+		}]
 	});
 	this._renderShading(shading.el);
 	this._renderMarks(marks.el);

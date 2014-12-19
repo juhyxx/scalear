@@ -39,17 +39,39 @@ Svg.Element.prototype = {
 		this._el.style.display = 'none';
 	},
 
+	showWithOpacity: function() {
+		this._el.style.opacity = 1;
+	},
+
+	hideWithOpacity: function() {
+		this._el.style.opacity = 0;
+	},
+
 	render: function() {
 		var self = this,
 			element = document.createElementNS(Svg.NS, this.name);
 
 		Object.keys(this.params).map(function(key) {
-			if (key === 'content') {
-				element.textContent = self[key];
-			} else {
-				if (self[key]) {
-					element.setAttribute(key, self[key]);
-				}
+			switch (key) {
+				case 'id':
+					element.id = self.id;
+					break;
+				case 'content':
+					element.textContent = self[key];
+					break;
+				case 'animate':
+					
+					self.animate.forEach(function(anim) {
+						new Svg.Animate(element, anim);
+					});
+					break;
+				case 'set':
+					new Svg.Set(element, self.set);
+					break;
+				default:
+					if (self[key]) {
+						element.setAttribute(key, self[key]);
+					}
 			}
 		});
 

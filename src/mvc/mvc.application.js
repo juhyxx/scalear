@@ -26,3 +26,7 @@ Mvc.Application.prototype.run = function() {
 Mvc.Application.prototype.onBoot = function() {
 	console.warn('Virtual method "boot", has to be implemented.');
 };
+
+Mvc.Application.prototype.modelUpdate = function() {
+	console.warn('Virtual method "modelUpdate", has to be implemented.');
+};

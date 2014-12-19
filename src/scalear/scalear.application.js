@@ -5,13 +5,13 @@ Scalear.Application = function() {
 
 Scalear.Application.prototype = new Mvc.Application();
 
-Scalear.Application.prototype.name = 'Scalear 0.4.1';
+Scalear.Application.prototype.name = 'Scalear 0.4.2';
 
 Scalear.Application.prototype.onBoot = function() {
-	var defaults = JSON.parse(localStorage.defaults);
+	var defaults = JSON.parse(localStorage.defaults || '{}');
 
 	Object.keys(Scalear.defaults).forEach(function(key) {
-		if (!defaults[key]) {
+		if (defaults[key] === undefined) {
 			defaults[key] = Scalear.defaults[key];
 		}
 	});
@@ -33,12 +33,14 @@ Scalear.Application.prototype.createUi = function() {
 Scalear.Application.prototype.setDefaults = function() {
 	q('#name').innerHTML = Scalear.scales[this.model.scale].name;
 	q('#root').innerHTML = Scalear.notes[this.model.rootNote];
-	q('#note-names').checked = this.model.namesVisible;
 	q('#frets-count').value = this.model.fretCount;
 	q('footer').className = '';
 	q('header').className = '';
 	q('svg').setAttribute('class', '');
 	document.title = Scalear.scales[this.model.scale].name + ' (' + this.name + ')';
+	if (this.model.namesVisible) {
+		q('#note-names').setAttribute('checked', 'checked');
+	}
 };
 
 Scalear.Application.prototype.setModels = function() {
