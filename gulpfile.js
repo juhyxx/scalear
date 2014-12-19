@@ -113,16 +113,15 @@ gulp.task('dist-sass', function() {
 });
 
 gulp.task('manifest', function() {
-	return gulp.src('./src/style/*.scss')
-		.pipe(sass({
-			errLogToConsole: true
+	gulp.src(['dist/*'])
+		.pipe(manifest({
+			hash: true,
+			preferOnline: true,
+			network: ['http://*', 'https://*', '*'],
+			filename: 'app.manifest',
+			exclude: 'app.manifest'
 		}))
-		.pipe(concat('style.css'))
-		.pipe(cssmin())
-		.pipe(rename({
-			suffix: '.min'
-		}))
-		.pipe(gulp.dest('./dist'));
+		.pipe(gulp.dest('dist'));
 });
 
 gulp.task('serve-dist', function() {
@@ -139,5 +138,5 @@ gulp.task('serve-dist', function() {
 });
 
 gulp.task('default', ['lint', 'tmp', 'serve', 'watch']);
-gulp.task('build', ['clean', 'dist-html', 'dist-js', 'dist-sass', 'manifest']);
+gulp.task('build', ['clean', 'dist-html', 'dist-js', 'dist-sass']);
 gulp.task('test', ['build', 'serve-dist']);

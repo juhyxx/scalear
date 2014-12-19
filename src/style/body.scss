@@ -23,7 +23,7 @@ h1 {
 
 .separator {
     @media screen {
-        margin-bottom: 140px;
+        margin-bottom: 100px;
     }
 }
 
@@ -61,9 +61,7 @@ header {
     position: static;
     border-bottom: solid;
     border-bottom: 2px solid white;
-    position: absolute;
-    top: 0;
-    transition: top 2s;
+    transition: transform 2s;
     transition-delay: 0.5s;
     h1 {
         color: white;
@@ -78,9 +76,11 @@ header {
             display: block;
             font-size: 15px;
         }
+        transform: translate3d(0,0,0);
     }
     &.loading {
-        top: -100px;
+        //top: -100px;
+        transform: translate3d(0,-100px,0);
     }
 }
 
@@ -111,7 +111,7 @@ footer {
         opacity: 0.4;
         margin-left: 1em;
         display: inline-block;
-        transition: opacity 1s;
+        transition: transform 1s;
         div {
             font-size: 11px;
             margin-bottom: 2px;
@@ -133,17 +133,12 @@ footer {
     input[type="number"] {
         width: 2em;
     }
+    transform: translate3d(0,0,0);
     bottom: 0;
     border-top: 2px solid white;
-    transition: bottom 2s;
+    transition: transform 2s;
     transition-delay: 0.5s;
     &.loading {
-        bottom: -100px;
+        transform: translate3d(0,100px,0);
     }
-}
-
-::-webkit-selection,
-::selection {
-    color: white;
-    background: #BFA98E;
 }
