@@ -8,6 +8,9 @@
         &.root {
             fill: lighten(#732c2c, 40%);
         }
+        &.highlighted {
+            fill: #84FFA4;
+        }
     }
 }
 
@@ -19,6 +22,9 @@
         display: none;
     }
     opacity: 0;
+    tspan {
+        font-size: 5px;
+    }
 }
 
 .shading {
@@ -110,5 +116,14 @@ rect.neck {
     polyline, line {
         stroke: gray;
         fill: transparent;
+    }
+    text {
+        tspan {
+            font-size: 8px;
+        }
+        cursor: pointer;
+        &.highlighted {
+            fill:  #84FFA4;
+        }
     }
 }

@@ -23,7 +23,7 @@ h1 {
 
 .separator {
     @media screen {
-        margin-bottom: 100px;
+        margin-bottom: 40px;
     }
 }
 
@@ -38,7 +38,7 @@ body {
     padding: 0;
     font-family: 'Ubuntu', sans-serif;
     background-color: #BFA98E;
-    background: linear-gradient(lighten(#bfa98e, 20%), #bfa98e);
+    background: url(bg.svg), linear-gradient(lighten(#bfa98e, 20%), #bfa98e);
     @media screen {
         //min-height: 95%;
         overflow: hidden;
@@ -96,6 +96,7 @@ footer {
             background-color: white;
         }
     }
+
     select, input,  input {
         outline: none;
         font-size: 1.5em;

@@ -5,7 +5,7 @@ Scalear.Application = function() {
 
 Scalear.Application.prototype = new Mvc.Application();
 
-Scalear.Application.prototype.name = 'Scalear 0.4.2';
+Scalear.Application.prototype.name = 'Scalear ' + Scalear.version;
 
 Scalear.Application.prototype.onBoot = function() {
 	var defaults = JSON.parse(localStorage.defaults || '{}');
@@ -66,7 +66,14 @@ Scalear.Application.prototype.registerHandlers = function() {
 		self.model.namesVisible = this.checked;
 	});
 	q('#frets-count').addEventListener('change', function() {
-		self.model.fretCount = parseInt(this.value, 10) || 12;
+		var fretCount = parseInt(this.value, 10) || 12;
+
+		fretCount = Math.min(fretCount, 25);
+		fretCount = Math.max(fretCount, 10);
+		if (fretCount !== this.value) {
+			this.value = fretCount;
+		}
+		self.model.fretCount = fretCount;
 	});
 };
 

@@ -13,6 +13,10 @@ Scalear.Neck.prototype.modelUpdate = function(model, changes) {
 
 	switch (changeName) {
 
+		case 'highlighted':
+			this._highlightNotes(model.highlighted);
+			break;
+
 		case 'namesVisible':
 			this.labels[model.namesVisible ? 'showWithOpacity' : 'hideWithOpacity']();
 			q('svg .labels animate#' + (model.namesVisible ? 'fadein' : 'fadeout')).beginElement();
@@ -84,7 +88,8 @@ Scalear.Neck.prototype._renderGroups = function(el) {
 
 	this.labels = new Svg.Group(el, {
 		className: 'labels',
-		animate: [{
+		children: [{
+			name: 'animate',
 			id: 'fadein',
 			attributeType: 'CSS',
 			attributeName: 'opacity',
@@ -94,6 +99,7 @@ Scalear.Neck.prototype._renderGroups = function(el) {
 			fill: "freeze",
 			begin: 'indefinite'
 		}, {
+			name: 'animate',
 			id: 'fadeout',
 			attributeType: 'CSS',
 			attributeName: 'opacity',
@@ -150,7 +156,7 @@ Scalear.Neck.prototype._renderFrets = function(el) {
 		new Svg.Text(el, {
 			x: i * this._fretWidth - this._fretWidth + 2 * this._fretWidth - 2,
 			y: this._neck.width + 10,
-			content: i
+			textContent: i
 		});
 	}
 	new Svg.Line(el, {
@@ -224,11 +230,19 @@ Scalear.Neck.prototype._renderLabels = function(parentEl) {
 		fretArray = new Array(self._fretCount + 2).join('0').split('');
 		return fretArray.map(function(item, i) {
 			content = Scalear.notes[(noteNumber + i) % Scalear.notes.length];
-			correction = content.length > 1 ? 2 : 0;
+			correction = content.length > 1 ? 1 : 0;
+
+			var hasSharp = content.length > 1;
+
 			return new Svg.Text(parentEl, {
 				x: i * self._fretWidth + (self._fretWidth / 2) - 2 - correction,
 				y: self._stringDistance * string + (self._stringDistance / 2) + 3,
-				content: content
+				textContent: content.replace('♯', ''),
+				children: [{
+					name: 'tspan',
+					dy: -2,
+					textContent: hasSharp ? '♯' : ''
+				}]
 			});
 		});
 	});
@@ -272,4 +286,17 @@ Scalear.Neck.prototype._clear = function() {
 			self._labels[i][j].hide();
 		});
 	});
+};
+
+Scalear.Neck.prototype._highlightNotes = function(note) {
+	this._fingers.forEach(function(item, i) {
+		item.map(function(finger, j) {
+			finger.removeClass('highlighted');
+		});
+	});
+
+	this._notesMap[note].forEach(function(item) {
+		item.addClass('highlighted');
+	});
+
 };

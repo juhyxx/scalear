@@ -1,4 +1,5 @@
 var Scalear = {
+	version: '0.4.4',
 	notes: [
 		'C', //0
 		'C♯', //1
@@ -14,6 +15,7 @@ var Scalear = {
 		'B' //11
 	],
 	defaults: {
+		highlighted: undefined,
 		fretCount: 12,
 		rootNote: 0,
 		scale: 0,

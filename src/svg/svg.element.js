@@ -17,7 +17,7 @@ Svg.Element = function(parent, params) {
 
 Svg.Element.prototype = {
 	get className() {
-		return this._el;
+		return this._el.getAttribute('class') || '';
 	},
 	set className(name) {
 		return this._el.setAttribute('class', name);
@@ -39,6 +39,18 @@ Svg.Element.prototype = {
 		this._el.style.display = 'none';
 	},
 
+	addClass: function(className) {
+		this.className = this.className + ' ' + className;
+	},
+
+	hasClass: function(className) {
+		return this.className.indexOf(className) > -1;
+	},
+
+	removeClass: function(className) {
+		this.className = this.className.replace(className);
+	},
+
 	showWithOpacity: function() {
 		this._el.style.opacity = 1;
 	},
@@ -54,22 +66,17 @@ Svg.Element.prototype = {
 		Object.keys(this.params).map(function(key) {
 			switch (key) {
 				case 'id':
-					element.id = self.id;
+				case 'textContent':
+					element[key] = self[key];
 					break;
-				case 'content':
-					element.textContent = self[key];
-					break;
-				case 'animate':
-					
-					self.animate.forEach(function(anim) {
-						new Svg.Animate(element, anim);
+				case 'children':
+					self.children.forEach(function(child) {
+						var name = child.name.charAt(0).toUpperCase() + child.name.slice(1);
+						new Svg[name](element, child);
 					});
 					break;
-				case 'set':
-					new Svg.Set(element, self.set);
-					break;
 				default:
-					if (self[key]) {
+					if (self[key] !== undefined) {
 						element.setAttribute(key, self[key]);
 					}
 			}
