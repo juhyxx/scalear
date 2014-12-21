@@ -19,7 +19,10 @@ Scalear.Neck.prototype.modelUpdate = function(model, changes) {
 
 		case 'namesVisible':
 			this.labels[model.namesVisible ? 'showWithOpacity' : 'hideWithOpacity']();
-			q('svg .labels animate#' + (model.namesVisible ? 'fadein' : 'fadeout')).beginElement();
+			var element = q('svg .labels animate#' + (model.namesVisible ? 'fadein' : 'fadeout'));
+			if (element.beginElement) {
+				element.beginElement();
+			}
 			break;
 
 		case 'rootNote':

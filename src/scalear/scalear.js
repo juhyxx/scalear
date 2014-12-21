@@ -21,7 +21,7 @@ var Scalear = {
 		scale: 0,
 		namesVisible: true,
 		instrument: 0,
-		neckType: 'fender'
+		neckType: 'gibson'
 	},
 	intervals: [
 		'1', //0

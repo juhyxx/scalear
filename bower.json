@@ -14,6 +14,7 @@
     "tests"
   ],
   "dependencies": {
-    "Object.observe.poly": "http://cdn.rawgit.com/jdarling/Object.observe/master/Object.observe.poly.js"
+    "Object.observe.poly": "http://cdn.rawgit.com/jdarling/Object.observe/master/Object.observe.poly.js",
+    "customevent-polyfill": "~1.0.0"
   }
 }

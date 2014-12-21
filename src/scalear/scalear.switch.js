@@ -15,14 +15,20 @@ Scalear.Switch = function(selector, defaultValue) {
 
 Scalear.Switch.prototype = new Mvc.View();
 
-Scalear.Switch.prototype.modelUpdate = function(model) {
-	var element, self = this;
+Scalear.Switch.prototype.modelUpdate = function(model, changes) {
+	changes = changes || [{
+		name: 'neckType'
+	}];
 
-	if (model.neckType === 'gibson') {
-		document.querySelector(this._selector + ' #gibson').style.display = 'none';
-		document.querySelector(this._selector + ' #fender').style.display = 'block';
-	} else {
-		document.querySelector(this._selector + ' #gibson').style.display = 'block';
-		document.querySelector(this._selector + ' #fender').style.display = 'none';
+	if (changes[0].name === 'neckType') {
+		var element, self = this;
+
+		if (model.neckType === 'gibson') {
+			document.querySelector(this._selector + ' #gibson').style.display = 'none';
+			document.querySelector(this._selector + ' #fender').style.display = 'block';
+		} else {
+			document.querySelector(this._selector + ' #gibson').style.display = 'block';
+			document.querySelector(this._selector + ' #fender').style.display = 'none';
+		}
 	}
 };
