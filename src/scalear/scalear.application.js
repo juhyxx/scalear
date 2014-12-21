@@ -28,7 +28,9 @@ Scalear.Application.prototype.createUi = function() {
 	this.scaleSelect = new Scalear.SelectTwoLevel('#scale-selector', this.model.scale, 'name');
 	this.rootSelect = new Scalear.Select('#root-selector', this.model.rootNote);
 	this.instrumentSelect = new Scalear.SelectTwoLevel('#instrument-selector', this.model.instrument, 'name');
+	this.neckSelect = new Scalear.Switch('#necktype', this.model.neckType);
 };
+
 Scalear.Application.prototype.setDefaults = function() {
 	q('#name').innerHTML = Scalear.scales[this.model.scale].name;
 	q('#root').innerHTML = Scalear.notes[this.model.rootNote];
@@ -43,6 +45,7 @@ Scalear.Application.prototype.setDefaults = function() {
 };
 
 Scalear.Application.prototype.setModels = function() {
+	this.neckSelect.model = this.model;
 	this.neckView.model = this.model;
 	this.scaleBox.model = this.model;
 	this.rootSelect.model = Scalear.notes;
@@ -53,6 +56,9 @@ Scalear.Application.prototype.setModels = function() {
 Scalear.Application.prototype.registerHandlers = function() {
 	var self = this;
 
+	this.neckSelect.on('change', function() {
+		self.model.neckType = this.value;
+	});
 	this.scaleSelect.on('change', function() {
 		self.model.scale = parseInt(this.value, 10);
 	});

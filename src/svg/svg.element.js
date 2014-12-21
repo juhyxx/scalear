@@ -28,7 +28,7 @@ Svg.Element.prototype = {
 	},
 
 	remove: function() {
-		this._el.remove();
+		this.el.parentNode.removeChild(this.el);
 	},
 
 	show: function() {

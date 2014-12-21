@@ -28,11 +28,16 @@
 
     <h1 class="title"><span id="root"></span> <span id="name"></span></h1>
     <div class="separator"></div>
-    <svg version="1.0" encoding="UTF-8" width="100%" viewBox="0 0 560 200" class="loading">
+    <svg version="1.0" encoding="UTF-8" width="100%" preserveAspectRatio="xMinYMin slice    " viewBox="0 0 560 200" class="loading">
         <defs>
-            <filter id="f1" x="-1" y="-1" width="300%" height="300%">
+            <filter id="neckshadow" x="-1" y="-1" width="300%" height="300%">
                 <feOffset result="offOut" in="SourceAlpha" dx="0" dy="0" />
                 <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
+                <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+            </filter>
+
+            <filter id="fretless" x="-1" y="-1" width="300%" height="300%">
+                <feGaussianBlur result="blurOut" in="offOut" stdDeviation="8,0" />
                 <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
             </filter>
 
@@ -50,6 +55,12 @@
                 <stop offset="40%" style="stop-color:#573a34;" />
                 <stop offset="60%" style="stop-color:#573a34;" />
                 <stop offset="100%" style="stop-color:#3b2b2b;" />
+            </linearGradient>
+            <linearGradient id="gradientfender" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#e4cda7" />
+                <stop offset="40%" style="stop-color:#d4bb90;" />
+                <stop offset="60%" style="stop-color:#d4bb90;" />
+                <stop offset="100%" style="stop-color:#e4cda7;" />
             </linearGradient>
             <linearGradient id="shading" x1="0%" y1="0%" x2="100%" y2="">
                 <stop offset="5%" stop-opacity="0.5" style="black" />
@@ -86,6 +97,11 @@
         <label>
             <div>Names</div>
             <input type="checkbox" id="note-names">
+        </label>
+         <label id="necktype">
+            <div>Neck color</div>
+            <span id="fender">Light</span>
+            <span id="gibson">Dark</span>
         </label>
 
     </footer>

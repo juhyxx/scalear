@@ -24,7 +24,3 @@ Scalear.Select.prototype.modelUpdate = function(model) {
 		}
 	});
 };
-
-Scalear.Select.prototype.on = function(eventName, fn) {
-	this._el.addEventListener(eventName, fn);
-};

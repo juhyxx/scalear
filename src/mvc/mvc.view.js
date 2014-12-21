@@ -25,3 +25,7 @@ Mvc.View.prototype.render = function() {
 Mvc.View.prototype.modelUpdate = function() {
 	console.warn('Virtual method "modelUpdate", has to be implemented.');
 };
+
+Mvc.View.prototype.on = function(eventName, fn) {
+	this._el.addEventListener(eventName, fn);
+};

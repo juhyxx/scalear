@@ -1,5 +1,5 @@
 var Scalear = {
-	version: '0.4.4',
+	version: '0.4.5',
 	notes: [
 		'C', //0
 		'C♯', //1
@@ -20,7 +20,8 @@ var Scalear = {
 		rootNote: 0,
 		scale: 0,
 		namesVisible: true,
-		instrument: 0
+		instrument: 0,
+		neckType: 'fender'
 	},
 	intervals: [
 		'1', //0
@@ -67,33 +68,38 @@ var Scalear = {
 		group: 'bass',
 		name: 'Standard (Bass)',
 		tunning: [7, 2, 9, 4]
-	}, {
+	},{
 		id: 6,
+		group: 'bass',
+		name: 'Fretless (Bass)',
+		tunning: [7, 2, 9, 4]
+	}, {
+		id: 7,
 		group: 'bass',
 		name: '5-string (Bass)',
 		tunning: [7, 2, 9, 4, 11]
 	}, {
-		id: 7,
+		id: 8,
 		group: 'bass',
 		name: '6-string (Bass)',
 		tunning: [0, 7, 2, 9, 4, 11]
 	}, {
-		id: 8,
+		id: 9,
 		group: 'ukulele',
 		name: 'Ukulele GCEA',
 		tunning: [9, 4, 0, 7]
 	}, {
-		id: 9,
+		id: 10,
 		group: 'ukulele',
 		name: 'Ukulele DGBE',
 		tunning: [4, 11, 7, 2]
 	}, {
-		id: 10,
+		id: 11,
 		group: 'ukulele',
 		name: 'Ukulele ADG♭B',
 		tunning: [11, 6, 2, 9]
 	}, {
-		id: 11,
+		id: 12,
 		group: 'other',
 		name: 'Violin',
 		tunning: [4, 9, 2, 7]

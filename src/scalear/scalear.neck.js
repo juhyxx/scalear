@@ -29,16 +29,17 @@ Scalear.Neck.prototype.modelUpdate = function(model, changes) {
 			this._showScale();
 			break;
 
-		case 'instrument':
-		case 'fretCount':
+		default:
 			if (this._mainGroup) {
 				this._mainGroup.remove();
 			}
 
 			this._fretCount = model.fretCount;
+			this._neckType = model.neckType;
 			this._namesVisible = model.namesVisible;
 			this._rootNote = model.rootNote;
 			this._scale = Scalear.scales[model.scale].notes.slice();
+			this._instrument = model.instrument;
 			this._tunning = Scalear.instruments[model.instrument].tunning;
 			this._stringsCount = this._tunning.length;
 			this._stringDistance = Math.round(this._neck.width / this._stringsCount);
@@ -54,16 +55,17 @@ Scalear.Neck.prototype.modelUpdate = function(model, changes) {
 
 Scalear.Neck.prototype._render = function() {
 	this._mainGroup = new Svg.Group(this._parentEl, {
-		id: 'neck'
+		id: 'neck',
+		className: this._neckType,
 	});
 	new Svg.Rectangle(this._mainGroup.el, {
-		className: 'neck',
+		class: 'neck',
 		x: this._fretWidth,
 		y: 0,
 		width: this._fretCount * this._fretWidth,
 		height: this._neck.width,
-		fill: 'url(#gradient)',
-		filter: 'url(#f1)'
+		fill: this._neckType === 'fender' ? 'url(#gradientfender)' : 'url(#gradient)',
+		filter: 'url(#neckshadow)'
 	});
 	this._renderGroups(this._mainGroup.el);
 	this._mapNotes();
@@ -111,9 +113,13 @@ Scalear.Neck.prototype._renderGroups = function(el) {
 
 		}]
 	});
-	this._renderShading(shading.el);
+	if (this._instrument !== 6) {
+		this._renderShading(shading.el);
+	}
 	this._renderMarks(marks.el);
-	this._renderFrets(frets.el);
+	if (this._instrument !== 6) {
+		this._renderFrets(frets.el);
+	}
 	this._renderStrings(strings.el);
 	this._renderFingers(fingers.el);
 	this._renderLabels(this.labels.el);
@@ -134,12 +140,20 @@ Scalear.Neck.prototype._renderMarks = function(el) {
 	var self = this;
 	[3, 5, 7, 9, 12, 3 + 12, 5 + 12, 7 + 12, 9 + 12, 12 + 12].map(function(i) {
 		if (i <= self._fretCount) {
-			new Svg.Rectangle(el, {
-				x: (i - 1) * self._fretWidth + 5 + self._fretWidth,
-				y: 4 * 5,
-				height: self._neck.width - 8 * 5,
-				width: self._fretWidth - 2 * 5
-			});
+			if (self._neckType === 'fender') {
+				new Svg.Circle(el, {
+					x: (i - 1) * self._fretWidth + 1.5 * self._fretWidth,
+					y: self._neck.width / 2,
+					radius: self._fretWidth / 8
+				});
+			} else {
+				new Svg.Rectangle(el, {
+					x: (i - 1) * self._fretWidth + 5 + self._fretWidth,
+					y: 4 * 5,
+					height: self._neck.width - 8 * 5,
+					width: self._fretWidth - 2 * 5
+				});
+			}
 
 		}
 	});
@@ -213,7 +227,7 @@ Scalear.Neck.prototype._renderFingers = function(parentEl) {
 				x: i * this._fretWidth + this._fretWidth / 2,
 				y: (this._stringDistance * string) + this._stringDistance / 2,
 				radius: this._stringDistance / 3,
-				filter: 'url(#finger)'
+				filter: this._instrument === 6 ? 'url(#fretless)' : 'url(#finger)'
 			}));
 		}
 	}
@@ -294,9 +308,9 @@ Scalear.Neck.prototype._highlightNotes = function(note) {
 			finger.removeClass('highlighted');
 		});
 	});
-
-	this._notesMap[note].forEach(function(item) {
-		item.addClass('highlighted');
-	});
-
+	if (note) {
+		this._notesMap[note].forEach(function(item) {
+			item.addClass('highlighted');
+		});
+	}
 };
