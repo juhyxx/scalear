@@ -1,5 +1,5 @@
 var Scalear = {
-	version: '0.4.5',
+	version: '0.4.6',
 	notes: [
 		'C', //0
 		'C♯', //1

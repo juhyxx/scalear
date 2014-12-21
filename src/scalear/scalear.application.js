@@ -16,6 +16,7 @@ Scalear.Application.prototype.onBoot = function() {
 		}
 	});
 	this.model = defaults;
+	this.onRouteChange();
 	this.createUi();
 	this.setDefaults();
 	this.setModels();
@@ -38,7 +39,7 @@ Scalear.Application.prototype.setDefaults = function() {
 	q('footer').className = '';
 	q('header').className = '';
 	q('svg').setAttribute('class', '');
-	document.title = Scalear.scales[this.model.scale].name + ' (' + this.name + ')';
+	document.title = Scalear.notes[this.model.rootNote] + ' ' + Scalear.scales[this.model.scale].name + ' (' + this.name + ')';
 	if (this.model.namesVisible) {
 		q('#note-names').setAttribute('checked', 'checked');
 	}
@@ -88,10 +89,11 @@ Scalear.Application.prototype.modelUpdate = function(model, changes) {
 		switch (change.name) {
 			case 'rootNote':
 				q('#root').innerHTML = Scalear.notes[change.object.rootNote];
+				document.title = Scalear.notes[this.model.rootNote] + ' ' + Scalear.scales[this.model.scale].name + ' (' + this.name + ')';
 				break;
 			case 'scale':
 				q('#name').innerHTML = Scalear.scales[change.object.scale].name;
-				document.title = Scalear.scales[change.object.scale].name + ' (' + this.name + ')';
+				document.title = Scalear.notes[this.model.rootNote] + ' ' + Scalear.scales[this.model.scale].name + ' (' + this.name + ')';
 				break;
 		}
 	}.bind(this));
@@ -109,22 +111,32 @@ Scalear.Application.prototype._prepareHashString = function(text) {
 	return text.toLowerCase().replace(/ /g, '-').replace(/[ \(\)]/g, '').replace(/♯/g, '#');
 };
 
-Scalear.Application.prototype.onRouteChange = function(params) {
-	var item, note;
+Scalear.Application.prototype.onRouteChange = function() {
+	var item, note,
+		params = (location.hash.slice(1) || '/').split('/');
 
-	for (note = 0; note < Scalear.notes.length; note++) {
-		item = Scalear.notes[note];
-		if (this._prepareHashString(item) === params[2]) {
-			break;
+	params.shift();
+	params.pop();
+
+	if (params.length > 0) {
+		if (params[2]) {
+			for (note = 0; note < Scalear.notes.length; note++) {
+				item = Scalear.notes[note];
+				if (this._prepareHashString(item) === params[2]) {
+					break;
+				}
+			}
+			this.model.rootNote = note;
+		}
+		if (params[0]) {
+			this.model.instrument = Scalear.instruments.filter(function(item) {
+				return this._prepareHashString(item.name) === params[0];
+			}.bind(this))[0].id;
+		}
+		if (params[1]) {
+			this.model.scale = scale = Scalear.scales.filter(function(item) {
+				return this._prepareHashString(item.name) === params[1];
+			}.bind(this))[0].id;
 		}
 	}
-	this.model.instrument = Scalear.instruments.filter(function(item) {
-		return this._prepareHashString(item.name) === params[0];
-	}.bind(this))[0].id;
-
-	this.model.scale = scale = Scalear.scales.filter(function(item) {
-		return this._prepareHashString(item.name) === params[1];
-	}.bind(this))[0].id;
-
-	this.model.rootNote = note;
 };

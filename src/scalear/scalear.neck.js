@@ -51,6 +51,7 @@ Scalear.Neck.prototype.modelUpdate = function(model, changes) {
 			this._render();
 			this._showScale();
 			this.labels[model.namesVisible ? 'showWithOpacity' : 'hideWithOpacity']();
+			this._highlightNotes(model.highlighted);
 
 			break;
 	}
@@ -62,7 +63,7 @@ Scalear.Neck.prototype._render = function() {
 		className: this._neckType,
 	});
 	new Svg.Rectangle(this._mainGroup.el, {
-		class: 'neck',
+		className: 'neck',
 		x: this._fretWidth,
 		y: 0,
 		width: this._fretCount * this._fretWidth,
@@ -311,7 +312,7 @@ Scalear.Neck.prototype._highlightNotes = function(note) {
 			finger.removeClass('highlighted');
 		});
 	});
-	if (note) {
+	if (note !== undefined) {
 		this._notesMap[note].forEach(function(item) {
 			item.addClass('highlighted');
 		});

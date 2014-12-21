@@ -7,6 +7,7 @@ Scalear.Box.prototype.modelUpdate = function(model, changes) {
 	var changeName = changes ? changes[0].name : 'scale';
 
 	switch (changeName) {
+		case 'highlighted':
 		case 'rootNote':
 		case 'scale':
 			this.showScale(model.scale, model.rootNote);
@@ -77,6 +78,9 @@ Scalear.Box.prototype.showScale = function(scaleId, rootNote) {
 				textContent: hasSharp ? '♯' : ''
 			}]
 		});
+		if (this.model.highlighted !== undefined && this.model.highlighted === item) {
+			noteName.addClass('highlighted');
+		}
 
 		noteName.el.addEventListener('click', function() {
 			if (noteName.hasClass('highlighted')) {
@@ -89,7 +93,7 @@ Scalear.Box.prototype.showScale = function(scaleId, rootNote) {
 					item.setAttribute('class', item.getAttribute('class').replace('highlighted', '') || '');
 				}
 				noteName.addClass('highlighted');
-				this.model.highlighted = noteName.el.getAttribute('note');
+				this.model.highlighted = parseInt(noteName.el.getAttribute('note'), 10);
 			}
 		}.bind(this), false);
 		new Svg.Text(self._mainGroup.el, {

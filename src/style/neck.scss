@@ -26,26 +26,9 @@
             font-size: 5px;
         }
     }
-    .shading {
-        @media print {
-            display: none;
-        }
-    }
-    rect.neck {
-        @media print {
-            fill: white;
-        }
-        stroke: white;
-        stroke-width: 1;
-    }
     .strings {
         line {
-            @media screen {
-                stroke: #aba3a1;
-            }
-            @media print {
-                stroke: black;
-            }
+            stroke: #aba3a1;
         }
         line:nth-child(n) {
             stroke-width: 0.8;
@@ -71,16 +54,9 @@
     }
     .frets {
         line {
-            @media screen {
-                stroke: #ffffcc;
-            }
-            @media print {
-                stroke: black;
-            }
+            stroke: #ffffcc;
             &.zero {
-                @media screen {
-                    stroke: #DDDDDD;
-                }
+                stroke: #DDDDDD;
                 stroke-width: 6;
             }
         }
@@ -100,11 +76,8 @@
         stroke: transparent;
     }
     &.fender {
-        
         .marks {
-            @media screen {
-                fill: #1d1912;
-            }
+            fill: #1d1912;
             stroke: transparent;
         }
         .shading {
@@ -120,6 +93,34 @@
                     stroke-width: 6;
                 }
             }
+        }
+    }
+    @media print {
+        rect.neck {
+            fill: white;
+        }
+        .frets {
+            line {
+                stroke: black !important;
+                stroke-width:1 ;
+                text {
+                    stroke: transparent;
+                }
+                &.zero {
+                    stroke: black;
+                    stroke-width: 6;
+                }
+            }
+        }
+        .strings {
+            line {
+                @media print {
+                    stroke: black;
+                }
+            }
+        }
+        .shading {
+            display: none;
         }
     }
 }

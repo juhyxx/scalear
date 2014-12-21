@@ -23,11 +23,7 @@ Mvc.Application.prototype.run = function() {
 	}.bind(this));
 
 	window.addEventListener('hashchange', function() {
-		var params = (location.hash.slice(1) || '/').split('/');
-
-		params.shift();
-		params.pop();
-		this.onRouteChange(params);
+		this.onRouteChange();
 	}.bind(this));
 };
 
