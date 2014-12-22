@@ -181,7 +181,7 @@ var Scalear = {
 		group: 'scales'
 	}, {
 		id: 15,
-		name: 'Maj/Min Pentatonic',
+		name: 'Maj Min Pentatonic',
 		notes: [0, 2, 3, 4, 5, 7, 9, 10],
 		group: 'hybrid'
 	}],
