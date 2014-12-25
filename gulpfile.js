@@ -2,7 +2,6 @@ var gulp = require('gulp'),
 	connect = require('gulp-connect'),
 	open = require('gulp-open'),
 	watch = require('gulp-watch'),
-	es6transpiler = require('gulp-es6-transpiler'),
 	concat = require('gulp-concat'),
 	sass = require('gulp-sass'),
 	uglify = require('gulp-uglify'),
@@ -12,10 +11,10 @@ var gulp = require('gulp'),
 	sourcemaps = require('gulp-sourcemaps'),
 	cssmin = require('gulp-cssmin'),
 	rename = require("gulp-rename"),
-	addsrc = require('gulp-add-src'),
 	htmlreplace = require('gulp-html-replace'),
 	inject = require("gulp-inject"),
 	htmlmin = require('gulp-htmlmin'),
+	stripCode = require('gulp-strip-code'),
 	paths = {
 		svg: ['src/svg/svg.js', 'src/svg/svg.element.js', 'src/svg/*.js'],
 		mvc: ['src/mvc/mvc.js', 'src/mvc/mvc.observable.js', 'src/mvc/*.js'],
@@ -23,10 +22,11 @@ var gulp = require('gulp'),
 	};
 
 gulp.task('watch', function() {
+	gulp.watch(['./src/*.html', './src/*.svg'], ['reload']);
 	gulp.watch(['./src/style/*.scss'], ['scss', 'reload']);
-	gulp.watch(['./src/svg/*'], ['lint', 'tmp-svg', 'reload']);
-	gulp.watch(['./src/mvc/*'], ['lint', 'tmp-mvc', 'reload']);
-	gulp.watch(['./src/scalear/*'], ['lint', 'tmp-scalear', 'reload']);
+	gulp.watch(['./src/svg/*'], ['tmp-svg', 'reload']);
+	gulp.watch(['./src/mvc/*'], ['tmp-mvc', 'reload']);
+	gulp.watch(['./src/scalear/*'], ['tmp-scalear', 'reload']);
 });
 
 gulp.task('reload', function() {
@@ -52,16 +52,30 @@ gulp.task('scss', function() {
 
 gulp.task('tmp-svg', function() {
 	return gulp.src(paths.svg)
+		.pipe(jshint())
+		.pipe(jshint.reporter('jshint-stylish', {
+			verbose: true
+		}))
 		.pipe(concat('svg.js'))
 		.pipe(gulp.dest('.tmp'));
 });
+
 gulp.task('tmp-mvc', function() {
 	return gulp.src(paths.mvc)
+		.pipe(jshint())
+		.pipe(jshint.reporter('jshint-stylish', {
+			verbose: true
+		}))
 		.pipe(concat('mvc.js'))
 		.pipe(gulp.dest('.tmp'));
 });
+
 gulp.task('tmp-scalear', function() {
 	return gulp.src(paths.scalear)
+		.pipe(jshint())
+		.pipe(jshint.reporter('jshint-stylish', {
+			verbose: true
+		}))
 		.pipe(concat('scalear.js'))
 		.pipe(gulp.dest('.tmp'));
 });
@@ -82,6 +96,11 @@ gulp.task('open', function() {
 			src: 'chrome'
 		}));
 });
+
+gulp.task('clean', function() {
+	return del(['dist/*']);
+});
+
 gulp.task('dist-html', function() {
 	return gulp.src('src/index.html')
 		.pipe(htmlreplace({
@@ -116,15 +135,20 @@ gulp.task('dist-js', function() {
 		))
 		.pipe(sourcemaps.init())
 		.pipe(concat('script.min.js'))
+		.pipe(stripCode({
+			start_comment: "start-debug-only",
+			end_comment: "end-debug-only"
+		}))
 		.pipe(uglify())
 		.pipe(sourcemaps.write('./'))
-		.pipe(addsrc(['src/*.svg']))
 		.pipe(gulp.dest('dist'));
 });
 
-gulp.task('clean', function() {
-	return del(['dist/*']);
+gulp.task('dist-prereq', function() {
+	return gulp.src(['src/*.svg'])
+		.pipe(gulp.dest('dist'));
 });
+
 gulp.task('dist-sass', function() {
 	return gulp.src(['./src/style/body.scss', './src/style/*.scss'])
 		.pipe(sass({
@@ -161,5 +185,5 @@ gulp.task('serve-dist', function() {
 });
 
 gulp.task('default', ['lint', 'tmp-svg', 'tmp-mvc', 'tmp-scalear', 'serve', 'watch', 'open']);
-gulp.task('build', ['clean', 'dist-html', 'dist-js', 'dist-sass']);
+gulp.task('build', ['clean', 'dist-html', 'dist-js', 'dist-sass', 'dist-prereq']);
 gulp.task('test', ['build', 'serve-dist']);

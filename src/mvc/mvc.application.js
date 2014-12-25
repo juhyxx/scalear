@@ -27,6 +27,7 @@ Mvc.Application.prototype.run = function() {
 	}.bind(this));
 };
 
+/* start-debug-only */ 
 Mvc.Application.prototype.onRouteChange = function() {
 	console.warn('Virtual method "boot", has to be implemented.');
 };
@@ -38,3 +39,4 @@ Mvc.Application.prototype.onBoot = function() {
 Mvc.Application.prototype.modelUpdate = function() {
 	console.warn('Virtual method "modelUpdate", has to be implemented.');
 };
+/* end-debug-only*/

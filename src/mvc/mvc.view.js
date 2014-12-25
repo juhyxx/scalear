@@ -18,6 +18,11 @@ Mvc.View = function() {
 
 Mvc.View.prototype = {};
 
+Mvc.View.prototype.on = function(eventName, fn) {
+	this._el.addEventListener(eventName, fn);
+};
+
+/* start-debug-only */ 
 Mvc.View.prototype.render = function() {
 	console.warn('Virtual method "render", has to be implemented.');
 };
@@ -25,7 +30,5 @@ Mvc.View.prototype.render = function() {
 Mvc.View.prototype.modelUpdate = function() {
 	console.warn('Virtual method "modelUpdate", has to be implemented.');
 };
+/* end-debug-only*/
 
-Mvc.View.prototype.on = function(eventName, fn) {
-	this._el.addEventListener(eventName, fn);
-};
