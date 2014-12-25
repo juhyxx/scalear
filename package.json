@@ -10,7 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "gulp-manifest": "0.0.6",
-    "gulp-uglify": "^1.0.2"
+    "gulp-uglify": "^1.0.2",
+    "gulp-inject": "^1.1.1",
+    "gulp-htmlmin": "^0.2.0"
   },
   "devDependencies": {
     "gulp-watch": "^3.0.0",

@@ -14,6 +14,8 @@ var gulp = require('gulp'),
 	rename = require("gulp-rename"),
 	addsrc = require('gulp-add-src'),
 	htmlreplace = require('gulp-html-replace'),
+	inject = require("gulp-inject"),
+	htmlmin = require('gulp-htmlmin'),
 	paths = {
 		svg: ['src/svg/svg.js', 'src/svg/svg.element.js', 'src/svg/*.js'],
 		mvc: ['src/mvc/mvc.js', 'src/mvc/mvc.observable.js', 'src/mvc/*.js'],
@@ -85,6 +87,19 @@ gulp.task('dist-html', function() {
 		.pipe(htmlreplace({
 			'css': 'style.min.css',
 			'js': 'script.min.js'
+		}))
+		.pipe(inject(gulp.src(['src/google.analytics.js']), {
+			starttag: '<!-- inject:analytics -->',
+			transform: function(filePath, file) {
+				return '<script>' + file.contents.toString('utf8') + '</script>';
+			}
+		}))
+		.pipe(htmlmin({
+			collapseWhitespace: true,
+			keepClosingSlash: true,
+			caseSensitive: true,
+			minifyJS: true,
+			removeComments: true,
 		}))
 		.pipe(gulp.dest('dist'));
 });
