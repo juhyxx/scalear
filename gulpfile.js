@@ -18,7 +18,10 @@ var gulp = require('gulp'),
 	paths = {
 		svg: ['src/svg/svg.js', 'src/svg/svg.element.js', 'src/svg/*.js'],
 		mvc: ['src/mvc/mvc.js', 'src/mvc/mvc.observable.js', 'src/mvc/*.js'],
-		scalear: ['src/scalear/scalear.js', 'src/scalear/*.js']
+		scalear: [
+			'src/scalear/scalear.js',
+			'src/scalear/*.js'
+		]
 	};
 
 gulp.task('watch', function() {
