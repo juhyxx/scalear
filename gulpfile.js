@@ -15,6 +15,7 @@ var gulp = require('gulp'),
 	inject = require("gulp-inject"),
 	htmlmin = require('gulp-htmlmin'),
 	stripCode = require('gulp-strip-code'),
+	autoprefixer = require('gulp-autoprefixer'),
 	paths = {
 		svg: ['src/svg/svg.js', 'src/svg/svg.element.js', 'src/svg/*.js'],
 		mvc: ['src/mvc/mvc.js', 'src/mvc/mvc.observable.js', 'src/mvc/*.js'],
@@ -46,10 +47,16 @@ gulp.task('lint', function() {
 
 gulp.task('scss', function() {
 	return gulp.src('./src/style/*.scss')
+		.pipe(sourcemaps.init())
 		.pipe(sass({
 			errLogToConsole: true
 		}))
 		.pipe(concat('style.css'))
+		.pipe(autoprefixer({
+			browsers: ['last 2 versions'],
+			cascade: false
+		}))
+		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('./.tmp'));
 });
 
@@ -154,11 +161,17 @@ gulp.task('dist-prereq', function() {
 
 gulp.task('dist-sass', function() {
 	return gulp.src(['./src/style/body.scss', './src/style/*.scss'])
+		.pipe(sourcemaps.init())
 		.pipe(sass({
 			errLogToConsole: true
 		}))
 		.pipe(concat('style.min.css'))
+		.pipe(autoprefixer({
+			browsers: ['last 2 versions'],
+			cascade: false
+		}))
 		.pipe(cssmin())
+		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('./dist'));
 });
 
