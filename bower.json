@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "Object.observe.poly": "http://cdn.rawgit.com/jdarling/Object.observe/master/Object.observe.poly.js",
-    "customevent-polyfill": "~1.0.0"
+    "customevent-polyfill": "~1.0.0",
+    "Fullscreen-API-Polyfill": "https://github.com/neovov/Fullscreen-API-Polyfill.git"
   }
 }

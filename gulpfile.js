@@ -137,7 +137,8 @@ gulp.task('dist-js', function() {
 	return gulp.src([].concat(
 			[
 				'bower_components/Object.observe.poly/index.js',
-				'bower_components/customevent-polyfill/customevent-polyfill.js'
+				'bower_components/customevent-polyfill/customevent-polyfill.js',
+				'bower_components/Fullscreen-API-Polyfill/fullscreen-api-polyfill.js'
 			],
 			paths.svg,
 			paths.mvc,
