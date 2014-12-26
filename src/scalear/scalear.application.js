@@ -83,13 +83,13 @@ Scalear.Application.prototype.registerHandlers = function() {
 		self.model.fretCount = fretCount;
 	});
 	q('#info').addEventListener('click', function(e) {
-		var el = document.body;
+		var el = q('html');
 		el.className = el.className.replace('fullscreen', '');
 		document.exitFullscreen();
 
 	});
 	q('#fullscreen').addEventListener('click', function(e) {
-		var el = document.body;
+		var el = q('html');
 		el.className = el.className + ' fullscreen';
 
 		if (el.requestFullscreen) {

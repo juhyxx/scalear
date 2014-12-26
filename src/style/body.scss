@@ -5,7 +5,7 @@
         position: absolute;
         background-color: rgba(#ffffca, 0.5);
         padding: 0.5em;
-        font-size: 8px;
+        font-size: 12px;
         text-align: center;
         width: 100%;
         color: darken(#ffffca, 60%);
@@ -48,12 +48,6 @@ h1 {
     }
 }
 
-html {
-    @media screen {
-        height: 100%;
-    }
-}
-
 body {
     margin: 0;
     padding: 0;
@@ -61,7 +55,7 @@ body {
     background-color: #BFA98E;
     background: url(bg.svg), linear-gradient(lighten(#bfa98e, 20%), #bfa98e);
     @media screen {
-        //min-height: 95%;
+        height: 100vh;
         overflow: hidden;
     }
 }
@@ -100,7 +94,7 @@ header {
         transform: translate3d(0, 0, 0);
     }
     &.loading,
-    body.fullscreen & {
+    .fullscreen & {
         //top: -100px;
         transform: translate3d(0, -100px, 0);
     }
@@ -162,8 +156,9 @@ footer {
     border-top: 2px solid white;
     transition: transform 2s;
     transition-delay: 0.5s;
+    position: fixed;
     &.loading,
-    body.fullscreen & {
+    .fullscreen & {
         transform: translate3d(0, 150px, 0);
     }
     #necktype {
