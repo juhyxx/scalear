@@ -83,17 +83,20 @@ Scalear.Application.prototype.registerHandlers = function() {
 		self.model.fretCount = fretCount;
 	});
 	q('#info').addEventListener('click', function(e) {
-		var el = q('html');
-		el.className = el.className.replace('fullscreen', '');
 		document.exitFullscreen();
-
 	});
 	q('#fullscreen').addEventListener('click', function(e) {
 		var el = q('html');
+		
 		el.className = el.className + ' fullscreen';
-
 		if (el.requestFullscreen) {
 			el.requestFullscreen();
+		}
+	});
+	document.addEventListener("fullscreenchange", function(event) {
+		var el = q('html');
+		if (!document.fullscreenEnabled) {
+			el.className = el.className.replace('fullscreen', '');
 		}
 	});
 };
