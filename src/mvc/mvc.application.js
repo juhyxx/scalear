@@ -12,6 +12,18 @@ Mvc.Application = function() {
 			});
 		}
 	});
+	Object.defineProperty(this, 'route', {
+		get: function() {
+			var params = (location.hash.slice(1) || '/').split('/');
+
+			params.shift();
+			params.pop();
+			return params || [];
+		},
+		set: function(route) {
+			window.location.hash = route;
+		}
+	});
 };
 
 Mvc.Application.prototype = {};
@@ -23,11 +35,23 @@ Mvc.Application.prototype.run = function() {
 	}.bind(this));
 
 	window.addEventListener('hashchange', function() {
-		this.onRouteChange();
+		this.onRouteChange(this.route);
 	}.bind(this));
+
+	document.addEventListener("fullscreenchange", function(event) {
+		document.documentElement.classList[document.fullscreenEnabled ? 'add' : 'remove']("fullscreen");
+	});
 };
 
-/* start-debug-only */ 
+Mvc.Application.prototype.showFullScreen = function() {
+	document.documentElement.requestFullscreen();
+};
+
+Mvc.Application.prototype.hideFullScreen = function() {
+	document.exitFullscreen();
+};
+
+/* start-debug-only */
 Mvc.Application.prototype.onRouteChange = function() {
 	console.warn('Virtual method "boot", has to be implemented.');
 };

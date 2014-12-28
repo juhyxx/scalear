@@ -16,7 +16,7 @@ Scalear.Application.prototype.onBoot = function() {
 		}
 	});
 	this.model = defaults;
-	this.onRouteChange();
+	this.onRouteChange(this.route);
 	this.createUi();
 	this.setDefaults();
 	this.setModels();
@@ -83,22 +83,14 @@ Scalear.Application.prototype.registerHandlers = function() {
 		self.model.fretCount = fretCount;
 	});
 	q('#info').addEventListener('click', function(e) {
-		document.exitFullscreen();
-	});
+		this.hideFullScreen();
+	}.bind(this));
 	q('#fullscreen').addEventListener('click', function(e) {
-		var el = q('html');
-		
-		el.className = el.className + ' fullscreen';
-		if (el.requestFullscreen) {
-			el.requestFullscreen();
-		}
-	});
-	document.addEventListener("fullscreenchange", function(event) {
-		var el = q('html');
-		if (!document.fullscreenEnabled) {
-			el.className = el.className.replace('fullscreen', '');
-		}
-	});
+		this.showFullScreen();
+	}.bind(this));
+	q('#print').addEventListener('click', function(e) {
+		window.print();
+	}.bind(this));
 };
 
 Scalear.Application.prototype.modelUpdate = function(model, changes) {
@@ -114,7 +106,7 @@ Scalear.Application.prototype.modelUpdate = function(model, changes) {
 				break;
 		}
 	}.bind(this));
-	window.location.hash = this._prepareHashString(['',
+	this.route = this._prepareHashString(['',
 		Scalear.instruments[model.instrument].name,
 		Scalear.scales[model.scale].name,
 		Scalear.notes[model.rootNote],
@@ -128,12 +120,8 @@ Scalear.Application.prototype._prepareHashString = function(text) {
 	return text.toLowerCase().replace(/ /g, '-').replace(/[ \(\)]/g, '').replace(/♯/g, '#');
 };
 
-Scalear.Application.prototype.onRouteChange = function() {
-	var item, note,
-		params = (location.hash.slice(1) || '/').split('/');
-
-	params.shift();
-	params.pop();
+Scalear.Application.prototype.onRouteChange = function(params) {
+	var item, note;
 
 	if (params.length > 0) {
 		if (params[2]) {
