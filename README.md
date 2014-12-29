@@ -1,7 +1,10 @@
 Scalear
 =======
-##What is it?
-It is very simple, guitar (or other string instrument players) learns scales and chords as pictures. So this will make simple displaiyng of scales and chords, and easy print.
+
+## What is it?
+It is very simple, guitar (or other string instrument) players learn scales and chords as pictures. So this will make simple displaying of scales and chords, and easy print.
+
+Second purpose is modern technology demonstrator.
 
 Inspired by http://www.all-guitar-chords.com/ and others.
 
@@ -12,6 +15,13 @@ Older version are even worst.
 ## Technology
 No frameworks, only pure JavaScript and SVG.
 
+## Running version
 
+See http://www.rezatyrakety.cz/scalear/
+
+## Change log
+
+* 0.4.7 
+Fullscreen mode, Print button
 
 
