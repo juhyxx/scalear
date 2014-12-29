@@ -53,10 +53,14 @@ body {
     padding: 0;
     font-family: 'Ubuntu', sans-serif;
     background-color: #BFA98E;
-    background: url(bg.svg), linear-gradient(lighten(#bfa98e, 20%), #bfa98e);
+    background:  linear-gradient(lighten(#bfa98e, 30%), #bfa98e);
     @media screen {
         height: 100vh;
         overflow: hidden;
+    }
+    &.dark {
+        background-color: darken(#bfa98e, 40%);
+        background: linear-gradient(darken(#bfa98e, 20%), darken(#bfa98e, 50%));
     }
 }
 

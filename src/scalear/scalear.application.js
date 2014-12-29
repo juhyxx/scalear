@@ -29,7 +29,7 @@ Scalear.Application.prototype.createUi = function() {
 	this.scaleSelect = new Scalear.SelectTwoLevel('#scale-selector', this.model.scale, 'name');
 	this.rootSelect = new Scalear.Select('#root-selector', this.model.rootNote);
 	this.instrumentSelect = new Scalear.SelectTwoLevel('#instrument-selector', this.model.instrument, 'name');
-	this.neckSelect = new Scalear.Switch('#necktype', this.model.neckType);
+	this.neckSelect = new Scalear.Switch('#necktype .two-values-switch', this.model.neckType);
 };
 
 Scalear.Application.prototype.setDefaults = function() {
@@ -39,6 +39,7 @@ Scalear.Application.prototype.setDefaults = function() {
 	q('footer').className = '';
 	q('header').className = '';
 	q('svg').setAttribute('class', '');
+	document.body.classList[this.model.neckType === 'fender' ? 'add' : 'remove']('dark');
 	document.title = Scalear.notes[this.model.rootNote] + ' ' + Scalear.scales[this.model.scale].name + ' (' + this.name + ')';
 	if (this.model.namesVisible) {
 		q('#note-names').setAttribute('checked', 'checked');
@@ -103,6 +104,10 @@ Scalear.Application.prototype.modelUpdate = function(model, changes) {
 			case 'scale':
 				q('#name').innerHTML = Scalear.scales[change.object.scale].name;
 				document.title = Scalear.notes[this.model.rootNote] + ' ' + Scalear.scales[this.model.scale].name + ' (' + this.name + ')';
+				break;
+
+			case 'neckType':
+				document.body.classList[this.model.neckType === 'fender' ? 'add' : 'remove']('dark');
 				break;
 		}
 	}.bind(this));
