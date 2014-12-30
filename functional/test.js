@@ -18,7 +18,7 @@ browser
 	.open('/')
 
 .waitForPageToLoad(10000)
-	.assertTitle('C Ionian (Scalear 0.4.7)')
+	.assertTitle('C Ionian (Scalear 0.4.8)')
 	.assertAttribute('css=svg g.labels@style', 'opacity: 1;')
 	.assertText('css=h1.title', 'C Ionian')
 	.assertNotAttribute('css=body@class')
@@ -40,7 +40,7 @@ browser
 	.select('css=select#instrument-selector', 'label=Fretless (Bass)')
 	.select('css=select#root-selector', 'C♯')
 
-.assertTitle('C♯ Chromatic (Scalear 0.4.7)')
+.assertTitle('C♯ Chromatic (Scalear 0.4.8)')
 	.assertLocation('http://localhost:8000/#/fretless-bass/chromatic/c#/')
 	.assertText('css=h1.title', 'C♯ Chromatic')
 
