@@ -12,6 +12,10 @@ page.open('http://localhost:8000/#/ukulele-gcea/major-chord/f#/', function(statu
 	console.log('\x1b[36m ', 'Page loading status: ' + status + '\x1b[0m');
 
 	if (status !== 'fail') {
+		var storage = page.evaluate(function() {
+			return localStorage;
+		});
+		console.log(storage.default);
 		page.render('screenshots/inital.png');
 		var data = page.evaluate(function() {
 			return {
@@ -30,7 +34,6 @@ page.open('http://localhost:8000/#/ukulele-gcea/major-chord/f#/', function(statu
 			var e = document.createEvent('MouseEvents');
 			e.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
 			a.dispatchEvent(e);
-
 		});
 
 		var checked = page.evaluate(function() {
