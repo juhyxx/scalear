@@ -4,7 +4,7 @@ Scalear
 ## What is it?
 It is very simple, guitar (or other string instrument) players learn scales and chords as pictures. So this will make simple displaying of scales and chords, and easy print.
 
-Second purpose is modern technology demonstrator.
+*Second purpose is modern technology demonstrator.*
 
 Inspired by http://www.all-guitar-chords.com/ and others.
 
@@ -20,8 +20,13 @@ No frameworks, only pure JavaScript and SVG.
 See http://www.rezatyrakety.cz/scalear/
 
 ## Change log
+* 0.4.8
+Neck color switch redesign
 
 * 0.4.7 
-Fullscreen mode, Print button
+Fullscreen mode (IE support declined), Print button
+
+* 0.4.6
+Bugfixing, IE support
 
 
