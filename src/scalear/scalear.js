@@ -1,5 +1,5 @@
 var Scalear = {
-	version: '0.4.8',
+	version: '0.4.9',
 	defaults: {
 		highlighted: undefined,
 		fretCount: 12,

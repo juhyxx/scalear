@@ -20,6 +20,8 @@ No frameworks, only pure JavaScript and SVG.
 See http://www.rezatyrakety.cz/scalear/
 
 ## Change log
+* 0.4.9
+Design improvements, flexbox layout, custom checkbox
 * 0.4.8
 Neck color switch redesign
 
