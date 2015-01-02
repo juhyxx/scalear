@@ -1,6 +1,6 @@
 @import url(//fonts.googleapis.com/css?family=Ubuntu:500);
 
-$red: #732C2C;
+$red: #732c2c;
 
 #info {
     @media screen {
@@ -60,7 +60,6 @@ body {
         height: 100vh;
         overflow: hidden;
     }
-    
 }
 
 footer, header {
@@ -146,16 +145,27 @@ footer {
         padding-bottom: 1em;
     }
     input[type="checkbox"] {
-        transform: scale(2.6);
-        margin-top: 12px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-color: #444444;
+        height: 30px;
+        width: 30px;
+        margin: 0;
         position: relative;
-        top: 0px;
-        left: 9px;
-        &:checked {
+        &:before {
+            transition: opacity 0.8s;
+            top: 2px;
+            left: 3px;
+            background-color: transparent;
+            position: absolute;
+            text-shadow: inset 1px 1px 4px rgba(white, 0.4), 0 0 4px rgba(black, 0.5);
+            color: white;
+            opacity: 0;
+            content: '\2713';
+        }
+        &:checked:before {
             opacity: 1;
         }
-        cursor: pointer;
-        box-shadow: none;
     }
     input[type="number"] {
         width: 2em;
