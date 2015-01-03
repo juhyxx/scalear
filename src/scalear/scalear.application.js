@@ -73,6 +73,12 @@ Scalear.Application.prototype.registerHandlers = function() {
 	q('#note-names').addEventListener('change', function() {
 		self.model.namesVisible = this.checked;
 	});
+	q('#note-names').addEventListener('keydown', function(e) {
+		if (e.keyCode === 13) {
+			self.model.namesVisible = !self.model.namesVisible;
+			this.checked = self.model.namesVisible;
+		}
+	});
 	q('#frets-count').addEventListener('change', function() {
 		var fretCount = parseInt(this.value, 10) || 12;
 
@@ -89,8 +95,19 @@ Scalear.Application.prototype.registerHandlers = function() {
 	q('#fullscreen').addEventListener('click', function(e) {
 		this.showFullScreen();
 	}.bind(this));
+	q('#fullscreen').addEventListener('keydown', function(e) {
+		if (e.keyCode === 13) {
+			this.showFullScreen();
+		}
+	}.bind(this));
+
 	q('#print').addEventListener('click', function(e) {
 		window.print();
+	}.bind(this));
+	q('#print').addEventListener('keydown', function(e) {
+		if (e.keyCode === 13) {
+			window.print();
+		}
 	}.bind(this));
 };
 

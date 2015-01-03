@@ -80,29 +80,29 @@
         <div>
             <label>
                 <div>Instrument</div>
-                <select id="instrument-selector"></select>
+                <select tabindex="1" id="instrument-selector"></select>
             </label>
             <label>
                 <div>Scale name</div>
-                <select id="scale-selector">
+                <select tabindex="2" id="scale-selector">
                 </select>
             </label>
             <label>
                 <div>Root note</div>
-                <select id="root-selector">
+                <select tabindex="3" id="root-selector">
                 </select>
             </label>
             <label>
                 <div>Fret count</div>
-                <input type=number id="frets-count" min=10 max=25>
+                <input tabindex="4" type=number id="frets-count" min=10 max=25>
             </label>
             <label>
                 <div>Names</div>
-                <input type="checkbox" id="note-names">
+                <input tabindex="5" type="checkbox" id="note-names">
             </label>
             <label id="necktype">
                 <div>Neck color</div>
-                <span class="two-values-switch">
+                <span class="two-values-switch" tabindex="6">
                     <span id="fender" selected="selected">Light</span>
                 <span id="gibson">Dark</span>
                 </span>
@@ -111,11 +111,11 @@
         <div>
             <label id="print">
                 <div>&nbsp;</div>
-                <span></span>
+                <span tabindex="7"></span>
             </label>
             <label id="fullscreen">
                 <div>&nbsp;</div>
-                <span></span>
+                <span tabindex="8"></span>
             </label>
         </div>
     </footer>

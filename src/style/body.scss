@@ -62,7 +62,7 @@ body {
     }
 }
 
-footer, 
+footer,
 header {
     background-color: $red;
     color: white;
@@ -129,6 +129,10 @@ footer {
         border: 0;
         box-shadow: inset 0 0 4px black;
         text-shadow: 0 1px 3px rgba(black, 0.8);
+        &:focus {
+            color: white;
+            box-shadow: inset 0 0 4px black, 0px 0px 4px black;
+        }
     }
     select {
         optgroup {
@@ -194,7 +198,6 @@ footer {
     .fullscreen & {
         transform: translate3d(0, 150px, 0);
     }
-   
     #fullscreen,
     #print {
         span {
@@ -206,7 +209,9 @@ footer {
             color: white;
             display: inline-block;
             cursor: pointer;
-            &:hover {
+            &:hover,
+            &:focus {
+                outline: none;
                 opacity: 1;
             }
         }

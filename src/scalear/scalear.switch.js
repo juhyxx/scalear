@@ -10,6 +10,14 @@ Scalear.Switch = function(selector, defaultValue) {
 		this.dispatchEvent(event);
 	});
 
+	this._el.addEventListener('keydown', function(e) {
+		if (e.keyCode === 13) {
+			this.value = document.querySelector(self._selector + ' [selected="selected"]').id === 'gibson' ? 'gibson' : 'fender';
+			var event = new CustomEvent('change');
+			this.dispatchEvent(event);
+		}
+	});
+
 	return Mvc.View.call(this);
 };
 
