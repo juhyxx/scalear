@@ -5,14 +5,14 @@ Scalear.Switch = function(selector, defaultValue) {
 	this._el = document.querySelector(this._selector);
 
 	this._el.addEventListener('click', function() {
-		this.value = document.querySelector(self._selector + ' [selected="selected"]').id === 'gibson' ? 'gibson' : 'fender';
+		this.value = document.querySelector(self._selector + ' [selected="selected"]').id === 'fender' ? 'gibson' : 'fender';
 		var event = new CustomEvent('change');
 		this.dispatchEvent(event);
 	});
 
 	this._el.addEventListener('keydown', function(e) {
 		if (e.keyCode === 13 || e.keyCode === 32) {
-			this.value = document.querySelector(self._selector + ' [selected="selected"]').id === 'gibson' ? 'gibson' : 'fender';
+			this.value = document.querySelector(self._selector + ' [selected="selected"]').id === 'fender' ? 'gibson' : 'fender';
 			var event = new CustomEvent('change');
 			this.dispatchEvent(event);
 		}
@@ -33,7 +33,7 @@ Scalear.Switch.prototype.modelUpdate = function(model, changes) {
 
 		document.querySelector(self._selector + ' [selected="selected"]').removeAttribute('selected');
 
-		if (model.neckType === 'gibson') {
+		if (model.neckType === 'fender') {
 			document.querySelector(this._selector + ' #fender').setAttribute('selected', 'selected');
 		} else {
 			document.querySelector(this._selector + ' #gibson').setAttribute('selected', 'selected');
