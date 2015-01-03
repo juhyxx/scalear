@@ -20,6 +20,9 @@ No frameworks, only pure JavaScript and SVG.
 See http://www.rezatyrakety.cz/scalear/
 
 ## Change log
+* 0.4.10
+Bugfixing
+
 * 0.4.9
 Design improvements, flexbox layout, custom checkbox, control by tab
 

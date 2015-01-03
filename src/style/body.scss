@@ -69,6 +69,7 @@ header {
     padding: 1em;
     @media print {
         display: none;
+        visibility: hidden;
     }
     position: absolute;
     width: 98%;
