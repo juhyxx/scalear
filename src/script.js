@@ -1,5 +1,2 @@
-var q = function(q) {
-	return document.querySelector(q);
-};
-
+var q = document.querySelector.bind(document);
 new Scalear.Application();
