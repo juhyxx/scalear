@@ -33,14 +33,17 @@ Svg.Element.prototype = {
 
 	show: function() {
 		this._el.style.display = 'block';
+		return this;
 	},
 
 	hide: function() {
 		this._el.style.display = 'none';
+		return this;
 	},
 
 	addClass: function(className) {
 		this.className = this.className + ' ' + className;
+		return this;
 	},
 
 	hasClass: function(className) {
