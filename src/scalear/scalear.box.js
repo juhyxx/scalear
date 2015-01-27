@@ -2,6 +2,7 @@ Scalear.Box = function(svgParent) {
 	this._parentEl = svgParent;
 	return Mvc.View.call(this);
 };
+Scalear.Box.prototype = new Mvc.View();
 
 Scalear.Box.prototype.modelUpdate = function(model, changes) {
 	var changeName = changes ? changes[0].name : 'scale';
