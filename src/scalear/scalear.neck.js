@@ -2,9 +2,8 @@ Scalear.Neck = function(svgParent) {
 	this._parentEl = svgParent;
 	return Mvc.View.call(this);
 };
-Scalear.Neck.prototype = new Mvc.View();
 
-Object.defineProperties(Scalear.Neck.prototype, {
+Scalear.Neck.prototype = Object.create(Mvc.View.prototype, {
 	tunning: {
 		get: function() {
 			return Scalear.instruments[this.instrument].tunning;
@@ -26,49 +25,34 @@ Object.defineProperties(Scalear.Neck.prototype, {
 		}
 	},
 	stringDistance: {
-		value: 20,
-		writable: false
+		value: 20
 	},
 	neckHeight: {
 		value: 500,
-		configurable: false,
-		enumerable: true,
 		writable: true
 	},
 	fretCount: {
 		value: 12,
-		configurable: true,
-		enumerable: true,
 		writable: true
 	},
 	neckType: {
 		value: 'gibson',
-		configurable: true,
-		enumerable: true,
 		writable: true
 	},
 	namesVisible: {
 		value: false,
-		configurable: true,
-		enumerable: true,
 		writable: true
 	},
 	rootNote: {
 		value: 0,
-		configurable: true,
-		enumerable: true,
 		writable: true
 	},
 	scale: {
 		value: 0,
-		configurable: true,
-		enumerable: true,
 		writable: true
 	},
 	instrument: {
 		value: 0,
-		configurable: true,
-		enumerable: true,
 		writable: true
 	}
 

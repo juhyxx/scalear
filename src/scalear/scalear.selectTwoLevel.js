@@ -2,7 +2,7 @@ Scalear.SelectTwoLevel = function(selector, defaultValue, propertyName) {
 	return Scalear.Select.apply(this, arguments);
 };
 
-Scalear.SelectTwoLevel.prototype = new Scalear.Select();
+Scalear.SelectTwoLevel.prototype = Object.create(Scalear.Select.prototype);
 
 Scalear.SelectTwoLevel.prototype.modelUpdate = function(model) {
 	var element, optgroupElement, self = this, id;

@@ -3,7 +3,8 @@ Scalear.Application = function() {
 	return Mvc.Application.call(this);
 };
 
-Scalear.Application.prototype = new Mvc.Application();
+Scalear.Application.prototype = Object.create(Mvc.Application.prototype);
+
 
 Scalear.Application.prototype.name = 'Scalear ' + Scalear.version;
 

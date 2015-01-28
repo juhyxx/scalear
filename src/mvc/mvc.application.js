@@ -1,5 +1,7 @@
-Mvc.Application = function() {
-	Object.defineProperty(this, 'model', {
+Mvc.Application = function() {};
+
+Mvc.Application.prototype = Object.create({}, {
+	model: {
 		get: function() {
 			return this._model;
 		},
@@ -11,8 +13,8 @@ Mvc.Application = function() {
 				self.modelUpdate(self._model, changes);
 			});
 		}
-	});
-	Object.defineProperty(this, 'route', {
+	},
+	route: {
 		get: function() {
 			var params = (location.hash.slice(1) || '/').split('/');
 
@@ -23,10 +25,8 @@ Mvc.Application = function() {
 		set: function(route) {
 			window.location.hash = route;
 		}
-	});
-};
-
-Mvc.Application.prototype = {};
+	}
+});
 
 Mvc.Application.prototype.run = function() {
 	window.addEventListener('load', function onload() {

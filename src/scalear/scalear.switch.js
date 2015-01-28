@@ -21,7 +21,7 @@ Scalear.Switch = function(selector, defaultValue) {
 	return Mvc.View.call(this);
 };
 
-Scalear.Switch.prototype = new Mvc.View();
+Scalear.Switch.prototype = Object.create(Mvc.View.prototype);
 
 Scalear.Switch.prototype.modelUpdate = function(model, changes) {
 	changes = changes || [{

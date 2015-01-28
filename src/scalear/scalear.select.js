@@ -7,7 +7,7 @@ Scalear.Select = function(selector, defaultValue, propertyName) {
 	return Mvc.View.call(this);
 };
 
-Scalear.Select.prototype = new Mvc.View();
+Scalear.Select.prototype = Object.create(Mvc.View.prototype);
 
 Scalear.Select.prototype.modelUpdate = function(model) {
 	var element, self = this;
