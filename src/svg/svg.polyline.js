@@ -6,6 +6,6 @@ Svg.PolyLine = function(parent, params) {
 	return Svg.Element.call(this, parent, params);
 };
 
-Svg.PolyLine.prototype = new Svg.Element();
+Svg.PolyLine.prototype = Object.create(Svg.Element.prototype);
 
 Svg.PolyLine.prototype.name = 'polyline';

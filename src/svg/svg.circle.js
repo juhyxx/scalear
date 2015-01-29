@@ -10,6 +10,6 @@ Svg.Circle = function(parent, params) {
 	return Svg.Element.call(this, parent, params);
 };
 
-Svg.Circle.prototype = new Svg.Element();
+Svg.Circle.prototype = Object.create(Svg.Element.prototype);
 
 Svg.Circle.prototype.name = 'circle';
