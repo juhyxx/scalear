@@ -16,6 +16,7 @@ var gulp = require('gulp'),
 	htmlmin = require('gulp-htmlmin'),
 	stripCode = require('gulp-strip-code'),
 	autoprefixer = require('gulp-autoprefixer'),
+	size = require('gulp-size'),
 	paths = {
 		svg: ['src/svg/svg.js', 'src/svg/svg.element.js', 'src/svg/*.js'],
 		mvc: ['src/mvc/mvc.js', 'src/mvc/mvc.observable.js', 'src/mvc/*.js'],
@@ -52,11 +53,15 @@ gulp.task('scss', function() {
 			errLogToConsole: true
 		}))
 		.pipe(concat('style.css'))
-		.pipe(autoprefixer({
+
+	.pipe(autoprefixer({
 			browsers: ['last 2 versions'],
 			cascade: false
 		}))
 		.pipe(sourcemaps.write())
+		.pipe(size({
+			showFiles: true
+		}))
 		.pipe(gulp.dest('./.tmp'));
 });
 
@@ -67,6 +72,9 @@ gulp.task('tmp-svg', function() {
 			verbose: true
 		}))
 		.pipe(concat('svg.js'))
+		.pipe(size({
+			showFiles: true
+		}))
 		.pipe(gulp.dest('.tmp'));
 });
 
@@ -77,6 +85,9 @@ gulp.task('tmp-mvc', function() {
 			verbose: true
 		}))
 		.pipe(concat('mvc.js'))
+		.pipe(size({
+			showFiles: true
+		}))
 		.pipe(gulp.dest('.tmp'));
 });
 
@@ -87,6 +98,9 @@ gulp.task('tmp-scalear', function() {
 			verbose: true
 		}))
 		.pipe(concat('scalear.js'))
+		.pipe(size({
+			showFiles: true
+		}))
 		.pipe(gulp.dest('.tmp'));
 });
 
@@ -130,6 +144,9 @@ gulp.task('dist-html', function() {
 			minifyJS: true,
 			removeComments: true,
 		}))
+		.pipe(size({
+			showFiles: true
+		}))
 		.pipe(gulp.dest('dist'));
 });
 
@@ -150,7 +167,13 @@ gulp.task('dist-js', function() {
 			start_comment: "start-debug-only",
 			end_comment: "end-debug-only"
 		}))
+		.pipe(size({
+			showFiles: true
+		}))
 		.pipe(uglify())
+		.pipe(size({
+			showFiles: true
+		}))
 		.pipe(sourcemaps.write('./'))
 		.pipe(gulp.dest('dist'));
 });
@@ -172,6 +195,9 @@ gulp.task('dist-sass', function() {
 			cascade: false
 		}))
 		.pipe(cssmin())
+		.pipe(size({
+			showFiles: true
+		}))
 		.pipe(sourcemaps.write())
 		.pipe(gulp.dest('./dist'));
 });
@@ -201,6 +227,6 @@ gulp.task('serve-dist', function() {
 		}));
 });
 
-gulp.task('default', ['lint', 'tmp-svg', 'tmp-mvc', 'tmp-scalear', 'serve', 'watch', 'open']);
+gulp.task('default', ['lint', 'scss', 'tmp-svg', 'tmp-mvc', 'tmp-scalear', 'serve', 'watch', 'open']);
 gulp.task('build', ['clean', 'dist-html', 'dist-js', 'dist-sass', 'dist-prereq']);
 gulp.task('test', ['build', 'serve-dist']);
