@@ -53,8 +53,7 @@ gulp.task('scss', function() {
 			errLogToConsole: true
 		}))
 		.pipe(concat('style.css'))
-
-	.pipe(autoprefixer({
+		.pipe(autoprefixer({
 			browsers: ['last 2 versions'],
 			cascade: false
 		}))
@@ -207,9 +206,9 @@ gulp.task('manifest', function() {
 		.pipe(manifest({
 			hash: true,
 			preferOnline: true,
-			network: ['http://*', 'https://*', '*'],
-			filename: 'app.manifest',
-			exclude: 'app.manifest'
+			network: ['*'],
+			filename: 'app.appcache',
+			exclude: 'app.appcache'
 		}))
 		.pipe(gulp.dest('dist'));
 });

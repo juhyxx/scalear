@@ -164,11 +164,11 @@ Scalear.Neck.prototype._renderGroups = function(el) {
 
 		}]
 	});
-	if (this.instrument !== 6) {
+	if (this.instrument !== 6 && this.instrument !== 12) {
 		this._renderShading(shading.el);
 	}
 	this._renderMarks(marks.el);
-	if (this.instrument !== 6) {
+	if (this.instrument !== 6 && this.instrument !== 12) {
 		this._renderFrets(frets.el);
 	}
 	this._renderStrings(strings.el);
@@ -277,7 +277,7 @@ Scalear.Neck.prototype._renderFingers = function(parentEl) {
 				x: i * this.fretWidth + this.fretWidth / 2,
 				y: (this.stringDistance * string) + this.stringDistance / 2,
 				radius: this.stringDistance / 3,
-				filter: this.instrument === 6 ? 'url(#fretless)' : 'url(#finger)'
+				filter: this.instrument === 6 || this.instrument === 12 ? 'url(#fretless)' : 'url(#finger)'
 			}));
 		}
 	}

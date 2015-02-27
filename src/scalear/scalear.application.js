@@ -1,10 +1,14 @@
 Scalear.Application = function() {
+	Object.freeze(Scalear.notes);
+	Object.freeze(Scalear.intervals);
+	Object.freeze(Scalear.instruments);
+	Object.freeze(Scalear.scales);
+
 	this.run();
 	return Mvc.Application.call(this);
 };
 
 Scalear.Application.prototype = Object.create(Mvc.Application.prototype);
-
 
 Scalear.Application.prototype.name = 'Scalear ' + Scalear.version;
 
@@ -110,6 +114,10 @@ Scalear.Application.prototype.registerHandlers = function() {
 			window.print();
 		}
 	}.bind(this));
+
+	applicationCache.addEventListener('updateready', function() {
+		q('#version-info').style.display = 'block';
+	}, false);
 };
 
 Scalear.Application.prototype.modelUpdate = function(model, changes) {
