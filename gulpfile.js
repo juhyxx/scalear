@@ -17,6 +17,7 @@ var gulp = require('gulp'),
 	stripCode = require('gulp-strip-code'),
 	autoprefixer = require('gulp-autoprefixer'),
 	size = require('gulp-size'),
+	deploy = require('gulp-gh-pages'),
 	paths = {
 		svg: ['src/svg/svg.js', 'src/svg/svg.element.js', 'src/svg/*.js'],
 		mvc: ['src/mvc/mvc.js', 'src/mvc/mvc.observable.js', 'src/mvc/*.js'],
@@ -224,6 +225,11 @@ gulp.task('serve-dist', function() {
 			url: 'http://localhost:8000',
 			src: 'chrome'
 		}));
+});
+
+gulp.task('deploy', function() {
+	return gulp.src('dist/**/*')
+		.pipe(deploy());
 });
 
 gulp.task('default', ['lint', 'scss', 'tmp-svg', 'tmp-mvc', 'tmp-scalear', 'serve', 'watch', 'open']);
