@@ -202,18 +202,6 @@ gulp.task('dist-sass', function() {
 		.pipe(gulp.dest('./dist'));
 });
 
-gulp.task('manifest', function() {
-	gulp.src(['dist/*'])
-		.pipe(manifest({
-			hash: true,
-			preferOnline: true,
-			network: ['*'],
-			filename: 'app.appcache',
-			exclude: 'app.appcache'
-		}))
-		.pipe(gulp.dest('dist'));
-});
-
 gulp.task('serve-dist', function() {
 	connect.server({
 		root: ['dist'],
@@ -233,5 +221,15 @@ gulp.task('deploy', function() {
 });
 
 gulp.task('default', ['lint', 'scss', 'tmp-svg', 'tmp-mvc', 'tmp-scalear', 'serve', 'watch', 'open']);
-gulp.task('build', ['clean', 'dist-html', 'dist-js', 'dist-sass', 'dist-prereq']);
+gulp.task('build', ['clean', 'dist-html', 'dist-js', 'dist-sass', 'dist-prereq'], function() {
+	gulp.src(['dist/*'])
+		.pipe(manifest({
+			hash: true,
+			preferOnline: true,
+			network: ['*'],
+			filename: 'app.appcache',
+			exclude: 'app.appcache'
+		}))
+		.pipe(gulp.dest('dist'));
+});
 gulp.task('test', ['build', 'serve-dist']);
