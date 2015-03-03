@@ -14,7 +14,9 @@
     "gulp-inject": "^1.1.1",
     "gulp-htmlmin": "^0.2.0",
     "gulp-strip-code": "^0.1.2",
-    "gulp-autoprefixer": "^2.0.0"
+    "gulp-autoprefixer": "^2.0.0",
+    "broccoli-autoprefixer": "^2.1.0",
+    "broccoli-clean-css": "^1.0.0"
   },
   "devDependencies": {
     "gulp-watch": "^3.0.0",

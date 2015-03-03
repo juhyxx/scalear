@@ -1,7 +1,13 @@
 node_modules
 dist
 .tmp
+tmp
 .sass-cache
 bower_components
 node_modules
 screenshots
+public/fullscreen-icon.svg
+public/index.html
+public/logo.svg
+public/printer-icon.svg
+public/scripts.js
