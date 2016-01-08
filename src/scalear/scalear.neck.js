@@ -5,22 +5,22 @@ Scalear.Neck = function(svgParent) {
 
 Scalear.Neck.prototype = Object.create(Mvc.View.prototype, {
 	tunning: {
-		get: function() {
+		get() {
 			return Scalear.instruments[this.instrument].tunning;
 		}
 	},
 	stringsCount: {
-		get: function() {
+		get() {
 			return this.tunning.length;
 		}
 	},
 	neckWidth: {
-		get: function() {
+		get() {
 			return this.stringDistance * this.stringsCount;
 		}
 	},
 	fretWidth: {
-		get: function() {
+		get() {
 			return Math.round(this.neckHeight / this.fretCount);
 		}
 	},
@@ -59,7 +59,6 @@ Scalear.Neck.prototype = Object.create(Mvc.View.prototype, {
 });
 
 Scalear.Neck.prototype.modelUpdate = function(model, changes) {
-
 	var changeName = changes ? changes[0].name : 'instrument';
 
 	switch (changeName) {
@@ -71,6 +70,7 @@ Scalear.Neck.prototype.modelUpdate = function(model, changes) {
 		case 'namesVisible':
 			this.labels[model.namesVisible ? 'showWithOpacity' : 'hideWithOpacity']();
 			var element = q('svg .labels animate#' + (model.namesVisible ? 'fadein' : 'fadeout'));
+
 			if (element.beginElement) {
 				element.beginElement();
 			}
@@ -107,7 +107,7 @@ Scalear.Neck.prototype.modelUpdate = function(model, changes) {
 Scalear.Neck.prototype._render = function() {
 	this._mainGroup = new Svg.Group(this._parentEl, {
 		id: 'neck',
-		className: this.neckType,
+		className: this.neckType
 	});
 	new Svg.Rectangle(this._mainGroup.el, {
 		className: 'neck',
@@ -149,7 +149,7 @@ Scalear.Neck.prototype._renderGroups = function(el) {
 			from: '0',
 			to: '1',
 			dur: '1s',
-			fill: "freeze",
+			fill: 'freeze',
 			begin: 'indefinite'
 		}, {
 			name: 'animate',
@@ -159,7 +159,7 @@ Scalear.Neck.prototype._renderGroups = function(el) {
 			from: '1',
 			to: '0',
 			dur: '1s',
-			fill: "freeze",
+			fill: 'freeze',
 			begin: 'indefinite'
 
 		}]
@@ -237,9 +237,8 @@ Scalear.Neck.prototype._mapNotes = function(el) {
 		labelsMap = new Map(),
 		notesMapItem = [];
 
-	this.tunning.forEach(function(note, string) {
+	this.tunning.forEach((note, string) => {
 		for (fret = 0; fret <= this.fretCount; fret++) {
-
 			notesMapItem = notesMap.has(note) ? notesMap.get(note) : [];
 			notesMapItem.push(this._fingers[string][fret]);
 			notesMap.set(note, notesMapItem);
@@ -249,13 +248,13 @@ Scalear.Neck.prototype._mapNotes = function(el) {
 			note++;
 			note = note % Scalear.notes.length;
 		}
-	}, this);
+	});
 	this._notesMap = notesMap;
 	this._labelsMap = labelsMap;
 };
 
 Scalear.Neck.prototype._renderStrings = function(el) {
-	this.tunning.forEach(function(item, i) {
+	this.tunning.forEach((item, i) => {
 		new Svg.Line(el, {
 			x1: 0,
 			x2: this.fretWidth + this.fretCount * this.fretWidth,
@@ -288,9 +287,9 @@ Scalear.Neck.prototype._renderLabels = function(parentEl) {
 	var string, noteNumber, content, correction, fretArray,
 		hasSharp = false;
 
-	this._labels = this.tunning.slice().map(function(noteNumber, string) {
+	this._labels = this.tunning.slice().map((noteNumber, string) => {
 		fretArray = new Array(this.fretCount + 2).join('0').split('');
-		return fretArray.map(function(item, i) {
+		return fretArray.map((item, i) => {
 			content = Scalear.notes[(noteNumber + i) % Scalear.notes.length];
 			correction = content.length > 1 ? 1 : 0;
 			hasSharp = content.length > 1;
@@ -305,47 +304,47 @@ Scalear.Neck.prototype._renderLabels = function(parentEl) {
 					textContent: hasSharp ? '♯' : ''
 				}]
 			});
-		}, this);
-	}, this);
+		});
+	});
 };
 
 Scalear.Neck.prototype.showAllNotes = function(note) {
-	this._notesMap.get(note).forEach(function(item) {
+	this._notesMap.get(note).forEach((item) => {
 		item.show();
 		this._labelsMap.get(item).show();
 		if (note === this.rootNote) {
 			item.className = 'root';
 		}
-	}, this);
+	});
 };
 
 Scalear.Neck.prototype._showScale = function(scale) {
 	this._clear();
-	this.scale = (scale || this.scale).slice().map(function(item) {
+	this.scale = (scale || this.scale).slice().map((item) => {
 		return (item + this.rootNote) % Scalear.notes.length;
-	}, this);
-	this.scale.forEach(function(note) {
+	});
+	this.scale.forEach((note) => {
 		this.showAllNotes(note);
-	}, this);
+	});
 };
 
 Scalear.Neck.prototype._clear = function() {
-	this._fingers.forEach(function(item, i) {
-		item.map(function(finger, j) {
+	this._fingers.forEach((item, i) => {
+		item.map((finger, j) => {
 			finger.hide().className = '';
 			this._labelsMap.get(finger).hide();
-		}, this);
-	}, this);
+		});
+	});
 };
 
 Scalear.Neck.prototype._highlightNotes = function(note) {
-	this._fingers.forEach(function(item, i) {
-		item.map(function(finger, j) {
+	this._fingers.forEach((item, i) => {
+		item.map((finger, j) => {
 			finger.removeClass('highlighted');
 		});
 	});
 	if (note !== undefined) {
-		this._notesMap.get(note).forEach(function(item) {
+		this._notesMap.get(note).forEach((item) => {
 			item.addClass('highlighted');
 		});
 	}

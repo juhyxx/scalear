@@ -10,9 +10,9 @@ var gulp = require('gulp'),
 	jshint = require('gulp-jshint'),
 	sourcemaps = require('gulp-sourcemaps'),
 	cssmin = require('gulp-cssmin'),
-	rename = require("gulp-rename"),
+	rename = require('gulp-rename'),
 	htmlreplace = require('gulp-html-replace'),
-	inject = require("gulp-inject"),
+	inject = require('gulp-inject'),
 	htmlmin = require('gulp-htmlmin'),
 	stripCode = require('gulp-strip-code'),
 	autoprefixer = require('gulp-autoprefixer'),
@@ -25,7 +25,8 @@ var gulp = require('gulp'),
 			'src/scalear/scalear.js',
 			'src/scalear/*.js'
 		]
-	};
+	},
+	babel = require('gulp-babel');
 
 gulp.task('watch', function() {
 	gulp.watch(['./src/*.html', './src/*.svg'], ['reload']);
@@ -164,11 +165,14 @@ gulp.task('dist-js', function() {
 		.pipe(sourcemaps.init())
 		.pipe(concat('script.min.js'))
 		.pipe(stripCode({
-			start_comment: "start-debug-only",
-			end_comment: "end-debug-only"
+			start_comment: 'start-debug-only',
+			end_comment: 'end-debug-only'
 		}))
 		.pipe(size({
 			showFiles: true
+		}))
+		.pipe(babel({
+			presets: ['es2015']
 		}))
 		.pipe(uglify())
 		.pipe(size({

@@ -12,7 +12,7 @@ Scalear.Select.prototype = Object.create(Mvc.View.prototype);
 Scalear.Select.prototype.modelUpdate = function(model) {
 	var element, self = this;
 
-	model.forEach(function(option, id) {
+	model.forEach((option, id) => {
 		if (!document.querySelector(self._selector + ' option[value="' + id + '"]')) {
 			element = document.createElement('option');
 			element.value = id;

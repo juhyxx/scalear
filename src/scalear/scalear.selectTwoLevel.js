@@ -12,7 +12,7 @@ Scalear.SelectTwoLevel.prototype.modelUpdate = function(model) {
 		optgroupElement.label = optgroup.name;
 		self._el.appendChild(optgroupElement);
 
-		optgroup.options.forEach(function(option) {
+		optgroup.options.forEach((option) => {
 			id = option.id;
 			if (!document.querySelector(self._selector + ' option[value="' + id + '"]')) {
 				element = document.createElement('option');
