@@ -83,6 +83,16 @@ Scalear.scales = [{
 	name: 'Maj Min Hybrid Pentatonic',
 	notes: [0, 2, 3, 4, 5, 7, 9, 10],
 	group: 'pentatonic'
+}, {
+	id: 17,
+	name: 'Major 9th chord',
+	notes: [0, 4, 7, 11, 14],
+	group: 'chords'
+}, {
+	id: 18,
+	name: 'Major 11th chord',
+	notes: [0, 4, 7, 11, 14, 16],
+	group: 'chords'
 }];
 
 Scalear.scalesGrouped = [{
@@ -92,7 +102,6 @@ Scalear.scalesGrouped = [{
 			return Scalear.scales.filter(function(item) {
 				return item.group === 'scales' ? item : undefined;
 			});
-
 		}()
 	},
 

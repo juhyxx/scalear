@@ -34,7 +34,6 @@ Scalear.Box.prototype.showScale = function(scaleId, rootNote) {
 
 	scale.forEach(function(item, index) {
 		if (index < scale.length - 1) {
-
 			new Svg.Text(self._mainGroup.el, {
 				x: 26 + 30 * index,
 				y: 50,
@@ -60,15 +59,14 @@ Scalear.Box.prototype.showScale = function(scaleId, rootNote) {
 				points: [
 					[37 + 30 * index, 47],
 					[44 + 30 * index, 47],
-					[44 + 30 * index, 52],
+					[44 + 30 * index, 52]
 				]
 			});
 		}
 
-		var content = Scalear.notes[item];
-		var hasSharp = content.length > 1;
-
-		var noteName = new Svg.Text(self._mainGroup.el, {
+		var content = Scalear.notes[item],
+			hasSharp = content.length > 1,
+			noteName = new Svg.Text(self._mainGroup.el, {
 			x: 10 + 30 * index,
 			y: 65,
 			note: item,
@@ -80,6 +78,7 @@ Scalear.Box.prototype.showScale = function(scaleId, rootNote) {
 				textContent: hasSharp ? '♯' : ''
 			}]
 		});
+		
 		if (this.model.highlighted !== undefined && this.model.highlighted === item) {
 			noteName.addClass('highlighted');
 		}
@@ -90,8 +89,10 @@ Scalear.Box.prototype.showScale = function(scaleId, rootNote) {
 				this.model.highlighted = undefined;
 			} else {
 				var items = document.querySelectorAll('#scale-box text.highlighted');
+
 				for (var i = 0; i < items.length; i++) {
 					var item = items[i];
+
 					item.setAttribute('class', item.getAttribute('class').replace('highlighted', '') || '');
 				}
 				noteName.addClass('highlighted');
@@ -105,5 +106,4 @@ Scalear.Box.prototype.showScale = function(scaleId, rootNote) {
 			textContent: Scalear.intervals[Scalear.scales[scaleId].notes[index]]
 		});
 	}.bind(this));
-
 };

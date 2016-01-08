@@ -30,7 +30,7 @@ Mvc.Application.prototype = Object.create({}, {
 
 Mvc.Application.prototype.run = function() {
 	window.addEventListener('load', function onload() {
-		window.removeEventListener("load", onload, false);
+		window.removeEventListener('load', onload, false);
 		this.onBoot.call(this);
 	}.bind(this));
 
@@ -38,8 +38,8 @@ Mvc.Application.prototype.run = function() {
 		this.onRouteChange(this.route);
 	}.bind(this));
 
-	document.addEventListener("fullscreenchange", function(event) {
-		document.documentElement.classList[document.fullscreenEnabled ? 'add' : 'remove']("fullscreen");
+	document.addEventListener('fullscreenchange', function(event) {
+		document.documentElement.classList[document.fullscreenEnabled ? 'add' : 'remove']('fullscreen');
 	});
 };
 

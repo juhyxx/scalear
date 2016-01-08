@@ -63,6 +63,11 @@ Scalear.instruments = [{
 	group: 'other',
 	name: 'Violin',
 	tunning: [4, 9, 2, 7]
+}, {
+	id: 13,
+	group: 'other',
+	name: 'Cello',
+	tunning: [4, 9, 2, 7]
 }];
 
 Scalear.instrumentsGrouped = [{
@@ -72,7 +77,6 @@ Scalear.instrumentsGrouped = [{
 		return Scalear.instruments.filter(function(item) {
 			return item.group === 'guitar' ? item : undefined;
 		});
-
 	}()
 }, {
 	name: 'Bass',
