@@ -188,7 +188,7 @@ Scalear.Neck.prototype._renderShading = function(el) {
 	}
 };
 Scalear.Neck.prototype._renderMarks = function(el) {
-	[3, 5, 7, 9, 12, 3 + 12, 5 + 12, 7 + 12, 9 + 12, 12 + 12].map(function(i) {
+	[3, 5, 7, 9, 12, 3 + 12, 5 + 12, 7 + 12, 9 + 12, 12 + 12].map((i) => {
 		if (i <= this.fretCount) {
 			if (this.neckType === 'fender') {
 				new Svg.Circle(el, {

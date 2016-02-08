@@ -1,5 +1,6 @@
 Scalear.Switch = function(selector, defaultValue) {
 	var self = this;
+
 	this._selector = selector;
 	this._defaultValue = defaultValue;
 	this._el = document.querySelector(this._selector);
@@ -7,6 +8,7 @@ Scalear.Switch = function(selector, defaultValue) {
 	this._el.addEventListener('click', function() {
 		this.value = document.querySelector(self._selector + ' [selected="selected"]').id === 'fender' ? 'gibson' : 'fender';
 		var event = new CustomEvent('change');
+
 		this.dispatchEvent(event);
 	});
 
@@ -14,6 +16,7 @@ Scalear.Switch = function(selector, defaultValue) {
 		if (e.keyCode === 13 || e.keyCode === 32) {
 			this.value = document.querySelector(self._selector + ' [selected="selected"]').id === 'fender' ? 'gibson' : 'fender';
 			var event = new CustomEvent('change');
+
 			this.dispatchEvent(event);
 		}
 	});
