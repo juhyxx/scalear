@@ -47,52 +47,77 @@ Scalear.scales = [{
 	id: 9,
 	name: 'Major chord',
 	notes: [0, 4, 7],
-	group: 'chords'
+	group: 'major-chords'
 }, {
 	id: 10,
 	name: 'Major 7th chord',
 	notes: [0, 4, 7, 11],
-	group: 'chords'
+	group: 'major-chords'
 }, {
 	id: 11,
-	name: 'Minor chord',
-	notes: [0, 3, 7],
-	group: 'chords'
+	name: 'Major 9th chord',
+	notes: [0, 4, 7, 11, 14],
+	group: 'major-chords'
 }, {
 	id: 12,
+	name: 'Major 11th chord',
+	notes: [0, 4, 7, 11, 14, 17],
+	group: 'major-chords'
+}, {
+	id: 13,
+	name: 'Major 13th chord',
+	notes: [0, 4, 7, 11, 14, 17, 21],
+	group: 'major-chords'
+}, {
+	id: 14,
+	name: 'Minor chord',
+	notes: [0, 3, 7],
+	group: 'minor-chords'
+}, {
+	id: 15,
+	name: 'Minor 7th chord',
+	notes: [0, 3, 7, 11],
+	group: 'minor-chords'
+}, {
+	id: 16,
+	name: 'Minor 9th chord',
+	notes: [0, 3, 7, 11, 14],
+	group: 'minor-chords'
+}, {
+	id: 17,
+	name: 'Minor 11th chord',
+	notes: [0, 3, 7, 11, 14, 17],
+	group: 'minor-chords'
+}, {
+	id: 18,
+	name: 'Minor 13th chord',
+	notes: [0, 3, 7, 11, 14, 17, 21],
+	group: 'minor-chords'
+}, {
+	id: 19,
 	name: 'Dim chord',
 	notes: [0, 3, 6],
 	group: 'chords'
 }, {
-	id: 13,
+	id: 20,
 	name: 'Dim 7 chord',
 	notes: [0, 3, 6, 9],
 	group: 'chords'
 }, {
-	id: 14,
+	id: 21,
 	name: 'Whole tone',
 	notes: [0, 2, 4, 6, 8, 10],
 	group: 'scales'
 }, {
-	id: 15,
+	id: 22,
 	name: 'Chromatic',
 	notes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 	group: 'scales'
 }, {
-	id: 16,
+	id: 23,
 	name: 'Maj Min Hybrid Pentatonic',
 	notes: [0, 2, 3, 4, 5, 7, 9, 10],
 	group: 'pentatonic'
-}, {
-	id: 17,
-	name: 'Major 9th chord',
-	notes: [0, 4, 7, 11, 14],
-	group: 'chords'
-}, {
-	id: 18,
-	name: 'Major 11th chord',
-	notes: [0, 4, 7, 11, 14, 16],
-	group: 'chords'
 }];
 
 Scalear.scalesGrouped = [{
@@ -111,6 +136,22 @@ Scalear.scalesGrouped = [{
 		options: function() {
 			return Scalear.scales.filter(function(item) {
 				return item.group === 'pentatonic' ? item : undefined;
+			});
+		}()
+	}, {
+		name: 'Major Chords',
+		group: 'major-chords',
+		options: function() {
+			return Scalear.scales.filter(function(item) {
+				return item.group === 'major-chords' ? item : undefined;
+			});
+		}()
+	}, {
+		name: 'Minor Chords',
+		group: 'minor-chords',
+		options: function() {
+			return Scalear.scales.filter(function(item) {
+				return item.group === 'minor-chords' ? item : undefined;
 			});
 		}()
 	}, {
