@@ -14,6 +14,7 @@ module.exports = {
 		}
 	},
 	plugins: {
-		sass: {}
+		sass: {},
+		babel: {}
 	}
 };
