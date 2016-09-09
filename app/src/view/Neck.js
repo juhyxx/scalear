@@ -1,4 +1,3 @@
-import log from '../logger.js';
 import View from '../View.js';
 import CONST from '../const.js';
 import SvgGroup from '../svg/element/Group.js';
@@ -6,6 +5,7 @@ import SvgCircle from '../svg/element/Circle.js';
 import SvgRectangle from '../svg/element/Rectangle.js';
 import SvgLine from '../svg/element/Line.js';
 import SvgText from '../svg/element/Text.js';
+import { q } from '../shortcuts.js';
 
 export default class Neck extends View {
 
@@ -16,7 +16,7 @@ export default class Neck extends View {
 		this._instrument = instrument;
 	}
 	get tunning() {
-		return CONST.instruments[this.instrument.value].tunning;
+		return CONST.instruments[this.instrument].tunning;
 	}
 	set tunning(tunning) {
 		return this._tunning = tunning;
@@ -25,66 +25,61 @@ export default class Neck extends View {
 		return this.tunning.length;
 	}
 	get neckWidth() {
-		return this.stringDistance.value * this.stringsCount;
+		return this.stringDistance * this.stringsCount;
 	}
 	get fretWidth() {
-
-		return Math.round(this.neckHeight.value / this.fretCount);
+		return Math.round(this.neckHeight / this.fretCount);
 	}
 	get stringDistance() {
-		return {value: 20};
+		return 20;
 	}
 	get neckHeight() {
-		return {value: 500,writable: true};
+		return 500;
 	}
 	get fretCount() {
-		return this._fretCount || {value: 12,writable: true};
+		return this._fretCount || 12;
 	}
 	set fretCount(fretCount) {
 		return this._fretCount = fretCount;
 	}
 	get neckType() {
-		return this._neckType || {value: 'gibson',writable: true};
+		return this._neckType || 'gibson';
 	}
 	set neckType(neckType) {
 		return this._neckType = neckType;
 	}
 	get namesVisible() {
-		return this._namesVisible || {value: false,writable: true};
+		return this._namesVisible || false;
 	}
 	set namesVisible(namesVisible) {
 		return this._namesVisible = namesVisible;
 	}
 	get rootNote() {
-		return this._rootNote || {value: 0,writable: true};
+		return this._rootNote || 0;
 	}
 	set rootNote(rootNote) {
 		return this._rootNote = rootNote;
 	}
 	get scale() {
-		return this._scale || {value: 0,writable: true};
+		return this._scale || 0;
 	}
 	set scale(scale) {
 		return this._scale = scale;
 	}
-	get instrument() {
-		return {value: 0,writable: true};
-	}
+
 
 	static get(selector) {
 		return document.querySelector(selector);
 	}
 
 	constructor(svgParent) {
-		console.debug('Neck: constructor', svgParent);
 		super();
 		this._parentEl = svgParent;
 	}
 
 
 	modelUpdate(model, changes) {
-		console.debug('Neck: modelUpdate');
-		var changeName = changes ? changes[0].name : 'instrument';
+		let changeName = changes ? changes[0].name : 'instrument';
 
 		switch (changeName) {
 
@@ -94,11 +89,11 @@ export default class Neck extends View {
 
 			case 'namesVisible':
 				this.labels[model.namesVisible ? 'showWithOpacity' : 'hideWithOpacity']();
-				var element = q('svg .labels animate#' + (model.namesVisible ? 'fadein' : 'fadeout'));
+				let element = q('svg .labels animate#' + (model.namesVisible ? 'fadein' : 'fadeout'));
 
-				if (element.beginElement) {
+				/*if (element.beginElement) {
 					element.beginElement();
-				}
+				}*/
 				break;
 
 			case 'rootNote':
@@ -148,37 +143,13 @@ export default class Neck extends View {
 	}
 
 	_renderGroups(el) {
-		var shading = new SvgGroup(el, {className: 'shading'}),
+		let shading = new SvgGroup(el, {className: 'shading'}),
 			frets = new SvgGroup(el, {className: 'frets'}),
 			marks = new SvgGroup(el, {className: 'marks'}),
 			strings = new SvgGroup(el, {className: 'strings'}),
 			fingers = new SvgGroup(el, {className: 'fingers'});
 
-		this.labels = new SvgGroup(el, {
-			className: 'labels',
-			children: [{
-				name: 'animate',
-				id: 'fadein',
-				attributeType: 'CSS',
-				attributeName: 'opacity',
-				from: '0',
-				to: '1',
-				dur: '1s',
-				fill: 'freeze',
-				begin: 'indefinite'
-			}, {
-				name: 'animate',
-				id: 'fadeout',
-				attributeType: 'CSS',
-				attributeName: 'opacity',
-				from: '1',
-				to: '0',
-				dur: '1s',
-				fill: 'freeze',
-				begin: 'indefinite'
-
-			}]
-		});
+		this.labels = new SvgGroup(el, {className: 'labels'});
 		if (this.instrument !== 6 && this.instrument !== 12) {
 			this._renderShading(shading.el);
 		}
@@ -192,7 +163,7 @@ export default class Neck extends View {
 	}
 
 	_renderShading(el) {
-		for (var i = 0; i < this.fretCount; i++) {
+		for (let i = 0; i < this.fretCount; i++) {
 			new SvgRectangle(el, {
 				x: i * this.fretWidth + this.fretWidth,
 				y: 0,
@@ -224,7 +195,7 @@ export default class Neck extends View {
 	}
 
 	_renderFrets(el) {
-		for (var i = 0; i <= this.fretCount; i++) {
+		for (let i = 0; i <= this.fretCount; i++) {
 			new SvgLine(el, {
 				x1: i * this.fretWidth + this.fretWidth,
 				x2: i * this.fretWidth + this.fretWidth,
@@ -247,7 +218,7 @@ export default class Neck extends View {
 	}
 
 	_mapNotes(el) {
-		var fret,
+		let fret,
 			string,
 			note,
 			notesMap = new Map(),
@@ -275,14 +246,14 @@ export default class Neck extends View {
 			new SvgLine(el, {
 				x1: 0,
 				x2: this.fretWidth + this.fretCount * this.fretWidth,
-				y1: i * this.stringDistance.value + this.stringDistance.value / 2,
-				y2: i * this.stringDistance.value + this.stringDistance.value / 2
+				y1: i * this.stringDistance + this.stringDistance / 2,
+				y2: i * this.stringDistance + this.stringDistance / 2
 			});
 		}, this);
 	}
 
 	_renderFingers(parentEl) {
-		var string,
+		let string,
 			i,
 			fingers = [];
 
@@ -292,8 +263,8 @@ export default class Neck extends View {
 			for (i = 0; i <= this.fretCount; i++) {
 				fingers[string].push(new SvgCircle(parentEl, {
 					x: i * this.fretWidth + this.fretWidth / 2,
-					y: (this.stringDistance.value * string) + this.stringDistance.value / 2,
-					radius: this.stringDistance.value / 3,
+					y: (this.stringDistance * string) + this.stringDistance / 2,
+					radius: this.stringDistance / 3,
 					filter: this.instrument === 6 || this.instrument === 12 ? 'url(#fretless)' : 'url(#finger)'
 				}));
 			}
@@ -302,7 +273,7 @@ export default class Neck extends View {
 	}
 
 	_renderLabels(parentEl) {
-		var string,
+		let string,
 			noteNumber,
 			content,
 			correction,
@@ -318,7 +289,7 @@ export default class Neck extends View {
 
 				return new SvgText(parentEl, {
 					x: i * this.fretWidth + (this.fretWidth / 2) - 2 - correction,
-					y: this.stringDistance.value * string + (this.stringDistance.value / 2) + 3,
+					y: this.stringDistance * string + (this.stringDistance / 2) + 3,
 					textContent: content.replace('♯', ''),
 					children: [{
 						name: 'tspan',
@@ -343,7 +314,7 @@ export default class Neck extends View {
 	_showScale(scale) {
 		this._clear();
 		this.scale = (scale || this.scale).slice().map((item) => {
-			return (item + this.rootNote.value) % CONST.notes.length;
+			return (item + this.rootNote) % CONST.notes.length;
 		});
 		this.scale.forEach((note) => {
 			this.showAllNotes(note);

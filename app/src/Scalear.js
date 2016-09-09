@@ -1,7 +1,6 @@
 import Application from './Application.js';
 import CONST from './const.js';
 import { q } from './shortcuts.js';
-import log from './logger.js';
 import Svg from './svg/Svg.js';
 import Neck from './view/Neck.js';
 import Box from './view/Box.js';
@@ -11,13 +10,30 @@ import Switch from './view/Switch.js';
 
 export default class Scalear extends Application {
 
-	constructor() {
-		super();
-		console.debug('Scalear: constructor');
+	get name() {
+		return 'Scalear ' + CONST.version;
+	}
+	get neckView() {
+		return this._neckView || new Neck(Svg.get('svg'));
+	}
+	get scaleBox() {
+		return this._scaleBox || new Box(Svg.get('svg'));
+	}
+	get scaleSelect() {
+		return this._scaleSelect || new SelectTwoLevel('#scale-selector', this.model.scale, 'name');
+	}
+	get rootSelect() {
+		return this._rootSelect || new Select('#root-selector', this.model.rootNote);
+	}
+	get instrumentSelect() {
+		return this._instrumentSelect || new SelectTwoLevel('#instrument-selector', this.model.instrument, 'name');
+	}
+	get neckSelect() {
+		return this._neckSelect || new Switch('#necktype .two-values-switch', this.model.neckType);
 	}
 
 	onBoot() {
-		var defaults = JSON.parse(localStorage.defaults || '{}');
+		let defaults = JSON.parse(localStorage.defaults || '{}');
 
 		Object.keys(CONST.defaults).forEach(key => {
 			if (defaults[key] === undefined) {
@@ -26,23 +42,12 @@ export default class Scalear extends Application {
 		});
 		this.model = defaults;
 		this.onRouteChange(this.route);
-		this.createUi();
 		this.setDefaults();
 		this.setModels();
 		this.registerHandlers();
 	}
 
-	createUi() {
-		this.neckView = new Neck(Svg.get('svg'));
-		this.scaleBox = new Box(Svg.get('svg'));
-		this.scaleSelect = new SelectTwoLevel('#scale-selector', this.model.scale, 'name');
-		this.rootSelect = new Select('#root-selector', this.model.rootNote);
-		this.instrumentSelect = new SelectTwoLevel('#instrument-selector', this.model.instrument, 'name');
-		this.neckSelect = new Switch('#necktype .two-values-switch', this.model.neckType);
-	}
-
 	setDefaults() {
-		console.debug('Scalear: setDefaults');
 		q('#name').innerHTML = CONST.scales[this.model.scale].name;
 		q('#root').innerHTML = CONST.notes[this.model.rootNote];
 		q('#frets-count').value = this.model.fretCount;
@@ -66,63 +71,41 @@ export default class Scalear extends Application {
 	}
 
 	registerHandlers() {
-		var self = this;
+		this.neckSelect.on('change', e => {
+			this.model.neckType = e.target.value;
+		});
+		this.scaleSelect.on('change', e => {
+			this.model.scale = parseInt(e.target.value, 10);
+		});
+		this.rootSelect.on('change', e => {
+			this.model.rootNote = parseInt(e.target.value, 10);
+		});
+		this.instrumentSelect.on('change', e => {
+			this.model.instrument = parseInt(e.target.value, 10);
+		});
+		q('#note-names').addEventListener('change', e => {
+			this.model.namesVisible = e.target.checked;
+		});
 
-		this.neckSelect.on('change', function() {
-			self.model.neckType = this.value;
-		});
-		this.scaleSelect.on('change', function() {
-			self.model.scale = parseInt(this.value, 10);
-		});
-		this.rootSelect.on('change', function() {
-			self.model.rootNote = parseInt(this.value, 10);
-		});
-		this.instrumentSelect.on('change', function() {
-			self.model.instrument = parseInt(this.value, 10);
-		});
-		q('#note-names').addEventListener('change', function() {
-			self.model.namesVisible = this.checked;
-		});
-		q('#note-names').addEventListener('keydown', function(e) {
-			if (e.keyCode === 13) {
-				self.model.namesVisible = !self.model.namesVisible;
-				this.checked = self.model.namesVisible;
-			}
-		});
-		q('#frets-count').addEventListener('change', function() {
-			var fretCount = parseInt(this.value, 10) || 12;
+		q('#frets-count').addEventListener('change', e => {
+			let fretCount = parseInt(e.target.value, 10) || 12;
 
 			fretCount = Math.min(fretCount, 25);
 			fretCount = Math.max(fretCount, 10);
 			if (fretCount !== this.value) {
 				this.value = fretCount;
 			}
-			self.model.fretCount = fretCount;
+			this.model.fretCount = fretCount;
 		});
-		q('#info').addEventListener('click', function(e) {
+		q('#info').addEventListener('click', e => {
 			this.hideFullScreen();
-		}.bind(this));
-		q('#fullscreen').addEventListener('click', function(e) {
+		});
+		q('#fullscreen').addEventListener('click', e => {
 			this.showFullScreen();
-		}.bind(this));
-		q('#fullscreen').addEventListener('keydown', function(e) {
-			if (e.keyCode === 13) {
-				this.showFullScreen();
-			}
-		}.bind(this));
-
-		q('#print').addEventListener('click', function(e) {
+		});
+		q('#print').addEventListener('click', e => {
 			window.print();
-		}.bind(this));
-		q('#print').addEventListener('keydown', function(e) {
-			if (e.keyCode === 13) {
-				window.print();
-			}
-		}.bind(this));
-
-		applicationCache.addEventListener('updateready', function() {
-			q('#version-info').style.display = 'block';
-		}, false);
+		});
 	}
 
 	modelUpdate(model, changes) {
@@ -157,7 +140,7 @@ export default class Scalear extends Application {
 	}
 
 	onRouteChange(params) {
-		var item,
+		let item,
 			note;
 
 		if (params.length > 0) {
@@ -171,18 +154,15 @@ export default class Scalear extends Application {
 				this.model.rootNote = note;
 			}
 			if (params[0]) {
-				this.model.instrument = CONST.instruments.filter(function(item) {
+				this.model.instrument = CONST.instruments.filter(item => {
 					return this._prepareHashString(item.name) === params[0];
-				}.bind(this))[0].id;
+				})[0].id;
 			}
 			if (params[1]) {
-				this.model.scale = scale = CONST.scales.filter(function(item) {
+				this.model.scale = CONST.scales.filter(item => {
 					return this._prepareHashString(item.name) === params[1];
-				}.bind(this))[0].id;
+				})[0].id;
 			}
 		}
 	}
-
-
-
 }

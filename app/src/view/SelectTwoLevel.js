@@ -1,15 +1,9 @@
-import log from '../logger.js';
 import Select from './Select.js';
 
 export default class SelectTwoLevel extends Select {
 
-	constructor(selector, defaultValue, propertyName) {
-		console.debug('SelectTwoLevel: constructor');
-		super(selector, defaultValue, propertyName);
-	}
-
 	modelUpdate(model) {
-		var element,
+		let element,
 			optgroupElement,
 			id;
 

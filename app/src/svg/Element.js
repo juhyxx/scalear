@@ -1,20 +1,17 @@
-import log from '../logger.js';
 import Svg from './Svg.js';
 
 export default class Element extends Svg {
 
 	constructor(parent, params) {
 		super(...arguments);
-		console.debug('Element: constructor', parent, params);
-		var self = this;
 
 		if (parent) {
 			params = params || {};
 			this.parent = parent;
 			params.class = params.className;
 			delete params.className;
-			Object.keys(params).forEach(function(key) {
-				self[key] = params[key];
+			Object.keys(params).forEach((key) => {
+				this[key] = params[key];
 			});
 			this.params = params;
 			this.render();
@@ -30,6 +27,9 @@ export default class Element extends Svg {
 
 	get el() {
 		return this._el;
+	}
+	set el(el) {
+		return this._el = el;
 	}
 
 	remove() {
@@ -56,7 +56,7 @@ export default class Element extends Svg {
 	}
 
 	removeClass(className) {
-		this.className = this.className.replace(className);
+		this.className = this.className.replace(className).trim();
 	}
 
 	showWithOpacity() {
@@ -68,34 +68,28 @@ export default class Element extends Svg {
 	}
 
 	render() {
-		console.log('Element:render');
-		var self = this,
-			element = document.createElementNS(this.NS, this.name);
+		this.el = document.createElementNS(this.NS, this.name);
 
-		console.log(this.params);
-
-		Object.keys(this.params).map(function(key) {
+		Object.keys(this.params).map((key) => {
 			switch (key) {
 				case 'id':
 				case 'textContent':
-					element[key] = self[key];
+					this.el[key] = this[key];
 					break;
-				case 'children':
-					/*self.children.forEach(function(child) {
+				/*case 'children':
+					this.children.forEach(function(child) {
 						var name = child.name.charAt(0).toUpperCase() + child.name.slice(1);
-						new Svg[name](element, child);
-					});*/
-					break;
+						new Svg[name](this.el, child);
+					});
+					break;*/
 				default:
-					if (self[key] !== undefined) {
-						element.setAttribute(key, self[key]);
+					if (this[key] !== undefined) {
+						this.el.setAttribute(key, this[key]);
 					}
 			}
 		});
 
-		this.parent.appendChild(element);
-		this._el = element;
-
+		this.parent.appendChild(this.el);
 		return this;
 	}
 }

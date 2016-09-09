@@ -1,23 +1,15 @@
-import log from './logger.js';
-
 export default class View {
 
-	constructor() {
-		console.debug('View:constructor');
-		Object.defineProperty(this, 'model', {
-			get: function() {
-				return this._model;
-			},
-			set: function(model) {
-				var self = this;
+	get model() {
+		return this._model;
+	}
 
-				this._model = model;
-				Object.observe(this._model, function(changes) {
-					self.modelUpdate(self._model, changes);
-				});
-				this.modelUpdate(self._model);
-			}
+	set model(model) {
+		this._model = model;
+		Object.observe(this._model, changes => {
+			this.modelUpdate(this._model, changes);
 		});
+		this.modelUpdate(this._model);
 	}
 
 	on(eventName, fn) {

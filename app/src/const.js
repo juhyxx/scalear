@@ -250,6 +250,10 @@ Scalear.instruments = [{
 	group: 'other',
 	name: 'Cello',
 	tunning: [9, 2, 7, 0]
+}, {
+	group: 'other',
+	name: 'Mandolin GDAE',
+	tunning: [4, 9, 2, 7]
 }];
 
 Scalear.instruments.forEach((item, index) => {
@@ -289,8 +293,5 @@ Scalear.instrumentsGrouped = [{
 		});
 	}()
 }];
-
-
-
 
 export default Scalear;
