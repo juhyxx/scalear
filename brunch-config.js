@@ -1,4 +1,5 @@
 module.exports = {
+	//optimize: true,
 	files: {
 		javascripts: {
 			joinTo: {
@@ -14,7 +15,15 @@ module.exports = {
 		}
 	},
 	plugins: {
-		sass: {},
-		babel: {}
+		postcss: {
+			processors: [
+				require('autoprefixer')(['last 2 versions'])
+			]
+		},
+		cssnano: {
+			autoprefixer: {
+				add: true
+			}
+		}
 	}
 };

@@ -79,12 +79,8 @@ export default class Box extends View {
 					y: 65,
 					note: item,
 					className: index === 0 ? 'root' : undefined,
-					textContent: content.replace('♯', ''),
-					children: [{
-						name: 'tspan',
-						dy: -7,
-						textContent: hasSharp ? '♯' : ''
-					}]
+					textContent: content
+
 				});
 
 			if (this.model.highlighted !== undefined && this.model.highlighted === item) {

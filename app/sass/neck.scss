@@ -1,3 +1,7 @@
+@import "variables";
+
+@import "variables";
+
 #neck {
     .fingers {
         circle {
@@ -7,11 +11,9 @@
             }
             display: none;
             &.root {
-                fill: lighten(#732c2c, 40%);
+                fill: lighten($colorBase, 30%);
             }
-            &.highlighted {
-                fill: #84FFA4;
-            }
+
         }
     }
     .labels {

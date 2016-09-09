@@ -1,5 +1,5 @@
 let Scalear = {
-	version: '0.4.12',
+	version: '0.5.0',
 	defaults: {
 		highlighted: undefined,
 		fretCount: 12,
@@ -11,16 +11,16 @@ let Scalear = {
 	},
 	notes: [
 		'C', //0
-		'C♯', //1
+		'D♭', //1
 		'D', //2
-		'D♯', //3
+		'E♭', //3
 		'E', //4
 		'F', //5
 		'F♯', //6
 		'G', //7
 		'G♯', //8
 		'A', //9
-		'A♯', //10
+		'B♭', //10
 		'B' //11
 	],
 
@@ -143,7 +143,21 @@ Scalear.scales = [{
 	name: 'Maj Min Hybrid Pentatonic',
 	notes: [0, 2, 3, 4, 5, 7, 9, 10],
 	group: 'pentatonic'
-}];
+}, {
+	name: 'Bebop dominant ',
+	notes: [0, 2, 4, 5, 7, 9, 10, 11],
+	group: 'scales'
+}, {
+	name: 'Spanish gypsy scale',
+	notes: [0, 1, 4, 5, 7, 8, 10],
+	group: 'scales'
+}, {
+	name: 'Hungarian gypsy scale',
+	notes: [0, 2, 3, 6, 7, 8, 10],
+	group: 'scales'
+}
+
+];
 
 Scalear.scales.forEach((item, index) => {
 	item.id = index;

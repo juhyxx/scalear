@@ -1,10 +1,12 @@
+@import "variables";
+
 #scale-box {
     .interval {
         fill: gray;
         font-size: 8px;
     }
     .root {
-        fill: #732c2c;
+        fill: $colorBase;
     }
     polyline, line {
         stroke: gray;

@@ -290,12 +290,7 @@ export default class Neck extends View {
 				return new SvgText(parentEl, {
 					x: i * this.fretWidth + (this.fretWidth / 2) - 2 - correction,
 					y: this.stringDistance * string + (this.stringDistance / 2) + 3,
-					textContent: content.replace('♯', ''),
-					children: [{
-						name: 'tspan',
-						dy: -2,
-						textContent: hasSharp ? '♯' : ''
-					}]
+					textContent: content
 				});
 			});
 		});

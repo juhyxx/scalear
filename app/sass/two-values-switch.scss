@@ -1,4 +1,4 @@
-$red: #732c2c;
+@import "variables";
 
 .two-values-switch {
     display: block;
@@ -28,9 +28,10 @@ $red: #732c2c;
         color: gray;
         &[selected] {
             color: white;
-            border: 1px solid darken($red, 20%);
-            background-color: $red;
+            border: 1px solid darken($colorBase, 20%);
+            background-color: $colorBase;
             text-shadow: 0 -1px black;
+			text-shadow:  0 0 3px white;
             box-shadow: inset 1px 1px 4px rgba(white, 0.2), 0 0 4px rgba(black, 0.5);
         }
     }
