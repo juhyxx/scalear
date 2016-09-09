@@ -133,7 +133,7 @@ export default class Neck extends View {
 		this._mainGroup = new SvgGroup(this._parentEl, {
 			id: 'neck',
 			className: this.neckType
-		});debugger
+		});
 		new SvgRectangle(this._mainGroup.el, {
 			className: 'neck',
 			x: this.fretWidth,
@@ -275,8 +275,8 @@ export default class Neck extends View {
 			new SvgLine(el, {
 				x1: 0,
 				x2: this.fretWidth + this.fretCount * this.fretWidth,
-				y1: i * this.stringDistance + this.stringDistance / 2,
-				y2: i * this.stringDistance + this.stringDistance / 2
+				y1: i * this.stringDistance.value + this.stringDistance.value / 2,
+				y2: i * this.stringDistance.value + this.stringDistance.value / 2
 			});
 		}, this);
 	}
@@ -292,8 +292,8 @@ export default class Neck extends View {
 			for (i = 0; i <= this.fretCount; i++) {
 				fingers[string].push(new SvgCircle(parentEl, {
 					x: i * this.fretWidth + this.fretWidth / 2,
-					y: (this.stringDistance * string) + this.stringDistance / 2,
-					radius: this.stringDistance / 3,
+					y: (this.stringDistance.value * string) + this.stringDistance.value / 2,
+					radius: this.stringDistance.value / 3,
 					filter: this.instrument === 6 || this.instrument === 12 ? 'url(#fretless)' : 'url(#finger)'
 				}));
 			}
@@ -318,7 +318,7 @@ export default class Neck extends View {
 
 				return new SvgText(parentEl, {
 					x: i * this.fretWidth + (this.fretWidth / 2) - 2 - correction,
-					y: this.stringDistance * string + (this.stringDistance / 2) + 3,
+					y: this.stringDistance.value * string + (this.stringDistance.value / 2) + 3,
 					textContent: content.replace('♯', ''),
 					children: [{
 						name: 'tspan',
@@ -343,7 +343,7 @@ export default class Neck extends View {
 	_showScale(scale) {
 		this._clear();
 		this.scale = (scale || this.scale).slice().map((item) => {
-			return (item + this.rootNote) % CONST.notes.length;
+			return (item + this.rootNote.value) % CONST.notes.length;
 		});
 		this.scale.forEach((note) => {
 			this.showAllNotes(note);

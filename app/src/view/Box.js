@@ -1,5 +1,12 @@
 import log from '../logger.js';
 import View from '../View.js';
+import CONST from '../const.js';
+import SvgGroup from '../svg/element/Group.js';
+import SvgCircle from '../svg/element/Circle.js';
+import SvgRectangle from '../svg/element/Rectangle.js';
+import SvgLine from '../svg/element/Line.js';
+import SvgText from '../svg/element/Text.js';
+import SvgPolyline from '../svg/element/Polyline.js';
 
 export default class Box extends View {
 
@@ -26,31 +33,31 @@ export default class Box extends View {
 		}
 
 		var self = this,
-			scale = Scalear.scales[scaleId].notes.slice().map(function(item) {
-				return (item + rootNote) % Scalear.notes.length;
+			scale = CONST.scales[scaleId].notes.slice().map(function(item) {
+				return (item + rootNote) % CONST.notes.length;
 			});
 
-		this._mainGroup = new Svg.Group(this._parentEl, {
+		this._mainGroup = new SvgGroup(this._parentEl, {
 			id: 'scale-box',
 			transform: 'translate(' + (250 - (-50 + scale.length * 28) / 2) + ',120)'
 		});
 
 		scale.forEach(function(item, index) {
 			if (index < scale.length - 1) {
-				new Svg.Text(self._mainGroup.el, {
+				new SvgText(self._mainGroup.el, {
 					x: 26 + 30 * index,
 					y: 50,
 					className: 'interval',
-					textContent: Scalear.intervals[Scalear.scales[scaleId].notes[index + 1] - Scalear.scales[scaleId].notes[index]]
+					textContent: CONST.intervals[CONST.scales[scaleId].notes[index + 1] - CONST.scales[scaleId].notes[index]]
 				});
 
-				new Svg.Line(self._mainGroup.el, {
+				new SvgLine(self._mainGroup.el, {
 					x1: 25 + 30 * index,
 					x2: 35 + 30 * index,
 					y1: 59,
 					y2: 59
 				});
-				new Svg.PolyLine(self._mainGroup.el, {
+				new SvgPolyline(self._mainGroup.el, {
 					points: [
 						[16 + 30 * index, 52],
 						[16 + 30 * index, 47],
@@ -58,7 +65,7 @@ export default class Box extends View {
 					]
 				});
 
-				new Svg.PolyLine(self._mainGroup.el, {
+				new SvgPolyline(self._mainGroup.el, {
 					points: [
 						[37 + 30 * index, 47],
 						[44 + 30 * index, 47],
@@ -67,9 +74,9 @@ export default class Box extends View {
 				});
 			}
 
-			var content = Scalear.notes[item],
+			var content = CONST.notes[item],
 				hasSharp = content.length > 1,
-				noteName = new Svg.Text(self._mainGroup.el, {
+				noteName = new SvgText(self._mainGroup.el, {
 					x: 10 + 30 * index,
 					y: 65,
 					note: item,
@@ -102,11 +109,11 @@ export default class Box extends View {
 					this.model.highlighted = parseInt(noteName.el.getAttribute('note'), 10);
 				}
 			}.bind(this), false);
-			new Svg.Text(self._mainGroup.el, {
+			new SvgText(self._mainGroup.el, {
 				x: 13 + 30 * index,
 				y: 75,
 				className: 'interval',
-				textContent: Scalear.intervals[Scalear.scales[scaleId].notes[index]]
+				textContent: CONST.intervals[CONST.scales[scaleId].notes[index]]
 			});
 		}.bind(this));
 	}
