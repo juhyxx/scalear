@@ -64,56 +64,30 @@ body {
     }
 }
 
-footer,
-header {
-    background-color: $colorBase;
-    color: white;
-    padding: 1rem;
-    @media print {
-        display: none;
-        visibility: hidden;
-    }
-    position: absolute;
-    width: 98%;
-    box-shadow: 0 0px 20px rgba(black, 0.8), inset 0 0 50px rgba(black, 0.5);
-    transition: transform 2s;
-    transition-delay: 0.5s;
-}
-
-header {
-    padding: 0.5rem;
-    position: static;
-    border-bottom: 2px solid white;
-    h1 {
-        color: white;
-        display: inline-block;
-        position: relative;
-        top: -17px;
-        margin: 0;
-        margin-left: 1rem;
-        text-transform: uppercase;
-        opacity: 0.8;
-        font-size: 1rem;
-        @media screen and (max-width: 650px) {
-            display: block;
-            font-size: 15px;
-        }
-        transform: translate3d(0, 0, 0);
-    }
-    &.loading,
-    .fullscreen & {
-        transform: translate3d(0, -100px, 0);
-    }
-}
-
 footer {
-    padding-top: 0.5rem;
-    padding-bottom: 0;
+	width: 99vw;
+	background: linear-gradient(darken($colorBase, 9%) 0%, $colorBase 15% ,$colorBase 75% ,  darken($colorBase, 9%) 100%) ;
+	color: white;
+	@media print {
+		display: none;
+		visibility: hidden;
+	}
+	padding: 1rem;
+	padding-bottom: 1rem;
+	padding-right: 4rem;
+	align-items: center;
+	position: absolute;
+	box-shadow: 0 0px 3px rgba(black, 0.8) , 0 0px 20px rgba(black, 0.3);
+	transition: transform 2s;
+	transition-delay: 0.5s;
+	transition-timing-function: ease-out;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
+	@media screen and (max-width: 500px) {
+		flex-flow: column;
+	}
     align-content: flex-start;
-    padding-bottom: 1rem;
     transform: translate3d(0, 0, 0);
     bottom: 0;
     border-top: 2px solid white;
@@ -179,6 +153,7 @@ footer {
     }
     label {
         margin-right: 1rem;
+		padding-bottom: 0.5rem;
         div {
             transition: opacity 2s;
             opacity: 0.3;
