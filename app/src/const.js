@@ -155,9 +155,7 @@ Scalear.scales = [{
 	name: 'Hungarian gypsy scale',
 	notes: [0, 2, 3, 6, 7, 8, 10],
 	group: 'scales'
-}
-
-];
+}];
 
 Scalear.scales.forEach((item, index) => {
 	item.id = index;
@@ -209,23 +207,23 @@ Scalear.scalesGrouped = [{
 ];
 
 Scalear.instruments = [{
-	name: 'Standard (Guitar)',
+	name: 'Standard',
 	group: 'guitar',
 	tunning: [4, 11, 7, 2, 9, 4]
 }, {
-	name: '7-string (Guitar)',
+	name: '7-string',
 	group: 'guitar',
 	tunning: [4, 11, 7, 2, 9, 4, 11]
 }, {
-	name: 'Open D (Guitar)',
+	name: 'Open D',
 	group: 'guitar',
 	tunning: [2, 9, 2, 6, 9, 2]
 }, {
-	name: 'Open C (Guitar)',
+	name: 'Open C',
 	group: 'guitar',
 	tunning: [0, 4, 7, 0, 4, 7]
 }, {
-	name: 'Open G (Guitar)',
+	name: 'Open G',
 	group: 'guitar',
 	tunning: [2, 7, 2, 7, 11, 2]
 }, {

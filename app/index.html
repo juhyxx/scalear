@@ -15,12 +15,6 @@
 </head>
 
 <body>
-    <div id="info">Close fullscreen mode</div>
-    <header class="loading">
-        <img src="logo.svg" width=172 height=53>
-        <h1>Visual printable fretboard <span id="version-info">Refresh for new version!</span></h1>
-    </header>
-
     <h1 class="title"><span id="root"></span> <span id="name"></span></h1>
     <svg version="1.0" encoding="UTF-8" width="100%" preserveAspectRatio="xMinYMin slice" viewBox="0 0 560 200" class="loading">
         <defs>
@@ -69,6 +63,7 @@
 
     <footer class="loading">
         <div>
+			<div id="logo"></div>
             <label>
                 <div>Instrument</div>
                 <select tabindex="1" id="instrument-selector"></select>
@@ -95,7 +90,7 @@
                 <div>Neck color</div>
                 <span class="two-values-switch" tabindex="6">
                     <span id="fender" selected="selected">Light</span>
-                <span id="gibson">Dark</span>
+                	<span id="gibson">Dark</span>
                 </span>
             </label>
         </div>
@@ -104,16 +99,8 @@
                 <div>&nbsp;</div>
                 <span tabindex="7"></span>
             </label>
-            <label id="fullscreen">
-                <div>&nbsp;</div>
-                <span tabindex="8"></span>
-            </label>
         </div>
     </footer>
-
-    <!-- inject:analytics -->
-    <!-- endinject -->
-
 </body>
 
 </html>

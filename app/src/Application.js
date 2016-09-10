@@ -28,21 +28,6 @@ export default class Application {
 		window.addEventListener('hashchange', () => {
 			this.onRouteChange(this.route);
 		});
-		document.addEventListener('fullscreenchange', function(event) {
-			document.documentElement.classList[document.fullscreenEnabled ? 'add' : 'remove']('fullscreen');
-		});
-	}
-
-	showFullScreen() {
-		document.documentElement.requestFullscreen();
-	}
-
-	hideFullScreen() {
-		document.exitFullscreen();
-	}
-
-	static run() {
-		return new Application();
 	}
 
 	onRouteChange() {

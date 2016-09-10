@@ -1,4 +1,5 @@
 import View from '../View.js';
+import { q } from '../shortcuts.js';
 
 export default class Select extends View {
 
@@ -7,13 +8,13 @@ export default class Select extends View {
 		this._selector = selector;
 		this._defaultValue = defaultValue;
 		this._propertyName = propertyName;
-		this._el = document.querySelector(this._selector);
+		this._el = q(this._selector);
 	}
 
 
 	modelUpdate(model) {
 		model.forEach((option, id) => {
-			if (!document.querySelector(this._selector + ' option[value="' + id + '"]')) {
+			if (!q(this._selector + ' option[value="' + id + '"]')) {
 				let element = document.createElement('option');
 
 				element.value = id;

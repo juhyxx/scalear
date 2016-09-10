@@ -52,7 +52,6 @@ export default class Scalear extends Application {
 		q('#root').innerHTML = CONST.notes[this.model.rootNote];
 		q('#frets-count').value = this.model.fretCount;
 		q('footer').className = '';
-		q('header').className = '';
 		q('svg').setAttribute('class', '');
 		document.body.classList[this.model.neckType === 'fender' ? 'add' : 'remove']('dark');
 		document.title = CONST.notes[this.model.rootNote] + ' ' + CONST.scales[this.model.scale].name + ' (' + this.name + ')';
@@ -96,12 +95,6 @@ export default class Scalear extends Application {
 				this.value = fretCount;
 			}
 			this.model.fretCount = fretCount;
-		});
-		q('#info').addEventListener('click', e => {
-			this.hideFullScreen();
-		});
-		q('#fullscreen').addEventListener('click', e => {
-			this.showFullScreen();
 		});
 		q('#print').addEventListener('click', e => {
 			window.print();

@@ -67,16 +67,10 @@ export default class Neck extends View {
 		return this._scale = scale;
 	}
 
-
-	static get(selector) {
-		return document.querySelector(selector);
-	}
-
 	constructor(svgParent) {
 		super();
 		this._parentEl = svgParent;
 	}
-
 
 	modelUpdate(model, changes) {
 		let changeName = changes ? changes[0].name : 'instrument';

@@ -1,4 +1,5 @@
 import Select from './Select.js';
+import { q } from '../shortcuts.js';
 
 export default class SelectTwoLevel extends Select {
 
@@ -14,7 +15,7 @@ export default class SelectTwoLevel extends Select {
 
 			optgroup.options.forEach((option) => {
 				id = option.id;
-				if (!document.querySelector(this._selector + ' option[value="' + id + '"]')) {
+				if (!q(this._selector + ' option[value="' + id + '"]')) {
 					element = document.createElement('option');
 					element.value = id;
 					element.innerHTML = this._propertyName ? option[this._propertyName] : option;
