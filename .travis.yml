@@ -9,4 +9,4 @@ install:
     - bower install
     - npm install
 script:
-    - brunch build --production
+    - npm build
