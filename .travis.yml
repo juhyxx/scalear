@@ -1,0 +1,20 @@
+language: node_js
+node_js:
+- '0.12'
+sudo: required
+branches:
+  only:
+  - master
+cache:
+  directories:
+  - node_modules
+  - bower_components
+before_install:
+before_script:
+  - npm install -g brunch
+  - npm install -g bower
+install:
+- bower install
+- npm install
+script:
+- brunch build --production
