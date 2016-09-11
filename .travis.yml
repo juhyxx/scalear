@@ -10,9 +10,9 @@ cache:
   - node_modules
   - bower_components
 before_install:
+- npm install -g bower
 before_script:
   - npm install -g brunch
-  - npm install -g bower
 install:
 - bower install
 - npm install
