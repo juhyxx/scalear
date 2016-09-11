@@ -1,19 +1,12 @@
 language: node_js
-
-sudo: required
 branches:
   only:
-  - master
-cache:
-  directories:
-  - node_modules
-  - bower_components
+      - master
 before_install:
-- npm install -g bower
-before_script:
-  - npm install -g brunch
+      - npm install -g bower
+      - npm install -g brunch
 install:
-- bower install
-- npm install
+    - bower install
+    - npm install
 script:
-- brunch build --production
+    - brunch build --production
