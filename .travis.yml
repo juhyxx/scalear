@@ -11,7 +11,7 @@ install:
    - bower install
    - npm install
 script:
-   - npm build
+   - brunch build --production
 after_success:
    - echo "BUILD ========= $TRAVIS_BUILD_NUMBER ==========="
    - cd "$TRAVIS_BUILD_DIR"
