@@ -19,6 +19,7 @@ after_success:
    - git init
    - git config user.name "travis"
    - git config user.email "travis"
-   - git commit -m "Travis to $TRAVIS_BUILD_NUMBER" -a
+   - git add .
+   - git commit -m "Travis to $TRAVIS_BUILD_NUMBER"
    - git push --force --quiet "https://$GITHUB_API_KEY@$REPO" master > /dev/null 2>&1
    - "echo 'deployed!'"
