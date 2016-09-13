@@ -1,7 +1,6 @@
 #!/bin/bash
 
 cd public
-gitPush gh-pages
 echo "BUILD========== ${TRAVIS_BUILD_NUMBER} ==============="
 git init
 git config user.name "travis"
