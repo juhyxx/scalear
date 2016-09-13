@@ -5,21 +5,21 @@ branches:
   only:
       - master
 before_install:
-      - npm install -g bower
-      - npm install -g brunch
+  - npm install -g bower
+  - npm install -g brunch
 install:
-    - bower install
-    - npm install
+   - bower install
+   - npm install
 script:
-    - npm build
+   - npm build
 deploy: |
-    echo "BUILD ========= $TRAVIS_BUILD_NUMBER ==========="
-    cd public
-    git init
-    git config user.name "travis"
-    git config user.email "travis"
-    git add .
-    git commit -m "Travis to $TRAVIS_BUILD_NUMBER"
-    git push --force --quiet "https://$GITHUB_API_KEY@$REPO" master > /dev/null 2>&1
+   echo "BUILD ========= $TRAVIS_BUILD_NUMBER ==========="
+   cd "$TRAVIS_BUILD_DIR"
+   cd public
+   git init
+   git config user.name "travis"
+   git config user.email "travis"
+   git commit -m "Travis to $TRAVIS_BUILD_NUMBER" -a
+   git push --force --quiet "https://${GITHUB_API_KEY}@${REPO}" master:${1} > /dev/null 2>&1
 after_deploy:
-    - "echo 'deployed!'"
+   - "echo 'deployed!'"
