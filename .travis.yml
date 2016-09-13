@@ -12,9 +12,5 @@ install:
    - npm install
 script:
    - npm build
-deploy: |
-   echo "BUILD ========= $TRAVIS_BUILD_NUMBER ==========="
-   cd "$TRAVIS_BUILD_DIR"
-  
 after_deploy:
    - "echo 'deployed!'"

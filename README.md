@@ -1,7 +1,7 @@
 #Scalear
+[![Build Status](https://travis-ci.org/juhyxx/scalear.svg?branch=master)](https://travis-ci.org/juhyxx/scalear)
 
 
- 
 ##What is it?
 It is very simple, guitar (or other string instrument players) learns scales and chords as pictures. So this will make simple displaiyng of scales and chords, and easy print.
 
