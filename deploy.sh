@@ -1,23 +1,11 @@
 #!/bin/bash
-set -e
 
-GH_REPO="@github.com/juhyxx/scalear"
-
-FULL_REPO="https://$GH_TOKEN$GH_REPO"
-
-commit=`git rev-parse HEAD`
-echo $commit > dist/version
-
-git fetch origin gh-pages:gh-pages
-git checkout gh-pages
-
-git config --global push.default matching
+cd public
+gitPush gh-pages
+echo "BUILD========== ${TRAVIS_BUILD_NUMBER} ==============="
+git init
 git config user.name "travis"
 git config user.email "travis"
-git remote set-url origin $FULL_REPO
-
-cp -rf dist/* .
-
 git add .
-git commit -a -m "deployed $commit"
-git push --force --quiet origin gh-pages
+git commit -m "Travis to ${TRAVIS_BUILD_NUMBER}"
+git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master > /dev/null 2>&1
