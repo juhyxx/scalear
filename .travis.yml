@@ -21,5 +21,5 @@ after_success:
    - git config user.email "travis"
    - git add .
    - git commit -m "Travis to $TRAVIS_BUILD_NUMBER"
-   - git push -fq https://${GITHUB_API_KEY}@github.com/$(TRAVIS_REPO_SLUG).git gh-pages 
+   - git push -fq https://${GITHUB_API_KEY}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages 
    - "echo 'deployed!'"
