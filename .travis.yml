@@ -1,25 +1,27 @@
 language: node_js
 node_js:
-  - "6"
+- '6'
 branches:
   only:
-      - master
+  - master
 before_install:
-  - npm install -g bower
-  - npm install -g brunch
+- npm install -g bower
+- npm install -g brunch
 install:
-   - bower install
-   - npm install
+- bower install
+- npm install
 script:
-   - brunch build --production
+- brunch build --production
 after_success:
-   - echo "BUILD ========= $TRAVIS_BUILD_NUMBER ==========="
-   - cd "$TRAVIS_BUILD_DIR"
-   - cd public
-   - git init
-   - git config user.name "travis"
-   - git config user.email "travis"
-   - git add .
-   - git commit -m "Travis to $TRAVIS_BUILD_NUMBER"
-   - git push -fq https://${GITHUB_API_KEY}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages 
-   - "echo 'deployed!'"
+- cd "$TRAVIS_BUILD_DIR"
+- cd public
+- git init
+- git config user.name "travis"
+- git config user.email "travis"
+- git add .
+- git commit -m "Travis build nr. $TRAVIS_BUILD_NUMBER"
+- git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages
+- echo 'deployed!'
+env:
+  global:
+    secure: Mgw/Y/6eCvy/qDpp8+Vvl0wqV0X5IZV9RQbpHrThGnYgGRJiMLSCjY28FHqzcisar09UvpKgqXboLPWRWv324k6/lIQ7kyJ8cqxl2eHKvmWJ6KHBIzO+UbOR5VJ1zu6lEFFkGlznqnN3c2Xvb7/T9CQl1rgc9hdgPh/ECTGZehVTyFP26b9DaTzpRnpJhqS1neBW9fjO8YaTSH0hFTF6LNwAk63MZ1T92qSNNkNaN5LOEQRFoL6SUCid12+01GhWpdLHkv1KFagY3nHwjfJEZBmP3Gt77mplETgJXk94l+HBtcY/RvnsyRHBE5dlqwBYcA53FLr+lQBVCm/n6dv2lzIPyyZHJBCpjMGi21BHx51YRrXL7ddnEXYZIqtpG20jVCU2TGaoHJyhaqgiJHTpRl+nc58UGTX6dahLVsLdrNT8ijvxz7r2wAGly6yRCPAFf39ECRyEvjI8/9FW7j5rKwHIs7FIcUUS7C+eWXZVRSDLkAoBcTttrVSk0TWrTgi8U2akb3ZbTyOQbiEV0rfAOh3bFGOs2XaQOmLbAfsXfEqJ55jqTMfBVhAn+JiVMCndJcN6ZMKclCUmrXNvon9jKe4CVVXhmUJoNaG7xjKs1abwqvprXQoKGFQ5b+mBwzUnUwBp5tkIaOWhtwq3g+qy7DjhNclUWeTHYFf+IvBUrMo=
