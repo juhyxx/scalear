@@ -3,12 +3,12 @@ export default class Application {
 	get model() {
 		return this._model;
 	}
+
 	set model(model) {
 		this._model = model;
-		Object.observe(this._model, changes => {
-			this.modelUpdate(this._model, changes);
-		});
+		this._model.addUpdateHandler(this.modelUpdate, this);
 	}
+
 	get route() {
 		let params = (location.hash.slice(1) || '/').split('/');
 
@@ -20,14 +20,16 @@ export default class Application {
 		window.location.hash = route;
 	}
 
-	run() {
+	static run() {
+		return (new this).runInstance();
+	}
+
+	runInstance() {
 		window.addEventListener('load', () => {
 			window.removeEventListener('load', onload, false);
 			this.onBoot.call(this);
 		});
-		window.addEventListener('hashchange', () => {
-			this.onRouteChange(this.route);
-		});
+		window.addEventListener('hashchange', () => this.onRouteChange(this.route));
 	}
 
 	onRouteChange() {
@@ -40,5 +42,9 @@ export default class Application {
 
 	modelUpdate() {
 		console.warn('Virtual method "modelUpdate", has to be implemented.');
+	}
+
+	static prepareHashString(text) {
+		return text.toLowerCase().replace(/ /g, '-').replace(/[ \(\)]/g, '').replace(/♯/g, '#');
 	}
 }

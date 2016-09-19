@@ -3,14 +3,20 @@ import { q } from '../shortcuts.js';
 
 export default class Select extends View {
 
-	constructor(selector, defaultValue, propertyName) {
+	constructor(selector, defaultValue, propertyName, model) {
 		super();
 		this._selector = selector;
 		this._defaultValue = defaultValue;
 		this._propertyName = propertyName;
 		this._el = q(this._selector);
+		this.model = model;
+
 	}
 
+	set model(model) {
+		this._model = model;
+		this.modelUpdate(model);
+	}
 
 	modelUpdate(model) {
 		model.forEach((option, id) => {

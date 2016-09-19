@@ -3,17 +3,18 @@ import { q } from '../shortcuts.js';
 
 export default class Switch extends View {
 
-	constructor(selector, defaultValue) {
+	constructor(selector, defaultValue, model) {
 		super();
 		this._selector = selector;
 		this._defaultValue = defaultValue;
 		this._el = q(this._selector);
 		this._el.addEventListener('click', () => {
 			let event = new CustomEvent('change');
-
 			this._el.value = q(this._selector + ' [selected]').id === 'fender' ? 'gibson' : 'fender';
 			this._el.dispatchEvent(event);
 		});
+		this.model = model;
+		this.modelUpdate(this.model);
 	}
 
 	modelUpdate(model, changes) {

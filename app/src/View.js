@@ -6,10 +6,7 @@ export default class View {
 
 	set model(model) {
 		this._model = model;
-		Object.observe(this._model, changes => {
-			this.modelUpdate(this._model, changes);
-		});
-		this.modelUpdate(this._model);
+		this._model.addUpdateHandler(this.modelUpdate, this);
 	}
 
 	on(eventName, fn) {
