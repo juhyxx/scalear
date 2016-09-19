@@ -79,15 +79,35 @@
                 </select>
             </label>
             <label>
-                <div>Frets</div>
-                <input tabindex="4" type=number id="frets-count" min=10 max=25>
+                <div>Frets </div>
+				<input  tabindex="4" type="range" id="frets-count" list="frets" min="10" max="25" value="1">
+				<datalist id="frets" >
+					<option>10</option>
+					<option>11</option>
+					<option>12</option>
+					<option>13</option>
+					<option>14</option>
+					<option>15</option>
+					<option>15</option>
+					<option>16</option>
+					<option>17</option>
+					<option>18</option>
+					<option>19</option>
+					<option>20</option>
+					<option>21</option>
+					<option>22</option>
+					<option>23</option>
+					<option>24</option>
+					<option>25</option>
+				</datalist>
             </label>
-            <label>
-                <div>Names</div>
+            <label class="toggle">
+                <div>&nbsp;</div>
                 <input tabindex="5" type="checkbox" id="note-names">
+				<div class="toggle-box">Names</div>
             </label>
             <label id="necktype">
-                <div>Neck color</div>
+                <div>&nbsp;</div>
                 <span class="two-values-switch" tabindex="6">
                     <span id="fender" selected="selected">Light</span>
                 	<span id="gibson">Dark</span>

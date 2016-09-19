@@ -9,9 +9,11 @@ import SvgPolyline from '../svg/element/Polyline.js';
 
 export default class Box extends View {
 
-	constructor(svgParent) {
+	constructor(svgParent, model) {
 		super();
 		this._parentEl = svgParent;
+		this.model = model;
+		this.modelUpdate(this.model);
 	}
 
 	modelUpdate(model, changes) {

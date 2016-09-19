@@ -9,134 +9,59 @@ import { q } from '../shortcuts.js';
 
 export default class Neck extends View {
 
-	get instrument() {
-		return this._instrument || 0;
-	}
-	set instrument(instrument) {
-		this._instrument = instrument;
-	}
-	get tunning() {
-		return CONST.instruments[this.instrument].tunning;
-	}
-	set tunning(tunning) {
-		return this._tunning = tunning;
-	}
-	get stringsCount() {
-		return this.tunning.length;
-	}
-	get neckWidth() {
-		return this.stringDistance * this.stringsCount;
-	}
-	get fretWidth() {
-		return Math.round(this.neckHeight / this.fretCount);
-	}
-	get stringDistance() {
-		return 20;
-	}
-	get neckHeight() {
-		return 500;
-	}
-	get fretCount() {
-		return this._fretCount || 12;
-	}
-	set fretCount(fretCount) {
-		return this._fretCount = fretCount;
-	}
-	get neckType() {
-		return this._neckType || 'gibson';
-	}
-	set neckType(neckType) {
-		return this._neckType = neckType;
-	}
-	get namesVisible() {
-		return this._namesVisible || false;
-	}
-	set namesVisible(namesVisible) {
-		return this._namesVisible = namesVisible;
-	}
-	get rootNote() {
-		return this._rootNote || 0;
-	}
-	set rootNote(rootNote) {
-		return this._rootNote = rootNote;
-	}
-	get scale() {
-		return this._scale || 0;
-	}
-	set scale(scale) {
-		return this._scale = scale;
-	}
 
-	constructor(svgParent) {
+	constructor(svgParent, model) {
 		super();
 		this._parentEl = svgParent;
+		this.model = model;
+		this.modelUpdate(this.model);
 	}
 
 	modelUpdate(model, changes) {
 		let changeName = changes ? changes[0].name : 'instrument';
 
 		switch (changeName) {
-
 			case 'highlighted':
-				this._highlightNotes(model.highlighted);
+				this.highlightNotes(model.highlighted);
 				break;
-
 			case 'namesVisible':
 				this.labels[model.namesVisible ? 'showWithOpacity' : 'hideWithOpacity']();
-				let element = q('svg .labels animate#' + (model.namesVisible ? 'fadein' : 'fadeout'));
-
-				/*if (element.beginElement) {
-					element.beginElement();
-				}*/
 				break;
-
 			case 'rootNote':
 			case 'scale':
-				this.rootNote = model.rootNote;
-				this.scale = CONST.scales[model.scale].notes.slice();
-				this._showScale();
+				this.showScale();
 				break;
-
 			default:
 				if (this._mainGroup) {
 					this._mainGroup.remove();
 				}
-
-				this.fretCount = model.fretCount;
-				this.neckType = model.neckType;
-				this.namesVisible = model.namesVisible;
-				this.rootNote = model.rootNote;
-				this.scale = CONST.scales[model.scale].notes.slice();
-				this.instrument = model.instrument;
-
-				this._render();
-				this._showScale();
+				this.render();
+				this.showScale(model.scale);
 				this.labels[model.namesVisible ? 'showWithOpacity' : 'hideWithOpacity']();
-				this._highlightNotes(model.highlighted);
-
+				this.highlightNotes(model.highlighted);
 				break;
 		}
 	}
 
-	_render() {
+	render() {
 		this._mainGroup = new SvgGroup(this._parentEl, {
 			id: 'neck',
-			className: this.neckType
+			className: this.model.neckType
 		});
 		new SvgRectangle(this._mainGroup.el, {
 			className: 'neck',
-			x: this.fretWidth,
+			x: this.model.fretWidth,
 			y: 0,
-			width: this.fretCount * this.fretWidth,
-			height: this.neckWidth,
-			fill: this.neckType === 'fender' ? 'url(#gradientfender)' : 'url(#gradient)',
+			width: this.model.fretCount * this.model.fretWidth,
+			height: this.model.neckWidth,
+			fill: this.model.neckType === 'fender' ? 'url(#gradientfender)' : 'url(#gradient)',
 			filter: 'url(#neckshadow)'
 		});
-		this._renderGroups(this._mainGroup.el);
-		this._mapNotes();
+		this.renderGroups(this._mainGroup.el);
+		this.mapNotes();
 	}
 
-	_renderGroups(el) {
+	renderGroups(el) {
 		let shading = new SvgGroup(el, {className: 'shading'}),
 			frets = new SvgGroup(el, {className: 'frets'}),
 			marks = new SvgGroup(el, {className: 'marks'}),
@@ -144,89 +69,85 @@ export default class Neck extends View {
 			fingers = new SvgGroup(el, {className: 'fingers'});
 
 		this.labels = new SvgGroup(el, {className: 'labels'});
-		if (this.instrument !== 6 && this.instrument !== 12) {
-			this._renderShading(shading.el);
+		if (this.model.instrument !== 6 && this.model.instrument !== 12) {
+			this.renderShading(shading.el);
 		}
-		this._renderMarks(marks.el);
-		if (this.instrument !== 6 && this.instrument !== 12) {
-			this._renderFrets(frets.el);
+		this.renderMarks(marks.el);
+		if (this.model.instrument !== 6 && this.model.instrument !== 12) {
+			this.renderFrets(frets.el);
 		}
-		this._renderStrings(strings.el);
-		this._renderFingers(fingers.el);
-		this._renderLabels(this.labels.el);
+		this.renderStrings(strings.el);
+		this.renderFingers(fingers.el);
+		this.renderLabels(this.labels.el);
 	}
 
-	_renderShading(el) {
-		for (let i = 0; i < this.fretCount; i++) {
+	renderShading(el) {
+		for (let i = 0; i < this.model.fretCount; i++) {
 			new SvgRectangle(el, {
-				x: i * this.fretWidth + this.fretWidth,
+				x: i * this.model.fretWidth + this.model.fretWidth,
 				y: 0,
-				width: this.fretWidth,
-				height: this.neckWidth,
+				width: this.model.fretWidth,
+				height: this.model.neckWidth,
 				fill: 'url(#shading)'
 			});
 		}
 	}
-	_renderMarks(el) {
-		[3, 5, 7, 9, 12, 3 + 12, 5 + 12, 7 + 12, 9 + 12, 12 + 12].map((i) => {
-			if (i <= this.fretCount) {
-				if (this.neckType === 'fender') {
+	renderMarks(el) {
+		[3, 5, 7, 9, 12, 3 + 12, 5 + 12, 7 + 12, 9 + 12, 12 + 12].map(i => {
+			if (i <= this.model.fretCount) {
+				if (this.model.neckType === 'fender') {
 					new SvgCircle(el, {
-						x: (i - 1) * this.fretWidth + 1.5 * this.fretWidth,
-						y: this.neckWidth / 2,
-						radius: this.fretWidth / 8
+						x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
+						y: this.model.neckWidth / 2,
+						radius: this.model.fretWidth / 8
 					});
 				} else {
 					new SvgRectangle(el, {
-						x: (i - 1) * this.fretWidth + 5 + this.fretWidth,
+						x: (i - 1) * this.model.fretWidth + 5 + this.model.fretWidth,
 						y: 4 * 5,
-						height: this.neckWidth - 8 * 5,
-						width: this.fretWidth - 2 * 5
+						height: this.model.neckWidth - 8 * 5,
+						width: this.model.fretWidth - 2 * 5
 					});
 				}
 			}
 		}, this);
 	}
 
-	_renderFrets(el) {
-		for (let i = 0; i <= this.fretCount; i++) {
+	renderFrets(el) {
+		for (let i = 0; i <= this.model.fretCount; i++) {
 			new SvgLine(el, {
-				x1: i * this.fretWidth + this.fretWidth,
-				x2: i * this.fretWidth + this.fretWidth,
+				x1: i * this.model.fretWidth + this.model.fretWidth,
+				x2: i * this.model.fretWidth + this.model.fretWidth,
 				y1: 0,
-				y2: this.neckWidth
+				y2: this.model.neckWidth
 			});
 			new SvgText(el, {
-				x: i * this.fretWidth - this.fretWidth + 2 * this.fretWidth - 2,
-				y: this.neckWidth + 10,
+				x: i * this.model.fretWidth - this.model.fretWidth + 2 * this.model.fretWidth - 2,
+				y: this.model.neckWidth + 10,
 				textContent: i
 			});
 		}
 		new SvgLine(el, {
 			className: 'zero',
-			x1: this.fretWidth - 2,
-			x2: this.fretWidth - 2,
+			x1: this.model.fretWidth - 2,
+			x2: this.model.fretWidth - 2,
 			y1: 0,
-			y2: this.neckWidth + 0.6
+			y2: this.model.neckWidth + 0.6
 		});
 	}
 
-	_mapNotes(el) {
+	mapNotes(el) {
 		let fret,
-			string,
-			note,
 			notesMap = new Map(),
 			labelsMap = new Map(),
 			notesMapItem = [];
 
-		this.tunning.forEach((note, string) => {
-			for (fret = 0; fret <= this.fretCount; fret++) {
+		this.model.tunning.forEach((note, string) => {
+			for (fret = 0; fret <= this.model.fretCount; fret++) {
 				notesMapItem = notesMap.has(note) ? notesMap.get(note) : [];
 				notesMapItem.push(this._fingers[string][fret]);
 				notesMap.set(note, notesMapItem);
-
 				labelsMap.set(this._fingers[string][fret], this._labels[string][fret]);
-
 				note++;
 				note = note % CONST.notes.length;
 			}
@@ -235,38 +156,38 @@ export default class Neck extends View {
 		this._labelsMap = labelsMap;
 	}
 
-	_renderStrings(el) {
-		this.tunning.forEach((item, i) => {
+	renderStrings(el) {
+		this.model.tunning.forEach((item, i) => {
 			new SvgLine(el, {
 				x1: 0,
-				x2: this.fretWidth + this.fretCount * this.fretWidth,
-				y1: i * this.stringDistance + this.stringDistance / 2,
-				y2: i * this.stringDistance + this.stringDistance / 2
+				x2: this.model.fretWidth + this.model.fretCount * this.model.fretWidth,
+				y1: i * this.model.stringDistance + this.model.stringDistance / 2,
+				y2: i * this.model.stringDistance + this.model.stringDistance / 2
 			});
 		}, this);
 	}
 
-	_renderFingers(parentEl) {
+	renderFingers(parentEl) {
 		let string,
 			i,
 			fingers = [];
 
-		for (string = 0; string < this.stringsCount; string++) {
+		for (string = 0; string < this.model.stringsCount; string++) {
 			fingers.push([]);
 
-			for (i = 0; i <= this.fretCount; i++) {
+			for (i = 0; i <= this.model.fretCount; i++) {
 				fingers[string].push(new SvgCircle(parentEl, {
-					x: i * this.fretWidth + this.fretWidth / 2,
-					y: (this.stringDistance * string) + this.stringDistance / 2,
-					radius: this.stringDistance / 3,
-					filter: this.instrument === 6 || this.instrument === 12 ? 'url(#fretless)' : 'url(#finger)'
+					x: i * this.model.fretWidth + this.model.fretWidth / 2,
+					y: (this.model.stringDistance * string) + this.model.stringDistance / 2,
+					radius: this.model.stringDistance / 3,
+					filter: this.model.instrument === 6 || this.model.instrument === 12 ? 'url(#fretless)' : 'url(#finger)'
 				}));
 			}
 		}
 		this._fingers = fingers;
 	}
 
-	_renderLabels(parentEl) {
+	renderLabels(parentEl) {
 		let string,
 			noteNumber,
 			content,
@@ -274,16 +195,16 @@ export default class Neck extends View {
 			fretArray,
 			hasSharp = false;
 
-		this._labels = this.tunning.slice().map((noteNumber, string) => {
-			fretArray = new Array(this.fretCount + 2).join('0').split('');
+		this._labels = this.model.tunning.slice().map((noteNumber, string) => {
+			fretArray = new Array(this.model.fretCount + 2).join('0').split('');
 			return fretArray.map((item, i) => {
 				content = CONST.notes[(noteNumber + i) % CONST.notes.length];
 				correction = content.length > 1 ? 1 : 0;
 				hasSharp = content.length > 1;
 
 				return new SvgText(parentEl, {
-					x: i * this.fretWidth + (this.fretWidth / 2) - 2 - correction,
-					y: this.stringDistance * string + (this.stringDistance / 2) + 3,
+					x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
+					y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
 					textContent: content
 				});
 			});
@@ -294,23 +215,19 @@ export default class Neck extends View {
 		this._notesMap.get(note).forEach((item) => {
 			item.show();
 			this._labelsMap.get(item).show();
-			if (note === this.rootNote) {
+			if (note === this.model.rootNote) {
 				item.className = 'root';
 			}
 		});
 	}
 
-	_showScale(scale) {
-		this._clear();
-		this.scale = (scale || this.scale).slice().map((item) => {
-			return (item + this.rootNote) % CONST.notes.length;
-		});
-		this.scale.forEach((note) => {
-			this.showAllNotes(note);
-		});
+	showScale(scale) {
+		this.clear();
+		(CONST.scales[scale || this.model.scale].notes).slice().map(item => (item + this.model.rootNote) % CONST.notes.length).forEach((note) => this.showAllNotes(note));
 	}
 
-	_clear() {
+	clear() {
+		this._fingers = this._fingers || [];
 		this._fingers.forEach((item, i) => {
 			item.map((finger, j) => {
 				finger.hide().className = '';
@@ -319,17 +236,10 @@ export default class Neck extends View {
 		});
 	}
 
-	_highlightNotes(note) {
-		this._fingers.forEach((item, i) => {
-			item.map((finger, j) => {
-				finger.removeClass('highlighted');
-			});
-		});
+	highlightNotes(note) {
+		this._fingers.forEach(item => item.map(finger => finger.removeClass('highlighted')));
 		if (note !== undefined) {
-			this._notesMap.get(note).forEach((item) => {
-				item.addClass('highlighted');
-			});
+			this._notesMap.get(note).forEach(item => item.addClass('highlighted'));
 		}
 	}
-
 }
