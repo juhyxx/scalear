@@ -2,68 +2,68 @@
 @import "variables";
 
 #info {
-    @media screen {
-        position: absolute;
-        background-color: rgba(#ffffca, 0.5);
-        padding: 0.5rem;
-        font-size: 12px;
-        text-align: center;
-        width: 100%;
-        color: darken(#ffffca, 60%);
-    }
-    @media print {
-        display: none;
-    }
-    opacity: 0;
-    transition: opacity 1s;
-    cursor: pointer;
-    .fullscreen & {
-        opacity: 0.8;
-    }
+	@media screen {
+		position: absolute;
+		background-color: rgba(#ffffca, 0.5);
+		padding: 0.5rem;
+		font-size: 12px;
+		text-align: center;
+		width: 100%;
+		color: darken(#ffffca, 60%);
+	}
+	@media print {
+		display: none;
+	}
+	opacity: 0;
+	transition: opacity 1s;
+	cursor: pointer;
+	.fullscreen & {
+		opacity: 0.8;
+	}
 }
 
 svg {
-    width: 100%;
-    opacity: 1;
-    transition: opacity 2s;
-    &.loading {
-        opacity: 0;
-    }
+	width: 100%;
+	opacity: 1;
+	transition: opacity 2s;
+	&.loading {
+		opacity: 0;
+	}
 }
 #logo {
 	background: url(logo.svg)  no-repeat left bottom;
 	width: 182px;
 	height: 63px;
-	flex-shrink:0;
+	flex-shrink: 0;
 	flex-grow: 1;
 }
 
 
 h1 {
-    margin-top: 1rem;
-    #version-info {
-        display: none;
-        text-transform: none;
-    }
+	margin-top: 1rem;
+	#version-info {
+		display: none;
+		text-transform: none;
+	}
 	@media screen {
 		margin-left: 4.5rem;
 		margin-bottom: 0.5em;
 		color: white;
 		text-shadow: 0 0 5px rgba(black, 0.5);
-		margin-top:40px;
+		margin-top: 40px;
 	}
 }
 
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Ubuntu', sans-serif;
-    background-color: #BFA98E;
-    background: linear-gradient(lighten(#bfa98e, 30%), #bfa98e);
-    @media screen {
-        height: 100vh;
-        overflow: hidden;
-    }
+	margin: 0;
+	padding: 0;
+	font-family: "Ubuntu", sans-serif;
+	background-color: #bfa98e;
+	background: linear-gradient(lighten(#bfa98e, 30%), #bfa98e);
+	@media screen {
+		height: 100vh;
+		overflow: hidden;
+	}
 }
 
 footer {
@@ -79,160 +79,137 @@ footer {
 	padding-right: 4rem;
 	align-items: center;
 	position: absolute;
-	box-shadow: 0 0px 3px rgba(black, 0.8) , 0 0px 20px rgba(black, 0.3);
+	box-shadow: 0 0 3px rgba(black, 0.8) , 0 0 20px rgba(black, 0.3);
 	transition: transform 2s;
 	transition-delay: 0.5s;
 	transition-timing-function: ease-out;
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
 	@media screen and (max-width: 500px) {
 		flex-flow: column;
 	}
-    align-content: flex-start;
-    transform: translate3d(0, 0, 0);
-    bottom: 0;
-    border-top: 2px solid white;
-    position: fixed;
-    select, input[type="number"] {
-        padding: 6px;
-        outline: none;
-        font-size: 1.3rem;
-        border-radius: 8px;
-        font-family: 'Ubuntu', sans-serif;
-        background-color: #444444;
-        color: #DDDDDD;
-        &:hover {
-            opacity: 1;
-        }
-        border: 0;
-        box-shadow: inset 0 0 4px black;
-        text-shadow: 0 1px 3px rgba(black, 0.8);
-        &:focus {
-            color: white;
-            box-shadow: inset 0 0 4px black, 0px 0px 4px black;
-        }
-    }
+	align-content: flex-start;
+	transform: translate3d(0, 0, 0);
+	bottom: 0;
+	border-top: 2px solid white;
+	position: fixed;
+	select,
+	input[type="number"] {
+		padding: 6px;
+		outline: none;
+		font-size: 1.3rem;
+		border-radius: 8px;
+		font-family: "Ubuntu", sans-serif;
+		background-color: #444444;
+		color: #dddddd;
+		&:hover {
+			opacity: 1;
+		}
+		border: 0;
+		box-shadow: inset 0 0 4px black;
+		text-shadow: 0 1px 3px rgba(black, 0.8);
+		&:focus {
+			color: white;
+			box-shadow: inset 0 0 4px black, 0 0 4px black;
+		}
+	}
 	input[type="range"] {
 		outline: 0;
 		color: darken($colorBase, 10%);
 	}
 
-    select {
-        optgroup {
-            background-color: $colorBase;
-            color: white;
-        }
-        option {
-            color: $colorBase;
-            background-color: white;
-            text-shadow: none;
-        }
-        cursor: pointer;
-    }
-    /*input[type="checkbox"] {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        background-color: #444444;
-        height: 37px;
-        width: 37px;
-        margin: 0;
-        position: relative;
+	select {
+		optgroup {
+			background-color: $colorBase;
+			color: white;
+		}
+		option {
+			color: $colorBase;
+			background-color: white;
+			text-shadow: none;
+		}
 		cursor: pointer;
-        &:before {
-            font-size: 30px;
-            transition: opacity 0.8s;
-            top: 1px;
-            left: 5px;
-            position: absolute;
-            text-shadow: 0 1px 3px rgba(black, 0.8);
-            color: white;
-            opacity: 0;
-            content: '\2713';
-        }
-        &:checked:before {
-            opacity: 1;
-			text-shadow:  0 0 3px white;
-        }
-    }*/
-
+	}
 	.toggle {
 		opacity: 1!important;
 		cursor: pointer;
 		.toggle-box {
 			opacity: 1!important;
-
 			padding: 0.7em;
 			color: rgba(black, 0.4);
 			background-color: gray;
 			border-radius: 8px;
 			text-shadow: none;
-			  user-select: none;
-			box-shadow:  inset 3px 3px 3px rgba(white, 0.2),  0 0 2px black, 0 0 8px rgba(white, 0.3), inset 0 0 3px black,  inset 0 0 20px gray;
+			user-select: none;
+			box-shadow: inset 3px 3px 3px rgba(white, 0.2),  0 0 3px black, 0 0 8px rgba(white, 0.3), inset 0 0 3px black,  inset 0 0 20px gray;
 		}
 		input[type="checkbox"] {
 			visibility: hidden;
 			position: absolute;
 		}
-		input[type="checkbox"]:checked + .toggle-box {
+		.toggle-box {
+			background-image: linear-gradient(transparent 50%, rgba(255,255,255,0.3) 50%);
+			background-size: 2px 2px;
+		}
+		input[type="checkbox"]:checked+.toggle-box {
 			background-color: lighten(orange, 10%);
-			box-shadow:  inset 3px 3px 3px rgba(white, 0.2),0 0 2px black, 0 0 8px rgba(white, 0.3), inset 0 0 3px black,  inset 0 0 20px gray, 0 0 40px rgba(orange, 0.5);
-
+			box-shadow: inset 3px 3px 3px rgba(white, 0.2), 0 0 3px black, 0 0 8px rgba(white, 0.3), inset 0 0 3px black,  inset 0 0 20px gray, 0 0 40px rgba(orange, 0.5);
 		}
 	}
-    input[type="number"] {
-        width: 3rem;
-    }
-    label {
-        margin-right: 1rem;
+	input[type="number"] {
+		width: 3rem;
+	}
+	label {
+		margin-right: 1rem;
 		padding-bottom: 0.5rem;
-        div {
-            transition: opacity 2s;
-            opacity: 0.3;
-            font-size: 0.9rem;
-            margin-bottom: 2px;
+		div {
+			transition: opacity 2s;
+			opacity: 0.3;
+			font-size: 0.9rem;
+			margin-bottom: 2px;
 			margin-left: 0.3rem;
-        }
-        &:hover {
-            div {
-                opacity: 1;
-				text-shadow:  0 0 3px white;
-            }
-        }
-    }
-    & > div {
-        display: flex;
-        flex-flow: row wrap;
-        justify-content: flex-start;
-        &:last-child {
-            padding-top: 7px;
-        }
-    }
-    &.loading,
-    .fullscreen & {
-        transform: translate3d(0, 150px, 0);
-    }
-    #fullscreen,
-    #print {
-        span {
-            opacity: 0.5;
-            transition: opacity 0.8s;
-            background-image: url("fullscreen-icon.svg");
-            height: 25px;
-            width: 25px;
-            color: white;
-            display: inline-block;
-            cursor: pointer;
-            &:hover,
-            &:focus {
-                outline: none;
-                opacity: 1;
-            }
-        }
-    }
-    #print {
-        span {
-            background-image: url("printer-icon.svg");
-        }
-    }
+		}
+		&:hover {
+			div {
+				opacity: 1;
+
+			}
+		}
+	}
+	&>div {
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: flex-start;
+		&:last-child {
+			padding-top: 7px;
+		}
+	}
+	&.loading,
+	.fullscreen & {
+		transform: translate3d(0, 150px, 0);
+	}
+	#fullscreen,
+	#print {
+		span {
+			opacity: 0.5;
+			transition: opacity 0.8s;
+			background-image: url("fullscreen-icon.svg");
+			height: 25px;
+			width: 25px;
+			color: white;
+			display: inline-block;
+			cursor: pointer;
+			&:hover,
+			&:focus {
+				outline: none;
+				opacity: 1;
+			}
+		}
+	}
+	#print {
+		span {
+			background-image: url("printer-icon.svg");
+		}
+	}
 }
