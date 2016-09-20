@@ -180,7 +180,7 @@ export default class Neck extends View {
 					x: i * this.model.fretWidth + this.model.fretWidth / 2,
 					y: (this.model.stringDistance * string) + this.model.stringDistance / 2,
 					radius: this.model.stringDistance / 3,
-					filter: this.model.instrument === 6 || this.model.instrument === 12 ? 'url(#fretless)' : 'url(#finger)'
+					filter: this.model.instrument === 6 || this.model.instrument === 12 ? 'url(#fretless)' : ''
 				}));
 			}
 		}
