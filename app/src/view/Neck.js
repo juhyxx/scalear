@@ -217,6 +217,7 @@ export default class Neck extends View {
 			this._labelsMap.get(item).show();
 			if (note === this.model.rootNote) {
 				item.className = 'root';
+				this._labelsMap.get(item).className = 'root';
 			}
 		});
 	}

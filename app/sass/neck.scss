@@ -12,7 +12,7 @@
 			}
 			display: none;
 			&.root {
-				fill: lighten($colorBase, 30%);
+				fill: $colorBase
 			}
 		}
 	}
@@ -22,6 +22,9 @@
 			font-family: "Ubuntu", sans-serif;
 			font-size: 7px;
 			display: none;
+			&.root {
+				fill: white;
+			}
 		}
 		opacity: 0;
 		tspan {
