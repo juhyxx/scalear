@@ -95,19 +95,66 @@ export default class Neck extends View {
 	renderMarks(el) {
 		[3, 5, 7, 9, 12, 3 + 12, 5 + 12, 7 + 12, 9 + 12, 12 + 12].map(i => {
 			if (i <= this.model.fretCount) {
-				if (this.model.neckType === 'fender') {
+				if (i % 12 === 0) {
+					new SvgCircle(el, {
+						x: (i - 1) * this.model.fretWidth + 1.4 * this.model.fretWidth,
+						y: this.model.neckWidth + 8,
+						radius: this.model.fretWidth / 14,
+						className: 'border'
+					});
+					new SvgCircle(el, {
+						x: (i - 1) * this.model.fretWidth + 1.6 * this.model.fretWidth,
+						y: this.model.neckWidth + 8,
+						radius: this.model.fretWidth / 14,
+						className: 'border'
+					});
+					if (this.model.neckType === 'fender') {
+						new SvgCircle(el, {
+							x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
+							y: this.model.stringDistance + this.model.neckWidth / 2,
+							radius: this.model.fretWidth / 8
+						});
+						new SvgCircle(el, {
+							x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
+							y: -this.model.stringDistance + this.model.neckWidth / 2,
+							radius: this.model.fretWidth / 8
+						});
+					} else {
+						new SvgRectangle(el, {
+							x: (i - 1) * this.model.fretWidth + 5 + this.model.fretWidth,
+							y: (5) + (this.model.neckWidth) / 2,
+							height: (this.model.neckWidth - 10 * 5) / 2,
+							width: this.model.fretWidth - 2 * 5
+						});
+						new SvgRectangle(el, {
+							x: (i - 1) * this.model.fretWidth + 5 + this.model.fretWidth,
+							y: 4 * 5,
+							height: (this.model.neckWidth - 10 * 5) / 2,
+							width: this.model.fretWidth - 2 * 5
+						});
+					}
+
+				} else {
 					new SvgCircle(el, {
 						x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
-						y: this.model.neckWidth / 2,
-						radius: this.model.fretWidth / 8
+						y: this.model.neckWidth + 8,
+						radius: this.model.fretWidth / 14,
+						className: 'border'
 					});
-				} else {
-					new SvgRectangle(el, {
-						x: (i - 1) * this.model.fretWidth + 5 + this.model.fretWidth,
-						y: 4 * 5,
-						height: this.model.neckWidth - 8 * 5,
-						width: this.model.fretWidth - 2 * 5
-					});
+					if (this.model.neckType === 'fender') {
+						new SvgCircle(el, {
+							x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
+							y: this.model.neckWidth / 2,
+							radius: this.model.fretWidth / 8
+						});
+					} else {
+						new SvgRectangle(el, {
+							x: (i - 1) * this.model.fretWidth + 5 + this.model.fretWidth,
+							y: 4 * 5,
+							height: this.model.neckWidth - 8 * 5,
+							width: this.model.fretWidth - 2 * 5
+						});
+					}
 				}
 			}
 		}, this);

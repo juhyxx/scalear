@@ -62,7 +62,6 @@ export default class Model {
 		return this._neckType || 'gibson';
 	}
 	set neckType(neckType) {
-		console.log('set', neckType);
 		this._neckType = neckType;
 		this.onUpdate('neckType');
 	}
@@ -91,7 +90,6 @@ export default class Model {
 	}
 
 	onUpdate(change) {
-		console.debug(change, this[change]);
 		this._updateHandlers = this._updateHandlers || [];
 		this._updateHandlers.forEach((handler) => {
 			handler.fn.call(handler.scope, this, [{name: change}]);
