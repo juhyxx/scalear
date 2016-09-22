@@ -89,6 +89,15 @@ export default class Model {
 		return 500;
 	}
 
+	get highlighted() {
+		return this._higlighted;
+	}
+
+	set highlighted(highlighted) {
+		this._higlighted = highlighted;
+		this.onUpdate('highlighted');
+	}
+
 	onUpdate(change) {
 		this._updateHandlers = this._updateHandlers || [];
 		this._updateHandlers.forEach((handler) => {
