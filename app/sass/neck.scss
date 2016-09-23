@@ -79,6 +79,9 @@
 			rect {
 				fill: rgba(#d6d7cf, 0.5);
 			}
+			.border {
+				fill: gray;
+			}
 		}
 		@media print {
 			fill: #bbbbbb;
@@ -90,7 +93,7 @@
 			fill: gray;
 			stroke: transparent;
 
-			&.border {
+			.border {
 				fill: gray;
 			}
 

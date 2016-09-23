@@ -23,12 +23,6 @@
                 <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
                 <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
             </filter>
-
-            <filter id="fretless" x="-1" y="-1" width="300%" height="300%">
-                <feGaussianBlur result="blurOut" in="SourceGraphic" stdDeviation="8,0" />
-                <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-            </filter>
-
             <filter id="fret" x="0" y="0" width="200%" height="200%">
                 <feOffset result="offOut" in="SourceAlpha" dx="1" dy="0" />
                 <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />

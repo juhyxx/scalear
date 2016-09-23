@@ -322,7 +322,8 @@ Scalear.instruments = [{
 }, {
 	group: 'bass',
 	name: 'Bass Fretless',
-	tunning: [G, D, A, E]
+	tunning: [G, D, A, E],
+	fretless: true
 }, {
 	group: 'bass',
 	name: 'Bass 5-string',
@@ -346,11 +347,13 @@ Scalear.instruments = [{
 }, {
 	group: 'other',
 	name: 'Violin',
-	tunning: [E, A, D, G]
+	tunning: [E, A, D, G],
+	fretless: true
 }, {
 	group: 'other',
 	name: 'Cello',
-	tunning: [A, D, G, C]
+	tunning: [A, D, G, C],
+	fretless: true
 }, {
 	group: 'other',
 	name: 'Mandolin GDAE',

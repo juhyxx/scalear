@@ -69,11 +69,11 @@ export default class Neck extends View {
 			fingers = new SvgGroup(el, {className: 'fingers'});
 
 		this.labels = new SvgGroup(el, {className: 'labels'});
-		if (this.model.instrument !== 6 && this.model.instrument !== 12) {
+		if (!CONST.instruments[this.model.instrument].fretless) {
 			this.renderShading(shading.el);
 		}
 		this.renderMarks(marks.el);
-		if (this.model.instrument !== 6 && this.model.instrument !== 12) {
+		if (!CONST.instruments[this.model.instrument].fretless) {
 			this.renderFrets(frets.el);
 		}
 		this.renderStrings(strings.el);
@@ -97,15 +97,15 @@ export default class Neck extends View {
 			if (i <= this.model.fretCount) {
 				if (i % 12 === 0) {
 					new SvgCircle(el, {
-						x: (i - 1) * this.model.fretWidth + 1.4 * this.model.fretWidth,
+						x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth - 3,
 						y: this.model.neckWidth + 8,
-						radius: this.model.fretWidth / 14,
+						radius: 2,
 						className: 'border'
 					});
 					new SvgCircle(el, {
-						x: (i - 1) * this.model.fretWidth + 1.6 * this.model.fretWidth,
+						x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth + 3,
 						y: this.model.neckWidth + 8,
-						radius: this.model.fretWidth / 14,
+						radius: 2,
 						className: 'border'
 					});
 					if (this.model.neckType === 'fender') {
@@ -136,9 +136,9 @@ export default class Neck extends View {
 
 				} else {
 					new SvgCircle(el, {
-						x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
+						x: ((i - 1) * this.model.fretWidth) + 1.5 * this.model.fretWidth,
 						y: this.model.neckWidth + 8,
-						radius: this.model.fretWidth / 14,
+						radius: 2,
 						className: 'border'
 					});
 					if (this.model.neckType === 'fender') {
@@ -226,8 +226,7 @@ export default class Neck extends View {
 				fingers[string].push(new SvgCircle(parentEl, {
 					x: i * this.model.fretWidth + this.model.fretWidth / 2,
 					y: (this.model.stringDistance * string) + this.model.stringDistance / 2,
-					radius: this.model.stringDistance / 3,
-					filter: this.model.instrument === 6 || this.model.instrument === 12 ? 'url(#fretless)' : ''
+					radius: this.model.stringDistance / 3
 				}));
 			}
 		}

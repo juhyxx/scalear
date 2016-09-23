@@ -68,6 +68,7 @@ body {
 
 footer {
 	width: 99vw;
+	user-select: none;
 	background: linear-gradient(darken($colorBase, 9%) 0%, $colorBase 15% ,$colorBase 75% ,  darken($colorBase, 9%) 100%) ;
 	color: white;
 	@media print {
