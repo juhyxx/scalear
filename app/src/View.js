@@ -20,4 +20,12 @@ export default class View {
 	modelUpdate() {
 		console.warn('Virtual method "modelUpdate", has to be implemented.');
 	}
+
+	createDomElement(parent, config) {
+		let element = document.createElement(config.name);
+
+		element.value = config.value;
+		element.innerHTML = config.innerHTML;
+		parent.appendChild(element);
+	}
 }

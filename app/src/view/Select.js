@@ -3,35 +3,39 @@ import { q } from '../shortcuts.js';
 
 export default class Select extends View {
 
-	constructor(selector, defaultValue, propertyName, model) {
+	get el() {
+		return this._el;
+	}
+	set el(selector) {
+		this._el = q(selector);
+	}
+
+	constructor(selector, propertyName, model, data, watchOption) {
 		super();
-		this._selector = selector;
-		this._defaultValue = defaultValue;
+		this.el = selector;
 		this._propertyName = propertyName;
-		this._el = q(this._selector);
+		this._watchOption = watchOption;
 		this.model = model;
-
+		this.render(data);
 	}
 
-	set model(model) {
-		this._model = model;
-		this.modelUpdate(model);
+	modelUpdate(model, changeName) {
+		if (changeName == this._watchOption) {
+			this.el.value = model[this._watchOption];
+		}
 	}
 
-	modelUpdate(model) {
-		model.forEach((option, id) => {
-			if (!q(this._selector + ' option[value="' + id + '"]')) {
-				let element = document.createElement('option');
-
-				element.value = id;
-				element.innerHTML = this._propertyName ? option[this._propertyName] : option;
-				if (id === this._defaultValue) {
-					element.setAttribute('selected', 'selected');
-				}
-				this._el.appendChild(element);
-			}
+	render(data) {
+		data.forEach((option, id) => {
+			this.renderOption(this.el, option, id);
 		});
-	};
+	}
 
-
+	renderOption(parent, option, id) {
+		this.createDomElement(parent, {
+			name: 'option',
+			value: id,
+			innerHTML: this._propertyName ? option[this._propertyName] : option
+		});
+	}
 }

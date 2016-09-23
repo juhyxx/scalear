@@ -296,23 +296,23 @@ Scalear.scalesGrouped = [{
 ];
 
 Scalear.instruments = [{
-	name: 'Standard',
+	name: 'Guitar Standard',
 	group: 'guitar',
 	tunning: [E, B, G, D, A, E]
 }, {
-	name: '7-string',
+	name: 'Guitar 7-string',
 	group: 'guitar',
 	tunning: [E, B, G, D, A, E, B]
 }, {
-	name: 'Open D',
+	name: 'Guitar Open D',
 	group: 'guitar',
 	tunning: [D, A, D, Fis, A, D]
 }, {
-	name: 'Open C',
+	name: 'Guitar Open C',
 	group: 'guitar',
 	tunning: [C, E, G, C, E, G]
 }, {
-	name: 'Open G',
+	name: 'Guitar Open G',
 	group: 'guitar',
 	tunning: [D, G, D, G, B, D]
 }, {

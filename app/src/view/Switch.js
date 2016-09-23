@@ -3,26 +3,28 @@ import { q } from '../shortcuts.js';
 
 export default class Switch extends View {
 
-	constructor(selector, defaultValue, model) {
-		super();
-		this._selector = selector;
-		this._defaultValue = defaultValue;
-		this._el = q(this._selector);
-		this._el.addEventListener('click', () => {
-			let event = new CustomEvent('change');
-			this._el.value = q(this._selector + ' [selected]').id === 'fender' ? 'gibson' : 'fender';
-			this._el.dispatchEvent(event);
-		});
-		this.model = model;
-		this.modelUpdate(this.model);
+	get el() {
+		return this._el;
+	}
+	set el(selector) {
+		this._el = q(selector);
 	}
 
-	modelUpdate(model, changes) {
-		changes = changes || [{name: 'neckType'}];
+	constructor(selector, model) {
+		super();
+		this.el = selector;
+		this.el.addEventListener('click', () => {
+			let event = new CustomEvent('change');
+			this.el.value = this.el.querySelector('[selected]').id === 'fender' ? 'gibson' : 'fender';
+			this.el.dispatchEvent(event);
+		});
+		this.model = model;
+	}
 
-		if (changes[0].name === 'neckType') {
-			q(this._selector + ' [selected]').removeAttribute('selected');
-			q(this._selector + ' #' + model.neckType).setAttribute('selected', 'selected');
+	modelUpdate(model, changeName) {
+		if (changeName === 'neckType') {
+			this.el.querySelector('[selected]').removeAttribute('selected');
+			this.el.querySelector(' #' + model.neckType).setAttribute('selected', 'selected');
 		}
 	}
 

@@ -9,7 +9,6 @@ import { q } from '../shortcuts.js';
 
 export default class Neck extends View {
 
-
 	constructor(svgParent, model) {
 		super();
 		this._parentEl = svgParent;
@@ -17,9 +16,7 @@ export default class Neck extends View {
 		this.modelUpdate(this.model);
 	}
 
-	modelUpdate(model, changes) {
-		let changeName = changes ? changes[0].name : 'instrument';
-
+	modelUpdate(model, changeName) {
 		switch (changeName) {
 			case 'highlighted':
 				this.highlightNotes(model.highlighted);
@@ -44,6 +41,7 @@ export default class Neck extends View {
 	}
 
 	render() {
+		console.time('render');
 		this._mainGroup = new SvgGroup(this._parentEl, {
 			id: 'neck',
 			className: this.model.neckType
@@ -57,8 +55,10 @@ export default class Neck extends View {
 			fill: this.model.neckType === 'fender' ? 'url(#gradientfender)' : 'url(#gradient)',
 			filter: 'url(#neckshadow)'
 		});
+
 		this.renderGroups(this._mainGroup.el);
 		this.mapNotes();
+		console.timeEnd('render');
 	}
 
 	renderGroups(el) {
@@ -265,6 +265,8 @@ export default class Neck extends View {
 			if (note === this.model.rootNote) {
 				item.className = 'root';
 				this._labelsMap.get(item).className = 'root';
+			} else {
+				this._labelsMap.get(item).className = '';
 			}
 		});
 	}

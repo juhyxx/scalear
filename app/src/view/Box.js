@@ -16,9 +16,7 @@ export default class Box extends View {
 		this.modelUpdate(this.model);
 	}
 
-	modelUpdate(model, changes) {
-		let changeName = changes ? changes[0].name : 'scale';
-
+	modelUpdate(model, changeName) {
 		switch (changeName) {
 			case 'highlighted':
 			case 'rootNote':

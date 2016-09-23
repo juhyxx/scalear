@@ -2,12 +2,6 @@ import CONST from './const.js';
 
 export default class Model {
 
-	constructor(defaults) {
-		Object.keys(defaults).forEach((key) => {
-			this[key] = defaults[key];
-		});
-	}
-
 	get rootNote() {
 		return this._rootNote || 0;
 	}
@@ -15,16 +9,20 @@ export default class Model {
 		return CONST.notes[this.rootNote];
 	}
 	set rootNote(rootNote) {
-		this._rootNote = parseInt(rootNote, 10);
-		this.onUpdate('rootNote');
+		if (this.rootNote !== rootNote) {
+			this._rootNote = parseInt(rootNote, 10);
+			this.onUpdate('rootNote');
+		}
 	}
 
 	get instrument() {
 		return this._instrument || 0;
 	}
 	set instrument(instrument) {
-		this._instrument = parseInt(instrument, 10);
-		this.onUpdate('instrument');
+		if (this.instrument !== instrument) {
+			this._instrument = parseInt(instrument, 10);
+			this.onUpdate('instrument');
+		}
 	}
 
 	get scale() {
@@ -34,8 +32,10 @@ export default class Model {
 		return CONST.scales[this.scale].name;
 	}
 	set scale(scale) {
-		this._scale = parseInt(scale, 10);
-		this.onUpdate('scale');
+		if (this.scale !== scale) {
+			this._scale = parseInt(scale, 10);
+			this.onUpdate('scale');
+		}
 	}
 
 	get fretCount() {
@@ -101,15 +101,13 @@ export default class Model {
 	onUpdate(change) {
 		this._updateHandlers = this._updateHandlers || [];
 		this._updateHandlers.forEach((handler) => {
-			handler.fn.call(handler.scope, this, [{name: change}]);
+			handler.fn.call(handler.scope, this, change);
 		});
 	}
 
 	addUpdateHandler(fn, scope) {
 		this._updateHandlers = this._updateHandlers || [];
-
 		this._updateHandlers.push({fn: fn,scope: scope});
-
 	}
 
 	toJSON() {
@@ -122,6 +120,5 @@ export default class Model {
 			neckType: this.neckType
 		});
 	}
-
 
 }
