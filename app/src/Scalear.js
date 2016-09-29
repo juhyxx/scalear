@@ -16,16 +16,9 @@ export default class Scalear extends Application {
 	}
 
 	onBoot() {
-		let defaults = JSON.parse(localStorage.defaults || '{}');
-
 		this.model = new Model();
 		this.prepareUI();
-		this.model.namesVisible = defaults.namesVisible;
-		this.model.fretsCount = defaults.fretsCount;
-		this.model.neckType = defaults.neckType;
-		this.model.rootNote = defaults.rootNote;
-		this.model.scale = defaults.scale;
-		this.model.instrument = defaults.instrument;
+		Object.assign(this.model, JSON.parse(localStorage.defaults || '{}'));
 		this.setDefaults();
 		this.onRouteChange(this.route);
 	}
@@ -34,7 +27,7 @@ export default class Scalear extends Application {
 		q('#name').innerHTML = this.model.scaleName;
 		q('#root').innerHTML = this.model.rootNoteName;
 		q('#frets-count').value = this.model.fretCount;
-		q('footer').className = '';
+		q('nav').className = '';
 		q('svg').setAttribute('class', '');
 		document.title = this.model.rootNoteName + ' ' + this.model.scaleName + ' (' + this.name + ')';
 		if (this.model.namesVisible) {
@@ -44,9 +37,26 @@ export default class Scalear extends Application {
 
 	prepareUI() {
 		let neckSelect = new Switch('#necktype .two-values-switch', this.model),
-			rootSelect = new Select('#root-selector', null, this.model, CONST.notes, 'rootNote'),
-			scaleSelect = new SelectTwoLevel('#scale-selector', 'name', this.model, CONST.scalesGrouped, 'scale'),
-			instrumentSelect = new SelectTwoLevel('#instrument-selector', 'name', this.model, CONST.instrumentsGrouped, 'instrument'),
+			rootSelect = new Select({
+				selector: '#root-selector',
+				model: this.model,
+				data: CONST.notes,
+				watchOption: 'rootNote'
+			}),
+			scaleSelect = new SelectTwoLevel({
+				selector: '#scale-selector',
+				propertyName: 'name',
+				model: this.model,
+				data: CONST.scalesGrouped,
+				watchOption: 'scale'
+			}),
+			instrumentSelect = new SelectTwoLevel({
+				selector: '#instrument-selector',
+				propertyName: 'name',
+				model: this.model,
+				data: CONST.instrumentsGrouped,
+				watchOption: 'instrument'
+			}),
 			scaleBox = new Box(Svg.get('svg'), this.model),
 			neckView = new Neck(Svg.get('svg'), this.model);
 
@@ -80,13 +90,12 @@ export default class Scalear extends Application {
 	}
 
 	onRouteChange(params) {
-		let item,
-			note;
+		let note;
 
 		if (params.length > 0) {
 			if (params[2]) {
 				for (note = 0; note < CONST.notes.length; note++) {
-					item = CONST.notes[note];
+					let item = CONST.notes[note];
 					if (Application.prepareHashString(item) === params[2]) {
 						break;
 					}

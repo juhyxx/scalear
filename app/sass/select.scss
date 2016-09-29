@@ -1,0 +1,31 @@
+@import "variables";
+
+select {
+	padding: 6px;
+	outline: none;
+	font-size: 1.3rem;
+	border-radius: 8px;
+	font-family: "Ubuntu", sans-serif;
+	background-color: #444444;
+	color: #dddddd;
+	cursor: pointer;
+	border: 0;
+	box-shadow: inset 0 0 4px black;
+	text-shadow: 0 1px 3px rgba(black, 0.8);
+	optgroup {
+		background-color: $colorBase;
+		color: white;
+	}
+	option {
+		color: $colorBase;
+		background-color: white;
+		text-shadow: none;
+	}
+	&:hover {
+		opacity: 1;
+	}
+	&:focus {
+		color: white;
+		box-shadow: inset 0 0 4px black, 0 0 4px black;
+	}
+}

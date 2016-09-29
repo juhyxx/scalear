@@ -1,0 +1,28 @@
+@import "variables";
+
+.toggle {
+	opacity: 1!important;
+	cursor: pointer;
+	.toggle-box {
+		opacity: 1!important;
+		padding: 0.7em;
+		color: rgba(black, 0.4);
+		background-color: gray;
+		border-radius: 8px;
+		text-shadow: none;
+		user-select: none;
+		box-shadow: inset 3px 3px 3px rgba(white, 0.2),  0 0 3px black, 0 0 8px rgba(white, 0.3), inset 0 0 3px black,  inset 0 0 20px gray;
+	}
+	input[type="checkbox"] {
+		visibility: hidden;
+		position: absolute;
+	}
+	.toggle-box {
+		background-image: linear-gradient(transparent 50%, rgba(255,255,255,0.3) 50%);
+		background-size: 2px 2px;
+	}
+	input[type="checkbox"]:checked+.toggle-box {
+		background-color: $colorHighlight;
+		box-shadow: inset 3px 3px 3px rgba(white, 0.2), 0 0 3px black, 0 0 8px rgba(white, 0.3), inset 0 0 3px black,  inset 0 0 20px gray, 0 0 40px rgba(orange, 0.5);
+	}
+}

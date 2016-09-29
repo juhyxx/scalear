@@ -10,7 +10,7 @@ export default class Select extends View {
 		this._el = q(selector);
 	}
 
-	constructor(selector, propertyName, model, data, watchOption) {
+	constructor({selector, propertyName, model, data, watchOption}) {
 		super();
 		this.el = selector;
 		this._propertyName = propertyName;

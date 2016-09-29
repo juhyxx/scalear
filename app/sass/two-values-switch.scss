@@ -27,10 +27,10 @@
         border-radius: 8px;
         color: gray;
         &[selected] {
-            color: lighten(orange, 10%);
+            color: $colorHighlight;
             border: 1px solid darken($colorBase, 20%);
             background-color: $colorBase;
-            text-shadow: 0 -1px black, 0 0 10px lighten(orange, 10%);
+            text-shadow: 0 -1px black, 0 0 10px $colorHighlight;
             box-shadow: inset 1px 1px 4px rgba(white, 0.2), 0 0 4px rgba(black, 0.5);
         }
     }

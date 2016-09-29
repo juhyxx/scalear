@@ -41,7 +41,6 @@ export default class Neck extends View {
 	}
 
 	render() {
-		console.time('render');
 		this._mainGroup = new SvgGroup(this._parentEl, {
 			id: 'neck',
 			className: this.model.neckType
@@ -58,7 +57,6 @@ export default class Neck extends View {
 
 		this.renderGroups(this._mainGroup.el);
 		this.mapNotes();
-		console.timeEnd('render');
 	}
 
 	renderGroups(el) {

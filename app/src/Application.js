@@ -21,14 +21,11 @@ export default class Application {
 	}
 
 	static run() {
-		return (new this).runInstance();
+		return (new this).run();
 	}
 
-	runInstance() {
-		window.addEventListener('load', () => {
-			window.removeEventListener('load', onload, false);
-			this.onBoot.call(this);
-		});
+	run() {
+		this.onBoot.call(this);
 		window.addEventListener('hashchange', () => this.onRouteChange(this.route));
 	}
 
