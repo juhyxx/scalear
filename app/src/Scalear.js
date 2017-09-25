@@ -1,5 +1,8 @@
 import Application from './Application.js';
-import CONST from './const.js';
+import { APP } from './enums/app.js';
+import { scalesGrouped, scales } from './enums/scales.js';
+import { instrumentsGrouped, instruments } from './enums/instruments.js';
+import { notes } from './enums/notes.js';
 import { q } from './shortcuts.js';
 import Svg from './svg/Svg.js';
 import Neck from './view/Neck.js';
@@ -12,7 +15,7 @@ import Model from './Model.js';
 export default class Scalear extends Application {
 
 	get name() {
-		return 'Scalear ' + CONST.version;
+		return 'Scalear ' + APP.version;
 	}
 
 	onBoot() {
@@ -40,21 +43,21 @@ export default class Scalear extends Application {
 			rootSelect = new Select({
 				selector: '#root-selector',
 				model: this.model,
-				data: CONST.notes,
+				data: notes,
 				watchOption: 'rootNote'
 			}),
 			scaleSelect = new SelectTwoLevel({
 				selector: '#scale-selector',
 				propertyName: 'name',
 				model: this.model,
-				data: CONST.scalesGrouped,
+				data: scalesGrouped,
 				watchOption: 'scale'
 			}),
 			instrumentSelect = new SelectTwoLevel({
 				selector: '#instrument-selector',
 				propertyName: 'name',
 				model: this.model,
-				data: CONST.instrumentsGrouped,
+				data: instrumentsGrouped,
 				watchOption: 'instrument'
 			}),
 			scaleBox = new Box(Svg.get('svg'), this.model),
@@ -84,7 +87,7 @@ export default class Scalear extends Application {
 				break;
 		}
 		this.route = Application.prepareHashString([
-			'', CONST.instruments[model.instrument].name, model.scaleName, model.rootNoteName, ''
+			'', instruments[model.instrument].name, model.scaleName, model.rootNoteName, ''
 		].join('/'));
 		localStorage.defaults = model.toJSON();
 	}
@@ -94,8 +97,8 @@ export default class Scalear extends Application {
 
 		if (params.length > 0) {
 			if (params[2]) {
-				for (note = 0; note < CONST.notes.length; note++) {
-					let item = CONST.notes[note];
+				for (note = 0; note < notes.length; note++) {
+					let item = notes[note];
 					if (Application.prepareHashString(item) === params[2]) {
 						break;
 					}
@@ -103,13 +106,13 @@ export default class Scalear extends Application {
 				this.model.rootNote = note;
 			}
 			if (params[0]) {
-				let instrument = CONST.instruments.filter(item => {
+				let instrument = instruments.filter(item => {
 					return Application.prepareHashString(item.name) === params[0];
 				})[0].id;
 				this.model.instrument = instrument;
 			}
 			if (params[1]) {
-				this.model.scale = CONST.scales.filter(item => {
+				this.model.scale = scales.filter(item => {
 					return Application.prepareHashString(item.name) === params[1];
 				})[0].id;
 			}

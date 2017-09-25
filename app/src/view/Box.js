@@ -1,5 +1,9 @@
 import View from '../View.js';
-import CONST from '../const.js';
+
+import { scales } from '../enums/scales.js';
+import { notes } from '../enums/notes.js';
+import { intervals } from '../enums/intervals.js';
+
 import SvgGroup from '../svg/element/Group.js';
 import SvgCircle from '../svg/element/Circle.js';
 import SvgRectangle from '../svg/element/Rectangle.js';
@@ -31,8 +35,8 @@ export default class Box extends View {
 			this._mainGroup.remove();
 		}
 
-		let scale = CONST.scales[scaleId].notes.slice().map(item => {
-			return (item + rootNote) % CONST.notes.length;
+		let scale = scales[scaleId].notes.slice().map(item => {
+			return (item + rootNote) % notes.length;
 		});
 
 		this._mainGroup = new SvgGroup(this._parentEl, {
@@ -46,7 +50,7 @@ export default class Box extends View {
 					x: 26 + 30 * index,
 					y: 50,
 					className: 'interval',
-					textContent: CONST.intervals[CONST.scales[scaleId].notes[index + 1] - CONST.scales[scaleId].notes[index]]
+					textContent: intervals[scales[scaleId].notes[index + 1] - scales[scaleId].notes[index]]
 				});
 
 				new SvgLine(this._mainGroup.el, {
@@ -72,7 +76,7 @@ export default class Box extends View {
 				});
 			}
 
-			let content = CONST.notes[item],
+			let content = notes[item],
 				hasSharp = content.length > 1,
 				noteName = new SvgText(this._mainGroup.el, {
 					x: 10 + 30 * index,
@@ -105,7 +109,7 @@ export default class Box extends View {
 				x: 13 + 30 * index,
 				y: 75,
 				className: 'interval',
-				textContent: CONST.intervals[CONST.scales[scaleId].notes[index]]
+				textContent: intervals[scales[scaleId].notes[index]]
 			});
 		});
 	}

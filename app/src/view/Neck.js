@@ -1,5 +1,8 @@
 import View from '../View.js';
-import CONST from '../const.js';
+
+import { scales } from '../enums/scales.js';
+import { instruments } from '../enums/instruments.js';
+import { notes } from '../enums/notes.js';
 import SvgGroup from '../svg/element/Group.js';
 import SvgCircle from '../svg/element/Circle.js';
 import SvgRectangle from '../svg/element/Rectangle.js';
@@ -67,11 +70,11 @@ export default class Neck extends View {
 			fingers = new SvgGroup(el, {className: 'fingers'});
 
 		this.labels = new SvgGroup(el, {className: 'labels'});
-		if (!CONST.instruments[this.model.instrument].fretless) {
+		if (!instruments[this.model.instrument].fretless) {
 			this.renderShading(shading.el);
 		}
 		this.renderMarks(marks.el);
-		if (!CONST.instruments[this.model.instrument].fretless) {
+		if (!instruments[this.model.instrument].fretless) {
 			this.renderFrets(frets.el);
 		}
 		this.renderStrings(strings.el);
@@ -194,7 +197,7 @@ export default class Neck extends View {
 				notesMap.set(note, notesMapItem);
 				labelsMap.set(this._fingers[string][fret], this._labels[string][fret]);
 				note++;
-				note = note % CONST.notes.length;
+				note = note % notes.length;
 			}
 		});
 		this._notesMap = notesMap;
@@ -242,7 +245,7 @@ export default class Neck extends View {
 		this._labels = this.model.tunning.slice().map((noteNumber, string) => {
 			fretArray = new Array(this.model.fretCount + 2).join('0').split('');
 			return fretArray.map((item, i) => {
-				content = CONST.notes[(noteNumber + i) % CONST.notes.length];
+				content = notes[(noteNumber + i) % notes.length];
 				correction = content.length > 1 ? 1 : 0;
 				hasSharp = content.length > 1;
 
@@ -270,7 +273,7 @@ export default class Neck extends View {
 
 	showScale(scale) {
 		this.clear();
-		(CONST.scales[scale || this.model.scale].notes).slice().map(item => (item + this.model.rootNote) % CONST.notes.length).forEach((note) => this.showAllNotes(note));
+		(scales[scale || this.model.scale].notes).slice().map(item => (item + this.model.rootNote) % notes.length).forEach((note) => this.showAllNotes(note));
 	}
 
 	clear() {

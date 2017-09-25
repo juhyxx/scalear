@@ -1,4 +1,6 @@
-import CONST from './const.js';
+import { scales } from './enums/scales.js';
+import { notes } from './enums/notes.js';
+import { instruments } from './enums/instruments.js';
 
 export default class Model {
 
@@ -6,7 +8,7 @@ export default class Model {
 		return this._rootNote || 0;
 	}
 	get rootNoteName() {
-		return CONST.notes[this.rootNote];
+		return notes[this.rootNote];
 	}
 	set rootNote(rootNote) {
 		if (this.rootNote !== rootNote) {
@@ -29,7 +31,7 @@ export default class Model {
 		return this._scale || 0;
 	}
 	get scaleName() {
-		return CONST.scales[this.scale].name;
+		return scales[this.scale].name;
 	}
 	set scale(scale) {
 		if (this.scale !== scale) {
@@ -67,7 +69,7 @@ export default class Model {
 	}
 
 	get tunning() {
-		return CONST.instruments[this.instrument].tunning;
+		return instruments[this.instrument].tunning;
 	}
 	set tunning(tunning) {
 		return this._tunning = tunning;
