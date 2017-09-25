@@ -201,11 +201,11 @@ Scalear.scales = [{
 }, {
 	name: 'Dim chord',
 	notes: [C, Dis, Fis],
-	group: 'chords'
+	group: 'dim-chords'
 }, {
 	name: 'Dim 7 chord',
 	notes: [C, Dis, Fis, A],
-	group: 'chords'
+	group: 'dim-chords'
 }, {
 	name: 'Whole tone',
 	notes: [C, D, E, Fis, Gis, Ais],
@@ -277,6 +277,14 @@ Scalear.scalesGrouped = [{
 		});
 	}()
 }, {
+	name: 'Dminished Chords',
+	group: 'dim-chords',
+	options: function() {
+		return Scalear.scales.filter(function(item) {
+			return item.group === 'dim-chords' ? item : undefined;
+		});
+	}()
+}/*, {
 	name: 'Chords',
 	group: 'chords',
 	options: function() {
@@ -284,7 +292,7 @@ Scalear.scalesGrouped = [{
 			return item.group === 'chords' ? item : undefined;
 		});
 	}()
-}, {
+}*/, {
 	name: 'Intervals',
 	group: 'intervals',
 	options: function() {

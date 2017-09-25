@@ -1,6 +1,4 @@
 @import "variables";
-
-
 #neck {
 	.fingers {
 		circle {
@@ -11,7 +9,7 @@
 			}
 			display: none;
 			&.root {
-				fill: $colorBase
+				fill: $colorBase;
 			}
 			&.highlighted {
 				fill: green;
@@ -61,7 +59,7 @@
 	}
 	.frets {
 		line {
-			stroke: #ffffcc;
+			stroke: rgba(#ffffcc, 0.4);
 			&.zero {
 				stroke: #dddddd;
 				stroke-width: 6;
@@ -76,7 +74,7 @@
 	.marks {
 		@media screen {
 			rect {
-				fill: rgba(#d6d7cf, 0.5);
+				fill: rgba(#d6d7cf, 0.2);
 			}
 			.border {
 				fill: gray;
@@ -91,14 +89,10 @@
 		.marks {
 			fill: gray;
 			stroke: transparent;
-
 			.border {
 				fill: gray;
 			}
-
 		}
-
-
 		.shading {
 			opacity: 0.5;
 		}
@@ -121,7 +115,7 @@
 		.frets {
 			line {
 				stroke: black !important;
-				stroke-width: 1 ;
+				stroke-width: 1;
 				text {
 					stroke: transparent;
 				}

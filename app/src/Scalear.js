@@ -69,7 +69,7 @@ export default class Scalear extends Application {
 		q('#print').addEventListener('click', e => window.print());
 	}
 
-	modelUpdate(model, changes, changeName) {
+	modelUpdate(model, changeName) {
 		switch (changeName) {
 			case 'rootNote':
 				q('#root').innerHTML = model.rootNoteName;
