@@ -1,4 +1,4 @@
-#Scalear
+# Scalear
 [![Build Status](https://travis-ci.org/juhyxx/scalear.svg?branch=master)](https://travis-ci.org/juhyxx/scalear)
 
 
