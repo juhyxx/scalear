@@ -3,14 +3,14 @@
 nav {
 	width: 99vw;
 	user-select: none;
-	background: linear-gradient(darken($colorBase, 3%) 0%, $colorBase 15% ,$colorBase 75% ,  darken($colorBase, 3%) 100%) ;
+	background: linear-gradient(darken(@colorBase, 3%) 0%, @colorBase 15% ,@colorBase 75% ,  darken(@colorBase, 3%) 100%) ;
 	color: white;
 	padding: 1rem;
 	padding-bottom: 1rem;
 	padding-right: 4rem;
 	align-items: center;
 	position: absolute;
-	box-shadow: 0 0 3px rgba(black, 0.5) , 0 0 20px rgba(black, 0.2);
+	box-shadow: 0 0 3px rgba(0,0,0, 0.5) , 0 0 20px rgba(0,0,0, 0.2);
 	transition: transform 2s;
 	transition-delay: 0.5s;
 	transition-timing-function: ease-out;
@@ -31,7 +31,7 @@ nav {
 	}
 	input[type="range"] {
 		outline: 0;
-		color: darken($colorBase, 10%);
+		color: darken(@colorBase, 10%);
 	}
 	&>div {
 		display: flex;

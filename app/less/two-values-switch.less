@@ -3,9 +3,7 @@
 .two-values-switch {
     display: block;
     outline: none;
-    margin: {
-        top: 2px;
-    };
+    margin-top: 2px;
     &:focus {
         color: white;
         box-shadow: inset 0 0 4px black, 0px 0px 4px black;
@@ -20,18 +18,16 @@
         display: inline-block;
         font-size: 18px;
         padding: 6px;
-        padding: {
-            left: 9px;
-            right: 9px;
-        };
+        padding-left: 9px;
+        padding-right: 9px;
         border-radius: 8px;
         color: gray;
         &[selected] {
-            color: $colorHighlight;
-            border: 1px solid darken($colorBase, 20%);
-            background-color: $colorBase;
-            text-shadow: 0 -1px black, 0 0 10px $colorHighlight;
-            box-shadow: inset 1px 1px 4px rgba(white, 0.2), 0 0 4px rgba(black, 0.5);
+            color: @colorHighlight;
+            border: 1px solid darken(@colorBase, 20%);
+            background-color: @colorBase;
+            text-shadow: 0 -1px black, 0 0 10px @colorHighlight;
+            box-shadow: inset 1px 1px 4px rgba(255,255,255, 0.2), 0 0 4px rgba(0,0,0, 0.5);
         }
     }
 }

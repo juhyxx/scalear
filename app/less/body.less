@@ -22,16 +22,22 @@ body {
 			margin-left: 4.5rem;
 			margin-bottom: 0.5em;
 			color: white;
-			text-shadow: 0 0 5px rgba(black, 0.5);
+			text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 			margin-top: 40px;
 		}
 	}
 	svg {
 		width: 100%;
 		opacity: 1;
-		transition: opacity 2s;
+		transition: opacity 2s, transform 1s;
+		transform-origin: 5% 100%;
 		&.loading {
 			opacity: 0;
+		}
+		@media screen   and (max-width: 600px) {
+			width: auto;
+			height: 80vw;
+			transform: rotate(90deg) translateX(-300px);
 		}
 	}
 }

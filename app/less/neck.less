@@ -3,13 +3,13 @@
 	.fingers {
 		circle {
 			fill: white;
-			stroke: rgba(black, 0.7);
+			stroke: rgba(0,0,0, 0.7);
 			@media print {
 				stroke: black;
 			}
 			display: none;
 			&.root {
-				fill: $colorBase;
+				fill: @colorBase;
 			}
 			&.highlighted {
 				fill: green;
@@ -18,7 +18,7 @@
 	}
 	.labels {
 		text {
-			fill: rgba(black, 0.7);
+			fill: rgba(0,0,0, 0.7);
 			font-family: "Ubuntu", sans-serif;
 			font-size: 7px;
 			display: none;
@@ -59,7 +59,7 @@
 	}
 	.frets {
 		line {
-			stroke: rgba(#ffffcc, 0.4);
+			stroke: rgba(255,255,204, 0.4);
 			&.zero {
 				stroke: #dddddd;
 				stroke-width: 6;
@@ -74,7 +74,7 @@
 	.marks {
 		@media screen {
 			rect {
-				fill: rgba(#d6d7cf, 0.2);
+				fill: rgba(214,215,207, 0.2);
 			}
 			.border {
 				fill: gray;
