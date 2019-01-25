@@ -13,7 +13,12 @@ const Ais = 10;
 const B = 11;
 
 
-let scales = [{
+let scales = [
+{
+	name: 'Chromatic',
+	notes: [C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B],
+	group: 'scales'
+},{
 	name: 'Minor second (m2)',
 	notes: [C, Cis],
 	group: 'intervals'
@@ -161,16 +166,12 @@ let scales = [{
 	name: 'Whole tone',
 	notes: [C, D, E, Fis, Gis, Ais],
 	group: 'scales'
-}, {
-	name: 'Chromatic',
-	notes: [C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B],
-	group: 'scales'
-}, {
+},  {
 	name: 'Maj Min Hybrid Pentatonic',
 	notes: [C, D, Dis, E, F, G, A, Ais],
 	group: 'pentatonic'
 }, {
-	name: 'Bebop dominant ',
+	name: 'Bebop dominant',
 	notes: [C, D, E, F, G, A, Ais, B],
 	group: 'scales'
 }, {
@@ -235,15 +236,7 @@ let scalesGrouped = [{
 			return item.group === 'dim-chords' ? item : undefined;
 		});
 	}()
-}/*, {
-	name: 'Chords',
-	group: 'chords',
-	options: function() {
-		return scales.filter(function(item) {
-			return item.group === 'chords' ? item : undefined;
-		});
-	}()
-}*/, {
+}, {
 	name: 'Intervals',
 	group: 'intervals',
 	options: function() {

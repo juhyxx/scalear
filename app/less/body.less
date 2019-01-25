@@ -8,6 +8,10 @@ body {
 	font-family: "Ubuntu", sans-serif;
 	background-color: #bfa98e;
 	background: linear-gradient(lighten(#bfa98e, 30%), #bfa98e);
+	&.dark{
+		background-color: #444;
+		background: linear-gradient(lighten(#444, 10%), #444);
+	}
 	@media screen {
 		height: 100vh;
 		overflow: hidden;
@@ -19,10 +23,10 @@ body {
 			text-transform: none;
 		}
 		@media screen {
+			visibility: hidden;
 			margin-left: 4.5rem;
 			margin-bottom: 0.5em;
-			color: white;
-			text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+			color: @colorBase;
 			margin-top: 40px;
 		}
 	}
@@ -34,10 +38,11 @@ body {
 		&.loading {
 			opacity: 0;
 		}
-		@media screen   and (max-width: 600px) {
-			width: auto;
-			height: 80vw;
-			transform: rotate(90deg) translateX(-300px);
-		}
+		// @media screen   and (max-width: 600px) {
+		// 	width: auto;
+		// 	height: 80vw;
+		// 	transform: rotate(90deg) translateX(-300px);
+		// }
 	}
 }
+
