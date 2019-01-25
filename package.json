@@ -2,7 +2,7 @@
   "name": "scalear",
   "description": "Scales and chords for stringed musical instruments.",
   "author": "juhyxx <juhy@rezatyrakety.cz>",
-  "version": "0.6.0",
+  "version": "0.5.2",
   "repository": {
     "type": "git",
     "url": ""
