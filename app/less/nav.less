@@ -22,13 +22,15 @@ nav {
 	bottom: 0;
 	border-top: 2px solid white;
 	position: fixed;
-	#logo {
-		background: url(logo.svg)  no-repeat left bottom;
-		background-size: contain;
-		width: 182px;
-		height: 2.5rem;
-		flex-shrink: 0;
-		flex-grow: 1;
+	@media screen and (min-width: 1150px) {
+		#logo {
+			background: url(logo.svg)  no-repeat left bottom;
+			background-size: contain;
+			width: 182px;
+			height: 2.5rem;
+			flex-shrink: 0;
+			flex-grow: 1;
+		}
 	}
 	input[type="range"] {
 		outline: 0;

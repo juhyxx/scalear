@@ -10,8 +10,7 @@ select {
 	color: @colorBase;
 	.dark & {
 		background-color:#444;
-		color: lighten(@colorBase, 20%);
-		text-shadow: 0 0 2px black;
+		color: black;
 	}
 	
 	cursor: pointer;
@@ -31,6 +30,6 @@ select {
 		opacity: 1;
 	}
 	&:focus {
-			box-shadow: inset 0 0 4px black, 0 0 4px black;
+		box-shadow: inset 0 0 4px black, 0 0 4px black;
 	}
 }

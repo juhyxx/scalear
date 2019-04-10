@@ -9,8 +9,8 @@ body {
 	background-color: #bfa98e;
 	background: linear-gradient(lighten(#bfa98e, 30%), #bfa98e);
 	&.dark{
-		background-color: #444;
-		background: linear-gradient(lighten(#444, 10%), #444);
+		background-color: @colorDark;
+		background: linear-gradient(lighten(#444, 10%), @colorDark);
 	}
 	@media screen {
 		height: 100vh;
@@ -24,6 +24,7 @@ body {
 		}
 		@media screen {
 			visibility: hidden;
+			display: none;
 			margin-left: 4.5rem;
 			margin-bottom: 0.5em;
 			color: @colorBase;
@@ -33,6 +34,7 @@ body {
 	svg {
 		width: 100%;
 		opacity: 1;
+		margin: 1rem;
 		transition: opacity 2s, transform 1s;
 		transform-origin: 5% 100%;
 		&.loading {
