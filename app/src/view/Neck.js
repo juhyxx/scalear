@@ -9,6 +9,7 @@ import SvgRectangle from '../svg/element/Rectangle.js';
 import SvgLine from '../svg/element/Line.js';
 import SvgText from '../svg/element/Text.js';
 import { q } from '../shortcuts.js';
+import { keys } from '../enums/keys.js';
 
 export default class Neck extends View {
 
@@ -245,9 +246,10 @@ export default class Neck extends View {
 		this._labels = this.model.tunning.slice().map((noteNumber, string) => {
 			fretArray = new Array(this.model.fretCount + 2).join('0').split('');
 			return fretArray.map((item, i) => {
-				content = notes[(noteNumber + i) % notes.length];
+				content = keys.flat[(noteNumber + i) % notes.length];
 				correction = content.length > 1 ? 1 : 0;
 				hasSharp = content.length > 1;
+				console.log(content);
 
 				return new SvgText(parentEl, {
 					x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
