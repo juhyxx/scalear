@@ -39,11 +39,6 @@ let instruments = [{
 	tunning: [G, D, A, E]
 }, {
 	group: 'bass',
-	name: 'Bass Fretless',
-	tunning: [G, D, A, E],
-	fretless: true
-}, {
-	group: 'bass',
 	name: 'Bass 5-string',
 	tunning: [G, D, A, E, B]
 }, {

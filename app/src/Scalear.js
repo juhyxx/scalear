@@ -6,7 +6,7 @@ import { notes } from './enums/notes.js';
 import { q } from './shortcuts.js';
 import Svg from './svg/Svg.js';
 import Neck from './view/Neck.js';
-import Box from './view/Box.js';
+//import Box from './view/Box.js';
 import Select from './view/Select.js';
 import SelectTwoLevel from './view/SelectTwoLevel.js';
 import Switch from './view/Switch.js';
@@ -20,10 +20,11 @@ export default class Scalear extends Application {
 
 	onBoot() {
 		this.model = new Model();
-		this.prepareUI();
+		this.init();
 		Object.assign(this.model, JSON.parse(localStorage.defaults || '{}'));
-		this.setDefaults();
+		
 		this.onRouteChange(this.route);
+		this.setDefaults();
 	}
 
 	setDefaults() {
@@ -38,7 +39,7 @@ export default class Scalear extends Application {
 		}
 	}
 
-	prepareUI() {
+	init() {
 		let neckSelect = new Switch('#necktype .two-values-switch', this.model),
 			rootSelect = new Select({
 				selector: '#root-selector',
@@ -60,7 +61,7 @@ export default class Scalear extends Application {
 				data: instrumentsGrouped,
 				watchOption: 'instrument'
 			}),
-			scaleBox = new Box(Svg.get('svg'), this.model),
+			//scaleBox = new Box(Svg.get('svg'), this.model),
 			neckView = new Neck(Svg.get('svg'), this.model);
 
 		neckSelect.on('change', e => this.model.neckType = e.target.value);
@@ -85,6 +86,8 @@ export default class Scalear extends Application {
 			case 'neckType':
 				document.body.classList[model.neckType === 'fender' ? 'add' : 'remove']('dark');
 				break;
+			case 'namesVisible':
+				q('#note-names')[model.namesVisible ? 'setAttribute':'removeAttribute']('checked', true);
 		}
 		this.route = Application.prepareHashString([
 			'', instruments[model.instrument].name, model.scaleName, model.rootNoteName, ''
@@ -103,19 +106,25 @@ export default class Scalear extends Application {
 						break;
 					}
 				}
-				this.model.rootNote = note;
+				this.model.rootNote = note < 12 ? note : 0;
 			}
 			if (params[0]) {
-				let instrument = instruments.filter(item => {
-					return Application.prepareHashString(item.name) === params[0];
-				})[0].id;
-				this.model.instrument = instrument;
+				try{
+					this.model.instrument = instruments.filter(item => Application.prepareHashString(item.name) === params[0])[0].id;
+				}
+				catch(e){
+					this.model.instrument = 0
+				}	
 			}
 			if (params[1]) {
-				this.model.scale = scales.filter(item => {
-					return Application.prepareHashString(item.name) === params[1];
-				})[0].id;
+				try{
+					this.model.scale = scales.filter(item => Application.prepareHashString(item.name) === params[1])[0].id;
+				}
+				catch(e){
+					this.model.scale = 0
+				}				
 			}
 		}
+	
 	}
 }

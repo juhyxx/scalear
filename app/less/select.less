@@ -6,12 +6,17 @@ select {
 	font-size: 1.3rem;
 	border-radius: 8px;
 	font-family: "Ubuntu", sans-serif;
-	background-color: #444444;
-	color: #dddddd;
+	background-color:#bfa98e;
+	color: @colorBase;
+	.dark & {
+		background-color:#444;
+		color: black;
+	}
+	
 	cursor: pointer;
 	border: 0;
 	box-shadow: inset 0 0 4px black;
-	text-shadow: 0 1px 3px rgba(0,0,0, 0.8);
+	font-size: 1rem;
 	optgroup {
 		background-color: @colorBase;
 		color: white;
@@ -25,7 +30,6 @@ select {
 		opacity: 1;
 	}
 	&:focus {
-		color: white;
 		box-shadow: inset 0 0 4px black, 0 0 4px black;
 	}
 }

@@ -15,6 +15,13 @@ module.exports = {
 		}
 	},
 	plugins: {
+		babel: {
+			presets: [['env', {
+			  targets: {
+				browsers:[ ">4%", "not ie 11", "not op_mini all"]
+			  }
+			}]]
+		  },
 		postcss: {
 			processors: [
 				require('autoprefixer')(['last 2 versions'])

@@ -100,6 +100,10 @@ export default class Model {
 		this.onUpdate('highlighted');
 	}
 
+	constructor() {
+		this.namesVisible = true;
+	}
+
 	onUpdate(change) {
 		this._updateHandlers = this._updateHandlers || [];
 		this._updateHandlers.forEach((handler) => {
