@@ -10,6 +10,7 @@ import SvgLine from '../svg/element/Line.js';
 import SvgText from '../svg/element/Text.js';
 import { q } from '../shortcuts.js';
 import { keys } from '../enums/keys.js';
+import { C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B } from '../enums/notes.js';
 
 export default class Neck extends View {
 
@@ -64,13 +65,13 @@ export default class Neck extends View {
 	}
 
 	renderGroups(el) {
-		let shading = new SvgGroup(el, {className: 'shading'}),
-			frets = new SvgGroup(el, {className: 'frets'}),
-			marks = new SvgGroup(el, {className: 'marks'}),
-			strings = new SvgGroup(el, {className: 'strings'}),
-			fingers = new SvgGroup(el, {className: 'fingers'});
-
-		this.labels = new SvgGroup(el, {className: 'labels'});
+		let shading = new SvgGroup(el, { className: 'shading' });
+		let frets = new SvgGroup(el, { className: 'frets' });
+		let	marks = new SvgGroup(el, { className: 'marks' });
+		let	strings = new SvgGroup(el, { className: 'strings' });
+		let	fingers = new SvgGroup(el, { className: 'fingers' });
+		this.labels = new SvgGroup(el, { className: 'labels' });
+		
 		if (!instruments[this.model.instrument].fretless) {
 			this.renderShading(shading.el);
 		}
@@ -217,14 +218,12 @@ export default class Neck extends View {
 	}
 
 	renderFingers(parentEl) {
-		let string,
-			i,
-			fingers = [];
+		let fingers = [];
 
-		for (string = 0; string < this.model.stringsCount; string++) {
+		for (let string = 0; string < this.model.stringsCount; string++) {
 			fingers.push([]);
 
-			for (i = 0; i <= this.model.fretCount; i++) {
+			for (let i = 0; i <= this.model.fretCount; i++) {
 				fingers[string].push(new SvgCircle(parentEl, {
 					x: i * this.model.fretWidth + this.model.fretWidth / 2,
 					y: (this.model.stringDistance * string) + this.model.stringDistance / 2,
@@ -236,28 +235,26 @@ export default class Neck extends View {
 	}
 
 	renderLabels(parentEl) {
-		let string,
-			noteNumber,
-			content,
-			correction,
-			fretArray,
-			hasSharp = false;
-
 		this._labels = this.model.tunning.slice().map((noteNumber, string) => {
-			fretArray = new Array(this.model.fretCount + 2).join('0').split('');
+			let fretArray = new Array(this.model.fretCount + 2).join('0').split('');
 			return fretArray.map((item, i) => {
-				content = keys.flat[(noteNumber + i) % notes.length];
-				correction = content.length > 1 ? 1 : 0;
-				hasSharp = content.length > 1;
-				console.log(content);
+				let correction = [Cis, Dis, Fis, Gis, Ais].includes((noteNumber + i) % notes.length) ? 1 : 0;
 
 				return new SvgText(parentEl, {
 					x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
 					y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
-					textContent: content
+					"data-note-number": (noteNumber + i) % notes.length
 				});
 			});
 		});
+	}
+
+	updateLabels() {
+		let noteNames = keys[scales[this.model.scale].minor ? 'minor' : 'major'][this.model.rootNote];
+
+		if (this.labels) {
+			[... this.labels.el.children].forEach(el => el.innerHTML = noteNames[el.getAttribute('data-note-number')]);
+		}
 	}
 
 	showAllNotes(note) {
@@ -275,6 +272,7 @@ export default class Neck extends View {
 
 	showScale(scale) {
 		this.clear();
+		this.updateLabels();
 		(scales[scale || this.model.scale].notes).slice().map(item => (item + this.model.rootNote) % notes.length).forEach((note) => this.showAllNotes(note));
 	}
 

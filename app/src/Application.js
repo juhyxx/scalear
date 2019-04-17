@@ -42,6 +42,6 @@ export default class Application {
 	}
 
 	static prepareHashString(text) {
-		return text.toLowerCase().replace(/ /g, '-').replace(/[ \(\)]/g, '').replace(/♯/g, '#');
+		return text.toLowerCase().replace(/ /g, '-').replace(/[ \(\)]/g, '').replace(/♯/g, '#').replace('♭', 'b');
 	}
 }

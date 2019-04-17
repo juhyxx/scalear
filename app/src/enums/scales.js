@@ -1,17 +1,4 @@
-
-const C = 0;
-const Cis = 1;
-const D = 2;
-const Dis = 3;
-const E = 4;
-const F = 5;
-const Fis = 6;
-const G = 7;
-const Gis = 8;
-const A = 9;
-const Ais = 10;
-const B = 11;
-
+import {  C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B } from '../enums/notes.js';
 
 let scales = [
 {
@@ -21,6 +8,7 @@ let scales = [
 },{
 	name: 'Minor second (m2)',
 	notes: [C, Cis],
+	minor: true,
 	group: 'intervals'
 }, {
 	name: 'Major second (M2)',
@@ -29,6 +17,7 @@ let scales = [
 }, {
 	name: 'Minor  Third (m3)',
 	notes: [C, Dis],
+	minor: true,
 	group: 'intervals'
 }, {
 	name: 'Major Third (M3)',
@@ -57,6 +46,7 @@ let scales = [
 }, {
 	name: 'Minor seventh (m7)',
 	notes: [C, Ais],
+	minor: true,
 	group: 'intervals'
 }, {
 	name: 'Major seventh (M7)',
@@ -97,10 +87,12 @@ let scales = [
 }, {
 	name: 'Melodic minor',
 	notes: [C, D, Dis, F, G, A, B],
+	minor: true,
 	group: 'scales'
 }, {
 	name: 'Harmonic minor',
 	notes: [C, D, Dis, F, G, Gis, B],
+	minor: true,
 	group: 'scales'
 }, {
 	name: 'Pentatonic major',
@@ -109,6 +101,7 @@ let scales = [
 }, {
 	name: 'Pentatonic minor',
 	notes: [C, Dis, F, G, Dis],
+	minor: true,
 	group: 'pentatonic'
 }, {
 	name: 'Pentatonic blues',
@@ -137,22 +130,27 @@ let scales = [
 }, {
 	name: 'Minor chord',
 	notes: [C, Dis, G],
+	minor: true,
 	group: 'minor-chords'
 }, {
 	name: 'Minor 7th chord',
 	notes: [C, Dis, G, B],
+	minor: true,
 	group: 'minor-chords'
 }, {
 	name: 'Minor 9th chord',
 	notes: [C, Dis, G, B, 14],
+	minor: true,
 	group: 'minor-chords'
 }, {
 	name: 'Minor 11th chord',
 	notes: [C, Dis, G, B, 14, 17],
+	minor: true,
 	group: 'minor-chords'
 }, {
 	name: 'Minor 13th chord',
 	notes: [C, Dis, G, B, 14, 17, 21],
+	minor: true,
 	group: 'minor-chords'
 }, {
 	name: 'Dim chord',

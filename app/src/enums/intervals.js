@@ -17,6 +17,6 @@ let intervals = [
 	'10♭', //15,
 	'10♯', //16
 	'11' //17
-]
+];
 
-export  {intervals};
+export { intervals };

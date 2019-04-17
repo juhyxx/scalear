@@ -11,6 +11,4 @@ let APP = {
 	}
 };
 
-
-
 export  {APP};

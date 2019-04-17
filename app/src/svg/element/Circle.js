@@ -3,7 +3,7 @@ import SvgElement from '../Element.js';
 export default class Circle extends SvgElement {
 
 	constructor(parent, params) {
-		params.r = params.radius;
+		params.r = Math.round(params.radius);
 		params.cx = params.x;
 		params.cy = params.y;
 
