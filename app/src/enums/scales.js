@@ -123,6 +123,10 @@ let scales = [
 	notes: [C, E, G, B],
 	group: 'major-chords'
 }, {
+	name: 'Dominant seventh chord',
+	notes: [C, E, G, Ais],
+	group: 'major-chords'
+}, {
 	name: 'Major 9th chord',
 	notes: [C, E, G, B, 14],
 	group: 'major-chords'
