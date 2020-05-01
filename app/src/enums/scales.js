@@ -1,15 +1,20 @@
 
 const C = 0;
 const Cis = 1;
+const Db = 1;
 const D = 2;
 const Dis = 3;
+const Eb = 3;
 const E = 4;
 const F = 5;
 const Fis = 6;
+const Gb = 6;
 const G = 7;
 const Gis = 8;
+const Ab = 8;
 const A = 9;
 const Ais = 10;
+const Bb = 10;
 const B = 11;
 
 
@@ -103,16 +108,12 @@ let scales = [
 	notes: [C, D, Dis, F, G, Gis, B],
 	group: 'scales'
 }, {
-	name: 'Pentatonic major',
+	name: 'Pentatonic major (ionian)',
 	notes: [C, D, E, G, A],
 	group: 'pentatonic'
 }, {
-	name: 'Pentatonic minor',
-	notes: [C, Dis, F, G, Dis],
-	group: 'pentatonic'
-}, {
-	name: 'Pentatonic blues',
-	notes: [C, Dis, F, Fis, G, Ais],
+	name: 'Pentatonic minor (aeolian)',
+	notes: [C, Dis, F, G, Ais],
 	group: 'pentatonic'
 }, {
 	name: 'Major chord',
@@ -169,11 +170,11 @@ let scales = [
 }, {
 	name: 'Whole tone',
 	notes: [C, D, E, Fis, Gis, Ais],
-	group: 'scales'
+	group: 'hexatonic'
 },  {
 	name: 'Maj Min Hybrid Pentatonic',
 	notes: [C, D, Dis, E, F, G, A, Ais],
-	group: 'pentatonic'
+	group: 'scales'
 }, {
 	name: 'Bebop dominant',
 	notes: [C, D, E, F, G, A, Ais, B],
@@ -186,7 +187,30 @@ let scales = [
 	name: 'Hungarian gypsy scale',
 	notes: [C, D, Dis, Fis, G, Gis, Ais],
 	group: 'scales'
-}];
+}, {
+	name: 'Augmented scale',
+	notes: [C, E, Gis, Dis, G, B],
+	group: 'hexatonic'
+},{
+	name: 'Prometheus scale',
+	notes: [C, D, E, Fis, A, Bb],
+	group: 'hexatonic'
+} ,{
+	name: 'Tritone scale',
+	notes: [C, Db, E, Gb, G, Bb],
+	group: 'hexatonic'
+} ,{
+	name: 'Two-semitone tritone scale',
+	notes: [C, Db, D, Fis, G, Ab],
+	group: 'hexatonic'
+},
+{
+	name: 'Hexatonic blues',
+	notes: [C, Dis, F, Fis, G, Ais],
+	group: 'hexatonic'
+}
+
+];
 
 scales.forEach((item, index) => {
 	item.id = index;
@@ -214,6 +238,14 @@ let scalesGrouped = [{
 	options: function() {
 		return scales.filter(function(item) {
 			return item.group === 'pentatonic' ? item : undefined;
+		});
+	}()
+},{
+	name: 'Hexatonic scales',
+	group: 'hexatonic',
+	options: function() {
+		return scales.filter(function(item) {
+			return item.group === 'hexatonic' ? item : undefined;
 		});
 	}()
 }, {
