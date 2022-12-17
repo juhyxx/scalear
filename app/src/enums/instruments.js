@@ -33,7 +33,11 @@ let instruments = [{
 	name: 'Guitar Open G',
 	group: 'guitar',
 	tunning: [D, G, D, G, B, D]
-}, {
+},  {
+	name: 'Guitar Drop D',
+	group: 'guitar',
+	tunning: [E, B, G, D, A, D]
+},{
 	group: 'bass',
 	name: 'Bass Standard',
 	tunning: [G, D, A, E]
