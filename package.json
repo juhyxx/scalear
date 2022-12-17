@@ -20,7 +20,7 @@
     "brunch": "^2.10.10",
     "clean-css-brunch": "^2.10.0",
     "css-brunch": "^2.10.0",
-    "cssnano-brunch": "^1.1.8",
+    "cssnano-brunch": "^1.2.1",
     "html-pages-brunch": "^2.8.0",
     "javascript-brunch": "^2.10.0",
     "less-brunch": "^2.10.0",
