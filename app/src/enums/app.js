@@ -2,7 +2,7 @@ let APP = {
 	version: '0.5.3',
 	defaults: {
 		highlighted: undefined,
-		fretCount: 12,
+		fretCount: 14,
 		rootNote: 0,
 		scale: 0,
 		namesVisible: true,
@@ -10,7 +10,5 @@ let APP = {
 		neckType: 'gibson'
 	}
 };
-
-
 
 export  {APP};

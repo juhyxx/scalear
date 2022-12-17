@@ -8,7 +8,8 @@ body {
 	font-family: "Ubuntu", sans-serif;
 	background-color: #bfa98e;
 	background: linear-gradient(lighten(#bfa98e, 30%), #bfa98e);
-	&.dark{
+
+	@media (prefers-color-scheme: dark) {
 		background-color: @colorDark;
 		background: linear-gradient(lighten(#444, 10%), @colorDark);
 	}
