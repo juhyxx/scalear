@@ -1,15 +1,12 @@
 @import "variables";
 
 nav {
-	width: 99vw;
+	width: 97vw;
 	user-select: none;
 	background: linear-gradient(darken(@colorBase, 3%) 0%, @colorBase 15% ,@colorBase 75% ,  darken(@colorBase, 3%) 100%) ;
 	color: white;
-	padding: 0.5rem;
-	padding-bottom: 0.5rem;
-	padding-right: 4rem;
+	padding: 0.5rem 2em;
 	align-items: center;
-	position: absolute;
 	box-shadow: 0 0 3px rgba(0,0,0, 0.5) , 0 0 20px rgba(0,0,0, 0.2);
 	transition: transform 2s;
 	transition-delay: 0.5s;
@@ -19,8 +16,8 @@ nav {
 	justify-content: space-between;
 	align-content: flex-start;
 	transform: translate3d(0, 0, 0);
-	bottom: 0;
-	border-top: 2px solid white;
+	top: 0;
+	border-bottom: 2px solid white;
 	position: fixed;
 	@media screen and (min-width: 1150px) {
 		#logo {
@@ -37,6 +34,27 @@ nav {
 		color: rgba(255,255,255,0.3);
 		cursor: pointer;		
 		accent-color: #bfa98e;
+		width: 15rem;
+		margin: 0;
+		&+datalist {
+			flex-direction: row;
+			display: flex;
+			font-family: monospace;
+
+			justify-content: space-between;
+
+			width:  15rem;
+			color:  #bfa98e;
+			font-size: 8px;
+			option {padding: 0;
+				&:first-child {
+					margin-left: 3px;
+				}
+				&:last-child {
+					margin-right: 5px;
+				}
+			}
+		  }
 	}
 	&>div {
 		display: flex;
@@ -48,7 +66,7 @@ nav {
 	}
 	&.loading,
 	.fullscreen & {
-		transform: translate3d(0, 150px, 0);
+		transform: translate3d(0, -100px, 0);
 	}
 	@media screen and (max-width: 500px) {
 		flex-flow: column;
