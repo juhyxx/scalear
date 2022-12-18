@@ -21,7 +21,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # Single deploy job since we're just deploying
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - with:
+        node-version: '16'
+    - run: npm ci
+    - run: npm run build
   deploy:
     environment:
       name: github-pages
