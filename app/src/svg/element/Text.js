@@ -1,9 +1,7 @@
 import SvgElement from '../Element.js';
 
 export default class extends SvgElement {
-
-	get name() {
-		return 'text';
-	}
-
+  get name() {
+    return 'text';
+  }
 }
