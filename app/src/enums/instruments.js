@@ -57,11 +57,15 @@ let instruments = [{
 	group: 'ukulele',
 	name: 'Ukulele DGBE',
 	tunning: [E, B, G, Cis]
-}, {
-	group: 'ukulele',
-	name: 'Ukulele ADG♭B',
-	tunning: [B, Fis, D, A]
-}, {
+},
+
+// {
+// 	group: 'ukulele',
+// 	name: 'Ukulele ADG♭B',
+// 	tunning: [B, Fis, D, A]
+// }, 
+
+{
 	group: 'other',
 	name: 'Violin',
 	tunning: [E, A, D, G],
