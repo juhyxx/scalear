@@ -29,17 +29,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
       - name: Build static files
         uses: actions/setup-node@v3
-      - run: npm ci
-      - run: npm run build
+
+      - name: Install dependencies
+        run: yarn install
+  
+      - name: build
+        run: npm run build
+      
       - name: Setup Pages
         uses: actions/configure-pages@v2
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
           path: 'public'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
