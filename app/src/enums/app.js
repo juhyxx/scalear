@@ -1,5 +1,5 @@
 let APP = {
-	version: '0.5.5',
+	version: '0.5.6',
 	defaults: {
 		highlighted: undefined,
 		fretCount: 14,

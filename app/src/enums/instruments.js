@@ -17,11 +17,7 @@ let instruments = [{
 	name: 'Guitar Standard',
 	group: 'guitar',
 	tunning: [E, B, G, D, A, E]
-}, {
-	name: 'Guitar 7-string',
-	group: 'guitar',
-	tunning: [E, B, G, D, A, E, B]
-}, {
+},  {
 	name: 'Guitar Open D',
 	group: 'guitar',
 	tunning: [D, A, D, Fis, A, D]
@@ -37,6 +33,10 @@ let instruments = [{
 	name: 'Guitar Drop D',
 	group: 'guitar',
 	tunning: [E, B, G, D, A, D]
+},{
+	name: 'Guitar 7-string',
+	group: 'guitar',
+	tunning: [E, B, G, D, A, E, B]
 },{
 	group: 'bass',
 	name: 'Bass Standard',

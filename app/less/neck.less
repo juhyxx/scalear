@@ -3,11 +3,20 @@
 #neck {
 
 	.fingers {
-		circle {
-			@media screen {
-				-webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .3));
-				filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .3));
+		rect {
+			fill: @colorBase;
+
+			@media print {
+				fill: black;
 			}
+			display: none;
+			&.visible {
+				display: block;
+			}
+		}
+
+		circle {
+			
 
 			fill: white;
 			//stroke: rgba(0, 0, 0, 0.7);
@@ -16,18 +25,21 @@
 				stroke: black;
 			}
 
+
 			display: none;
-
-			&.root {
-				fill: @colorBase;
-
-				@media print {
-					fill: black;
-				}
+			&.visible {
+				display: block;
 			}
+
 
 			&.highlighted {
 				fill: green;
+			}
+		}
+		rect, circle {
+			@media screen {
+				-webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .3));
+				filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .3));
 			}
 		}
 	}

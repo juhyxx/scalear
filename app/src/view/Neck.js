@@ -226,20 +226,29 @@ export default class Neck extends View {
 			fingers.push([]);
 
 			for (i = 0; i <= this.model.fretCount; i++) {
-				fingers[string].push(new SvgCircle(parentEl, {
+				let group = new SvgGroup(parentEl); 
+
+				let radius = this.model.stringDistance / 3
+
+				new SvgCircle(group.el, {
 					x: i * this.model.fretWidth + this.model.fretWidth / 2,
 					y: (this.model.stringDistance * string) + this.model.stringDistance / 2,
-					radius: this.model.stringDistance / 3
-				}));
+					radius: radius
+				});
+				new SvgRectangle(group.el, {
+					x: i * this.model.fretWidth + this.model.fretWidth / 2 - radius,
+					y: (this.model.stringDistance * string) + this.model.stringDistance / 2 - radius,
+					width: radius * 2,
+					height: radius * 2
+				});
+				fingers[string].push(group)
 			}
 		}
 		this._fingers = fingers;
 	}
 
 	renderLabels(parentEl) {
-		let string,
-			noteNumber,
-			content,
+		let content,
 			correction,
 			fretArray,
 			hasSharp = false;
@@ -277,10 +286,13 @@ export default class Neck extends View {
 			item.show();
 			this._labelsMap.get(item).show();
 			if (note === this.model.rootNote) {
-				item.className = 'root';
+				item.el.querySelector("rect").classList.add("visible");
+				item.el.querySelector("circle").classList.remove("visible")
 				this._labelsMap.get(item).className = 'root';
 			} else {
 				this._labelsMap.get(item).className = '';
+				item.el.querySelector("rect").classList.remove("visible");
+				item.el.querySelector("circle").classList.add("visible")
 			}
 		});
 	}
