@@ -8,7 +8,7 @@ import SvgCircle from '../svg/element/Circle.js';
 import SvgRectangle from '../svg/element/Rectangle.js';
 import SvgLine from '../svg/element/Line.js';
 import SvgText from '../svg/element/Text.js';
-import { q } from '../shortcuts.js';
+
 
 export default class Neck extends View {
 
@@ -46,7 +46,8 @@ export default class Neck extends View {
 	render() {
 		this._mainGroup = new SvgGroup(this._parentEl, {
 			id: 'neck',
-			className: this.model.neckType
+			className: this.model.neckType,
+			transform: "translate(0,2.5) "
 		});
 		new SvgRectangle(this._mainGroup.el, {
 			className: 'neck',
@@ -63,13 +64,13 @@ export default class Neck extends View {
 	}
 
 	renderGroups(el) {
-		let shading = new SvgGroup(el, {className: 'shading'}),
-			frets = new SvgGroup(el, {className: 'frets'}),
-			marks = new SvgGroup(el, {className: 'marks'}),
-			strings = new SvgGroup(el, {className: 'strings'}),
-			fingers = new SvgGroup(el, {className: 'fingers'});
+		let shading = new SvgGroup(el, { className: 'shading' }),
+			frets = new SvgGroup(el, { className: 'frets' }),
+			marks = new SvgGroup(el, { className: 'marks' }),
+			strings = new SvgGroup(el, { className: 'strings' }),
+			fingers = new SvgGroup(el, { className: 'fingers' });
 
-		this.labels = new SvgGroup(el, {className: 'labels'});
+		this.labels = new SvgGroup(el, { className: 'labels' });
 		if (!instruments[this.model.instrument].fretless) {
 			this.renderShading(shading.el);
 		}
@@ -113,12 +114,12 @@ export default class Neck extends View {
 						new SvgCircle(el, {
 							x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
 							y: this.model.stringDistance + this.model.neckWidth / 2,
-							radius: this.model.fretWidth / 8
+							radius: this.model.fretWidth / 6
 						});
 						new SvgCircle(el, {
 							x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
 							y: -this.model.stringDistance + this.model.neckWidth / 2,
-							radius: this.model.fretWidth / 8
+							radius: this.model.fretWidth / 6
 						});
 					} else {
 						new SvgRectangle(el, {
@@ -146,7 +147,7 @@ export default class Neck extends View {
 						new SvgCircle(el, {
 							x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
 							y: this.model.neckWidth / 2,
-							radius: this.model.fretWidth / 8
+							radius: this.model.fretWidth / 6
 						});
 					} else {
 						new SvgRectangle(el, {
@@ -164,8 +165,8 @@ export default class Neck extends View {
 	renderFrets(el) {
 		for (let i = 0; i <= this.model.fretCount; i++) {
 			new SvgLine(el, {
-				x1: i * this.model.fretWidth + this.model.fretWidth,
-				x2: i * this.model.fretWidth + this.model.fretWidth,
+				x1: i * this.model.fretWidth + this.model.fretWidth + 1,
+				x2: i * this.model.fretWidth + this.model.fretWidth + 1,
 				y1: 0,
 				y2: this.model.neckWidth
 			});
@@ -210,8 +211,9 @@ export default class Neck extends View {
 				x1: 0,
 				x2: this.model.fretWidth + this.model.fretCount * this.model.fretWidth,
 				y1: i * this.model.stringDistance + this.model.stringDistance / 2,
-				y2: i * this.model.stringDistance + this.model.stringDistance / 2
+				y2: i * this.model.stringDistance + this.model.stringDistance / 2,
 			});
+			
 		}, this);
 	}
 

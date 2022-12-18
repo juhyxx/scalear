@@ -22,7 +22,7 @@ export default class Scalear extends Application {
 		this.model = new Model();
 		this.init();
 		Object.assign(this.model, JSON.parse(localStorage.defaults || '{}'));
-		
+
 		this.onRouteChange(this.route);
 		this.setDefaults();
 	}
@@ -87,7 +87,7 @@ export default class Scalear extends Application {
 				document.body.classList[model.neckType === 'fender' ? 'add' : 'remove']('dark');
 				break;
 			case 'namesVisible':
-				q('#note-names')[model.namesVisible ? 'setAttribute':'removeAttribute']('checked', true);
+				q('#note-names')[model.namesVisible ? 'setAttribute' : 'removeAttribute']('checked', true);
 		}
 		this.route = Application.prepareHashString([
 			'', instruments[model.instrument].name, model.scaleName, model.rootNoteName, ''
@@ -109,22 +109,22 @@ export default class Scalear extends Application {
 				this.model.rootNote = note < 12 ? note : 0;
 			}
 			if (params[0]) {
-				try{
+				try {
 					this.model.instrument = instruments.filter(item => Application.prepareHashString(item.name) === params[0])[0].id;
 				}
-				catch(e){
+				catch (e) {
 					this.model.instrument = 0
-				}	
+				}
 			}
 			if (params[1]) {
-				try{
+				try {
 					this.model.scale = scales.filter(item => Application.prepareHashString(item.name) === params[1])[0].id;
 				}
-				catch(e){
+				catch (e) {
 					this.model.scale = 0
-				}				
+				}
 			}
 		}
-	
+
 	}
 }
