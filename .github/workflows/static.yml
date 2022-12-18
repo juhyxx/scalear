@@ -24,9 +24,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - with:
-        node-version: '16'
+    - name: Build static files
+      uses: actions/checkout@v2
     - run: npm ci
     - run: npm run build
   deploy:
