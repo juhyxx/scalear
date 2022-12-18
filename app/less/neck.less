@@ -10,6 +10,9 @@
 			display: none;
 			&.root {
 				fill: @colorBase;
+				@media print {
+					fill: black;
+				}
 			}
 			&.highlighted {
 				fill: green;
