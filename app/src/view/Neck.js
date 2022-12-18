@@ -251,11 +251,23 @@ export default class Neck extends View {
 				correction = content.length > 1 ? 1 : 0;
 				hasSharp = content.length > 1;
 
-				return new SvgText(parentEl, {
+				let group = new SvgGroup(parentEl, {
+					id: "label"
+				});
+
+				 new SvgText(group.el, {
 					x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
 					y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
-					textContent: content
+					textContent: content.charAt(0)
 				});
+				new SvgText(group.el, {
+					className: "index",
+					x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
+					y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
+					textContent: content.charAt(1)
+				});
+
+				return group
 			});
 		});
 	}
