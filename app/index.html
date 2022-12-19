@@ -9,8 +9,12 @@
     <meta name="keyword" content="guitar, 7-string guitar, ukulele, tunning, scales, fretless bass">
 
     <link rel="stylesheet" href="scalear.css">
-	<script src="scalear.js"></script>
-	<script>require('initialize');</script>
+	<script type="module">
+        import Scalear from "/src/scalear.js"
+
+        (new Scalear()).run()
+    </script>
+	
 </head>
 
 <body>

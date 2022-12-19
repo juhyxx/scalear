@@ -1,9 +1,9 @@
 import Application from './Application.js';
-import {APP} from './enums/app.js';
-import {scalesGrouped, scales} from './enums/scales.js';
-import {instrumentsGrouped, instruments} from './enums/instruments.js';
-import {notes} from './enums/notes.js';
-import {q} from './shortcuts.js';
+import { APP } from './enums/app.js';
+import { scalesGrouped, scales } from './enums/scales.js';
+import { instrumentsGrouped, instruments } from './enums/instruments.js';
+import { notes } from './enums/notes.js';
+import { q } from './shortcuts.js';
 import Svg from './svg/Svg.js';
 import Neck from './view/Neck.js';
 // import Box from './view/Box.js';

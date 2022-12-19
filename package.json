@@ -12,11 +12,8 @@
     "build": "brunch build --production"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.4.3",
     "auto-reload-brunch": "2.7.1",
     "autoprefixer": "^7.1.4",
-    "babel-brunch": "^6.1.1",
-    "babel-preset-env": "^1.7.0",
     "brunch": "^2.10.10",
     "clean-css-brunch": "^2.10.0",
     "css-brunch": "^2.10.0",
@@ -24,10 +21,8 @@
     "eslint": ">=5.16.0",
     "eslint-config-google": "^0.14.0",
     "html-pages-brunch": "^2.8.0",
-    "javascript-brunch": "^2.10.0",
     "less-brunch": "^2.10.0",
-    "postcss-brunch": "^2.1.0",
-    "uglify-js-brunch": "^2.10.0"
+    "postcss-brunch": "^2.1.0"
   },
   "dependencies": {}
 }
