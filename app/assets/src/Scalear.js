@@ -60,9 +60,9 @@ export default class Scalear extends Application {
       data: instrumentsGrouped,
       watchOption: 'instrument',
     });
-    // scaleBox = new Box(Svg.get('svg'), this.model),
+
     const neckView = new Neck(Svg.get('svg'), this.model);
-    const boxView = new Box(Svg.get('svg'), this.model);
+    const scaleBox = new Box(Svg.get('svg'), this.model);
 
     neckSelect.on('change', (e) => this.model.neckType = e.target.value);
     scaleSelect.on('change', (e) => this.model.scale = e.target.value);

@@ -88,20 +88,20 @@ export default class Box extends View {
         noteName.addClass('highlighted');
       }
 
-      noteName.el.addEventListener('click', () => {
-        if (noteName.hasClass('highlighted')) {
-          noteName.removeClass('highlighted');
-          this.model.highlighted = undefined;
-        } else {
-          const items = document.querySelectorAll('#scale-box text.highlighted');
+      // noteName.el.addEventListener('click', () => {
+      //   if (noteName.hasClass('highlighted')) {
+      //     noteName.removeClass('highlighted');
+      //     this.model.highlighted = undefined;
+      //   } else {
+      //     const items = document.querySelectorAll('#scale-box text.highlighted');
 
-          for (let i = 0, item = items[i]; i < items.length; i++) {
-            item.setAttribute('class', item.getAttribute('class').replace('highlighted', '') || '');
-          }
-          noteName.addClass('highlighted');
-          this.model.highlighted = parseInt(noteName.el.getAttribute('note'), 10);
-        }
-      }, false);
+      //     for (let i = 0, item = items[i]; i < items.length; i++) {
+      //       item.setAttribute('class', item.getAttribute('class').replace('highlighted', '') || '');
+      //     }
+      //     noteName.addClass('highlighted');
+      //     this.model.highlighted = parseInt(noteName.el.getAttribute('note'), 10);
+      //   }
+      // }, false);
       new SvgText(this._mainGroup.el, {
         x: 13 + width * index,
         y: 75,
