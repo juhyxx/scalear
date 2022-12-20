@@ -20,13 +20,14 @@ export default class Box extends View {
     switch (changeName) {
       case 'highlighted':
       case 'rootNote':
+      case 'instrument':
       case 'scale':
-        this.showScale(model.scale, model.rootNote);
+        this.showScale(model.scale, model.rootNote, model.stringsCount);
         break;
     }
   }
 
-  showScale(scaleId, rootNote) {
+  showScale(scaleId, rootNote, stringCount) {
     const width = 35;
     const horizonWidth = 8;
 
@@ -41,7 +42,7 @@ export default class Box extends View {
 
     this._mainGroup = new SvgGroup(this._parentEl, {
       id: 'scale-box',
-      transform: 'translate(' + (250 - (-50 + scale.length * width) / 2) + ',100)',
+      transform: 'translate(' + (250 - (-50 + scale.length * width) / 2) + ',' + stringCount * 17 + ')',
     });
 
 
