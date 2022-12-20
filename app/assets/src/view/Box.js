@@ -1,13 +1,10 @@
 import View from '../View.js';
 
-import {scales} from '../enums/scales.js';
-import {notes} from '../enums/notes.js';
-import {intervals} from '../enums/intervals.js';
+import { scales } from '../enums/scales.js';
+import { notes } from '../enums/notes.js';
+import { intervals } from '../enums/intervals.js';
 
 import SvgGroup from '../svg/element/Group.js';
-import SvgCircle from '../svg/element/Circle.js';
-import SvgRectangle from '../svg/element/Rectangle.js';
-import SvgLine from '../svg/element/Line.js';
 import SvgText from '../svg/element/Text.js';
 import SvgPolyline from '../svg/element/Polyline.js';
 
@@ -30,6 +27,9 @@ export default class Box extends View {
   }
 
   showScale(scaleId, rootNote) {
+    const width = 35;
+    const horizonWidth = 8;
+
     if (this._mainGroup) {
       this._mainGroup.remove();
     }
@@ -38,39 +38,36 @@ export default class Box extends View {
       return (item + rootNote) % notes.length;
     });
 
+
     this._mainGroup = new SvgGroup(this._parentEl, {
       id: 'scale-box',
-      transform: 'translate(' + (250 - (-50 + scale.length * 28) / 2) + ',120)',
+      transform: 'translate(' + (250 - (-50 + scale.length * width) / 2) + ',100)',
     });
 
+
     scale.forEach((item, index) => {
+
       if (index < scale.length - 1) {
         new SvgText(this._mainGroup.el, {
-          x: 26 + 30 * index,
+          x: 10 + width / 2 + width * index,
           y: 50,
           className: 'interval',
           textContent: intervals[scales[scaleId].notes[index + 1] - scales[scaleId].notes[index]],
         });
 
-        new SvgLine(this._mainGroup.el, {
-          x1: 25 + 30 * index,
-          x2: 35 + 30 * index,
-          y1: 59,
-          y2: 59,
-        });
         new SvgPolyline(this._mainGroup.el, {
           points: [
-            [16 + 30 * index, 52],
-            [16 + 30 * index, 47],
-            [23 + 30 * index, 47],
+            [16 + width * index, 52],
+            [16 + width * index, 47],
+            [16 + horizonWidth + width * index, 47],
           ],
         });
 
         new SvgPolyline(this._mainGroup.el, {
           points: [
-            [37 + 30 * index, 47],
-            [44 + 30 * index, 47],
-            [44 + 30 * index, 52],
+            [16 + width - horizonWidth + width * index, 47],
+            [16 + width + width * index, 47],
+            [16 + width + width * index, 52],
           ],
         });
       }
@@ -78,7 +75,7 @@ export default class Box extends View {
       const content = notes[item];
       const hasSharp = content.length > 1;
       const noteName = new SvgText(this._mainGroup.el, {
-        x: 10 + 30 * index,
+        x: 10 + width * index,
         y: 65,
         note: item,
         className: index === 0 ? 'root' : undefined,
@@ -105,7 +102,7 @@ export default class Box extends View {
         }
       }, false);
       new SvgText(this._mainGroup.el, {
-        x: 13 + 30 * index,
+        x: 13 + width * index,
         y: 75,
         className: 'interval',
         textContent: intervals[scales[scaleId].notes[index]],

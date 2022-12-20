@@ -6,7 +6,7 @@ import { notes } from './enums/notes.js';
 import { q } from './shortcuts.js';
 import Svg from './svg/Svg.js';
 import Neck from './view/Neck.js';
-// import Box from './view/Box.js';
+import Box from './view/Box.js';
 import Select from './view/Select.js';
 import SelectTwoLevel from './view/SelectTwoLevel.js';
 import Switch from './view/Switch.js';
@@ -62,6 +62,7 @@ export default class Scalear extends Application {
     });
     // scaleBox = new Box(Svg.get('svg'), this.model),
     const neckView = new Neck(Svg.get('svg'), this.model);
+    const boxView = new Box(Svg.get('svg'), this.model);
 
     neckSelect.on('change', (e) => this.model.neckType = e.target.value);
     scaleSelect.on('change', (e) => this.model.scale = e.target.value);
