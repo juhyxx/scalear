@@ -75,12 +75,9 @@ export default class Element extends Svg {
         case 'textContent':
           this.el[key] = this[key];
           break;
-        /* case 'children':
-            this.children.forEach(function(child) {
-                var name = child.name.charAt(0).toUpperCase() + child.name.slice(1);
-                new Svg[name](this.el, child);
-            });
-            break;*/
+        case 'children':
+          this.children.forEach((child) => new child.class(this.el, child));
+          break;
         default:
           if (this[key] !== undefined) {
             this.el.setAttribute(key, this[key]);

@@ -1,8 +1,8 @@
 import View from '../View.js';
 
-import {scales} from '../enums/scales.js';
-import {instruments} from '../enums/instruments.js';
-import {notes} from '../enums/notes.js';
+import { scales } from '../enums/scales.js';
+import { instruments } from '../enums/instruments.js';
+import { notes, notesWithBs } from '../enums/notes.js';
 import SvgGroup from '../svg/element/Group.js';
 import SvgCircle from '../svg/element/Circle.js';
 import SvgRectangle from '../svg/element/Rectangle.js';
@@ -63,13 +63,13 @@ export default class Neck extends View {
   }
 
   renderGroups(el) {
-    const shading = new SvgGroup(el, {className: 'shading'});
-    const frets = new SvgGroup(el, {className: 'frets'});
-    const marks = new SvgGroup(el, {className: 'marks'});
-    const strings = new SvgGroup(el, {className: 'strings'});
-    const fingers = new SvgGroup(el, {className: 'fingers'});
+    const shading = new SvgGroup(el, { className: 'shading' });
+    const frets = new SvgGroup(el, { className: 'frets' });
+    const marks = new SvgGroup(el, { className: 'marks' });
+    const strings = new SvgGroup(el, { className: 'strings' });
+    const fingers = new SvgGroup(el, { className: 'fingers' });
 
-    this.labels = new SvgGroup(el, {className: 'labels'});
+    this.labels = new SvgGroup(el, { className: 'labels' });
     if (!instruments[this.model.instrument].fretless) {
       this.renderShading(shading.el);
     }
@@ -215,28 +215,29 @@ export default class Neck extends View {
   }
 
   renderFingers(parentEl) {
-    let string;
-    let i;
     const fingers = [];
 
-    for (string = 0; string < this.model.stringsCount; string++) {
+    for (let string = 0; string < this.model.stringsCount; string++) {
       fingers.push([]);
 
-      for (i = 0; i <= this.model.fretCount; i++) {
-        const group = new SvgGroup(parentEl);
-
+      for (let i = 0; i <= this.model.fretCount; i++) {
         const radius = this.model.stringDistance / 3;
-
-        new SvgCircle(group.el, {
-          x: i * this.model.fretWidth + this.model.fretWidth / 2,
-          y: (this.model.stringDistance * string) + this.model.stringDistance / 2,
-          radius: radius,
-        });
-        new SvgRectangle(group.el, {
-          x: i * this.model.fretWidth + this.model.fretWidth / 2 - radius,
-          y: (this.model.stringDistance * string) + this.model.stringDistance / 2 - radius,
-          width: radius * 2,
-          height: radius * 2,
+        const group = new SvgGroup(parentEl, {
+          children: [
+            {
+              class: SvgCircle,
+              x: i * this.model.fretWidth + this.model.fretWidth / 2,
+              y: (this.model.stringDistance * string) + this.model.stringDistance / 2,
+              radius: radius,
+            },
+            {
+              class: SvgRectangle,
+              x: i * this.model.fretWidth + this.model.fretWidth / 2 - radius,
+              y: (this.model.stringDistance * string) + this.model.stringDistance / 2 - radius,
+              width: radius * 2,
+              height: radius * 2,
+            }
+          ]
         });
         fingers[string].push(group);
       }
@@ -245,43 +246,69 @@ export default class Neck extends View {
   }
 
   renderLabels(parentEl) {
-    let content;
-    let correction;
+
     let fretArray;
     let hasSharp = false;
 
     this._labels = this.model.tunning.slice().map((noteNumber, string) => {
       fretArray = new Array(this.model.fretCount + 2).join('0').split('');
       return fretArray.map((item, i) => {
-        content = notes[(noteNumber + i) % notes.length];
-        correction = content.length > 1 ? 1 : 0;
+        let content = {
+          "sharp": notes[(noteNumber + i) % notes.length],
+          "flat": notesWithBs[(noteNumber + i) % notes.length],
+        }
+        let correction = content.length > 1 ? 1 : 0;
         hasSharp = content.length > 1;
 
-        const group = new SvgGroup(parentEl, {
+        return new SvgGroup(parentEl, {
           id: 'label',
+          children: [
+            {
+              class: SvgText,
+              x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
+              y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
+              textContent: content.sharp.charAt(0),
+              className: "sharp"
+            },
+            {
+              class: SvgText,
+              className: 'index sharp',
+              x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
+              y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
+              textContent: content.sharp.charAt(1),
+            },
+            {
+              class: SvgText,
+              x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
+              y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
+              textContent: content.flat.charAt(0),
+              className: "flat"
+            },
+            {
+              class: SvgText,
+              className: 'index flat',
+              x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
+              y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
+              textContent: content.flat.charAt(1),
+            }
+          ]
         });
-
-        new SvgText(group.el, {
-          x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
-          y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
-          textContent: content.charAt(0),
-        });
-        new SvgText(group.el, {
-          className: 'index',
-          x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
-          y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
-          textContent: content.charAt(1),
-        });
-
-        return group;
       });
     });
   }
 
   showAllNotes(note) {
+    const hasSharps = [0, 2, 4,  7, 9, 11].includes(this.model.rootNote)
+    
     this._notesMap.get(note).forEach((item) => {
+   
+
       item.show();
       this._labelsMap.get(item).show();
+
+      this._labelsMap.get(item).el.querySelectorAll(hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.add('hide'));
+      this._labelsMap.get(item).el.querySelectorAll(!hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.remove('hide'));
+
       if (note === this.model.rootNote) {
         item.el.querySelector('rect').classList.add('visible');
         item.el.querySelector('circle').classList.remove('visible');

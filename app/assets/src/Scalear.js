@@ -2,7 +2,7 @@ import Application from './Application.js';
 import { APP } from './enums/app.js';
 import { scalesGrouped, scales } from './enums/scales.js';
 import { instrumentsGrouped, instruments } from './enums/instruments.js';
-import { notes } from './enums/notes.js';
+import { notes, notesWithBs } from './enums/notes.js';
 import { q } from './shortcuts.js';
 import Svg from './svg/Svg.js';
 import Neck from './view/Neck.js';
@@ -43,7 +43,7 @@ export default class Scalear extends Application {
     const rootSelect = new Select({
       selector: '#root-selector',
       model: this.model,
-      data: notes,
+      data: notesWithBs,
       watchOption: 'rootNote',
     });
     const scaleSelect = new SelectTwoLevel({
