@@ -1,7 +1,7 @@
 import View from '../View.js';
 
 import { scales } from '../enums/scales.js';
-import { notes } from '../enums/notes.js';
+import { notes, notesWithBs } from '../enums/notes.js';
 import { intervals } from '../enums/intervals.js';
 
 import SvgGroup from '../svg/element/Group.js';
@@ -39,7 +39,6 @@ export default class Box extends View {
       return (item + rootNote) % notes.length;
     });
 
-
     this._mainGroup = new SvgGroup(this._parentEl, {
       id: 'scale-box',
       transform: 'translate(' + (250 - (-50 + scale.length * width) / 2) + ',' + stringCount * 17 + ')',
@@ -72,8 +71,8 @@ export default class Box extends View {
           ],
         });
       }
-
-      const content = notes[item];
+      const hasSharps = [0, 2, 4,  7, 9, 11].includes(rootNote)
+      const content = hasSharps ?  notes[item] : notesWithBs[item];
       const hasSharp = content.length > 1;
       const noteName = new SvgText(this._mainGroup.el, {
         x: 10 + width * index,
