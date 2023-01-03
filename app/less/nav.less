@@ -1,7 +1,7 @@
 @import "variables";
 
 nav {
-	width: 97vw;
+	width: 98vw;
 	user-select: none;
 	background: linear-gradient(darken(@colorBase, 3%) 0%, @colorBase 15% ,@colorBase 75% ,  darken(@colorBase, 3%) 100%) ;
 	color: white;
@@ -10,12 +10,13 @@ nav {
 	box-shadow: 0 0 3px rgba(0,0,0, 0.5) , 0 0 20px rgba(0,0,0, 0.2);
 	transition: transform 2s;
 	transition-delay: 0.5s;
-	transition-timing-function: ease-out;
+	transition-timing-function: cubic-bezier(0.1, 0.1);
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-between;
 	align-content: flex-start;
 	transform: translate3d(0, 0, 0);
+	transform-origin: top center;
 	top: 0;
 	border-bottom: 2px solid white;
 	position: fixed;
@@ -47,7 +48,8 @@ nav {
 	}
 	&.loading,
 	.fullscreen & {
-		transform: translate3d(0, -100px, 0);
+
+		transform: rotate3d(1, 0, 0, 90deg);
 	}
 	@media screen and (max-width: 500px) {
 		flex-flow: column;

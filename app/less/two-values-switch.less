@@ -8,6 +8,7 @@
         color: white;
         box-shadow: inset 0 0 4px black, 0px 0px 4px black;
     }
+  
     background-color: rgba(0,0,0,0.4);
     border-radius: 5px;
     box-shadow: inset 0 0 4px black;
@@ -22,8 +23,18 @@
         padding-right: 9px;
         border-radius: 5px;
         color: rgba(0,0,0, 0.5);
+        transition: color 0.4s;
+	
+        &:hover {
+            color: white;
+        }
         &[selected] {
+            transition: color 0.4s;
+	
             color: @colorSecondary;
+            &:hover {
+                color: white;
+            }
             border: 1px solid darken(@colorBase, 20%);
             background-color: @colorBase;
             box-shadow: inset 3px 3px 3px rgba(255,255,255, 0.2), 0 0 3px black, 0 0 8px rgba(255,255,255, 0.3),  0 0 40px rgba(255,165,0, 0.5);
