@@ -1,60 +1,66 @@
 @import "variables";
 
 nav {
-	width: 97vw;
-	user-select: none;
-	background: linear-gradient(darken(@colorBase, 3%) 0%, @colorBase 15% ,@colorBase 75% ,  darken(@colorBase, 3%) 100%) ;
-	color: white;
-	padding: 1rem 2em;
-	align-items: center;
-	box-shadow: 0 0 3px rgba(0,0,0, 0.5) , 0 0 20px rgba(0,0,0, 0.2);
-	transition: transform 2s;
-	transition-delay: 0.5s;
-	transition-timing-function: cubic-bezier(0.1, 0.1);
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-between;
-	align-content: flex-start;
-	transform: translate3d(0, 0, 0);
-	transform-origin: top center;
-	top: 0;
-	border-bottom: 2px solid white;
-	position: fixed;
-	@media screen and (min-width: 1150px) {
-		#logo {
-			background: url(logo.svg)  no-repeat left bottom;
-			background-size: contain;
-			width: 182px;
-			height: 2.5rem;
-			flex-shrink: 0;
-		}
-	}
-	input[type="range"] {
-		outline: 0;
-		color: rgba(255,255,255,0.3);
-		cursor: pointer;		
-		accent-color: #bfa98e;
+  width: 97vw;
+  user-select: none;
+  background: linear-gradient(darken(@colorBase, 3%) 0%, @colorBase 15%, @colorBase 75%, darken(@colorBase, 3%) 100%);
+  color: white;
+  padding: 1rem 2em;
+  align-items: center;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.2);
+  transition: transform 2s;
+  transition-delay: 0.5s;
+  transition-timing-function: cubic-bezier(0.1, 0.1);
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-content: flex-start;
+  transform: translate3d(0, 0, 0);
+  transform-origin: top center;
+  top: 0;
+  border-bottom: 2px solid white;
+  position: fixed;
 
-		margin: 0;
-	
-	}
-	&>div {
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: flex-start;
-    gap: 1rem;
-		
-	}
-	&.loading,
-	.fullscreen & {
+  @media screen and (min-width: 1150px) {
+    #logo {
+      background: url(logo.svg) no-repeat left bottom;
+      background-size: contain;
+      width: 182px;
+      height: 2.5rem;
+      flex-shrink: 0;
+    }
+  }
 
-		transform: rotate3d(1, 0, 0, 90deg);
-	}
-	@media screen and (max-width: 500px) {
-		flex-flow: column;
-	}
-	@media print {
-		display: none;
-		visibility: hidden;
-	}
+  input[type="range"] {
+    outline: 0;
+    color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    accent-color: #bfa98e;
+
+    margin: 0;
+
+  }
+
+  &>div {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    gap: 1.5rem;
+
+  }
+
+  &.loading,
+  .fullscreen & {
+
+    transform: rotate3d(1, 0, 0, 90deg);
+  }
+
+  @media screen and (max-width: 500px) {
+    flex-flow: column;
+  }
+
+  @media print {
+    display: none;
+    visibility: hidden;
+  }
 }
