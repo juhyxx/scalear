@@ -1,11 +1,11 @@
 @import "variables";
 
 nav {
-	width: 98vw;
+	width: 97vw;
 	user-select: none;
 	background: linear-gradient(darken(@colorBase, 3%) 0%, @colorBase 15% ,@colorBase 75% ,  darken(@colorBase, 3%) 100%) ;
 	color: white;
-	padding: 0.5rem 2em;
+	padding: 1rem 2em;
 	align-items: center;
 	box-shadow: 0 0 3px rgba(0,0,0, 0.5) , 0 0 20px rgba(0,0,0, 0.2);
 	transition: transform 2s;
@@ -42,9 +42,8 @@ nav {
 		display: flex;
 		flex-flow: row wrap;
 		justify-content: flex-start;
-		&:last-child {
-			padding-top: 7px;
-		}
+    gap: 1rem;
+		
 	}
 	&.loading,
 	.fullscreen & {
