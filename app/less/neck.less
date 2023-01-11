@@ -1,7 +1,10 @@
 @import "variables";
 
 #neck {
-
+	rect {
+		-webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .4));
+		filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .4));
+	}
 	.fingers {
 		rect {
 			fill: @colorBase;
@@ -18,8 +21,6 @@
 		circle {
 
 			fill: white;
-			//stroke: rgba(0, 0, 0, 0.7);
-
 			@media print {
 				stroke: black;
 			}
@@ -72,8 +73,8 @@
 
 	.strings {
 		line {
-			stroke: #535353;
-
+			stroke: red;
+			stroke: url(#str2);
 			@media screen {
 				-webkit-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .5));
 				filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .5));
@@ -112,10 +113,13 @@
 	.frets {
 		line {
 			stroke: rgba(255, 255, 204, 0.4);
+		
 
 			&.zero {
 				stroke: #dddddd;
 				stroke-width: 6;
+				-webkit-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .3));
+				filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .3));
 			}
 		}
 
@@ -187,6 +191,8 @@
 				&.zero {
 					stroke: black;
 					stroke-width: 6;
+					-webkit-filter:none;
+					filter: none;
 				}
 			}
 		}

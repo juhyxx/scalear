@@ -55,7 +55,6 @@ export default class Neck extends View {
       width: this.model.fretCount * this.model.fretWidth,
       height: this.model.neckWidth,
       fill: this.model.neckType === 'fender' ? 'url(#gradientfender)' : 'url(#gradient)',
-      filter: 'url(#neckshadow)',
     });
 
     this.renderGroups(this._mainGroup.el);
@@ -178,8 +177,8 @@ export default class Neck extends View {
       className: 'zero',
       x1: this.model.fretWidth - 2,
       x2: this.model.fretWidth - 2,
-      y1: 0,
-      y2: this.model.neckWidth + 0.6,
+      y1: -0.5,
+      y2: this.model.neckWidth,
     });
   }
 
@@ -209,7 +208,7 @@ export default class Neck extends View {
         x1: 0,
         x2: this.model.fretWidth + this.model.fretCount * this.model.fretWidth,
         y1: i * this.model.stringDistance + this.model.stringDistance / 2,
-        y2: i * this.model.stringDistance + this.model.stringDistance / 2,
+        y2: i * this.model.stringDistance + this.model.stringDistance / 2
       });
     }, this);
   }
