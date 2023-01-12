@@ -88,7 +88,6 @@ export default class Neck extends View {
         y: 0,
         width: this.model.fretWidth,
         height: this.model.neckWidth,
-        fill: 'url(#shading)',
       });
     }
   }
@@ -247,7 +246,6 @@ export default class Neck extends View {
   renderLabels(parentEl) {
 
     let fretArray;
-    let hasSharp = false;
 
     this._labels = this.model.tunning.slice().map((noteNumber, string) => {
       fretArray = new Array(this.model.fretCount + 2).join('0').split('');
@@ -257,7 +255,7 @@ export default class Neck extends View {
           "flat": notesWithBs[(noteNumber + i) % notes.length],
         }
         let correction = content.length > 1 ? 1 : 0;
-        hasSharp = content.length > 1;
+        let hasSharp = content.length > 1;
 
         return new SvgGroup(parentEl, {
           id: 'label',
@@ -297,14 +295,11 @@ export default class Neck extends View {
   }
 
   showAllNotes(note) {
-    const hasSharps = [0, 2, 4,  7, 9, 11].includes(this.model.rootNote)
-    
-    this._notesMap.get(note).forEach((item) => {
-   
+    const hasSharps = [0, 2, 4, 7, 9, 11].includes(this.model.rootNote)
 
+    this._notesMap.get(note).forEach((item) => {
       item.show();
       this._labelsMap.get(item).show();
-
       this._labelsMap.get(item).el.querySelectorAll(hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.add('hide'));
       this._labelsMap.get(item).el.querySelectorAll(!hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.remove('hide'));
 

@@ -5,14 +5,20 @@
 		-webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .4));
 		filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .4));
 	}
+
 	.fingers {
 		rect {
 			fill: @colorBase;
 
+
 			@media print {
 				fill: black;
+				-webkit-filter: none;
+				filter: none;
 			}
+
 			display: none;
+
 			&.visible {
 				display: block;
 			}
@@ -21,12 +27,20 @@
 		circle {
 
 			fill: white;
+
+
+			@media (prefers-color-scheme: dark) {
+
+				fill: black;
+			}
+
 			@media print {
 				stroke: black;
 			}
 
 
 			display: none;
+
 			&.visible {
 				display: block;
 			}
@@ -36,7 +50,9 @@
 				fill: green;
 			}
 		}
-		rect, circle {
+
+		rect,
+		circle {
 			@media screen {
 				-webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .3));
 				filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .3));
@@ -47,7 +63,13 @@
 	.labels {
 		#label {
 			fill: rgba(0, 0, 0, 0.7);
-			font-family: "Ubuntu", sans-serif;
+
+			@media (prefers-color-scheme: dark) {
+				fill: white
+			}
+
+			font-family: "Ubuntu",
+			sans-serif;
 			font-size: 7px;
 			display: none;
 
@@ -59,8 +81,13 @@
 				font-size: 4px;
 				transform: translate(4px, -3px);
 			}
+
 			.hide {
 				display: none;
+			}
+
+			@media print {
+				fill: black;
 			}
 		}
 
@@ -75,6 +102,7 @@
 		line {
 			stroke: red;
 			stroke: url(#str2);
+
 			@media screen {
 				-webkit-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .5));
 				filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .5));
@@ -113,7 +141,7 @@
 	.frets {
 		line {
 			stroke: rgba(255, 255, 204, 0.4);
-		
+
 
 			&.zero {
 				stroke: #dddddd;
@@ -128,6 +156,15 @@
 			font-family: "Ubuntu", sans-serif;
 			font-size: 6px;
 		}
+	}
+
+	.shading {
+		opacity: 0.5;
+
+		rect {
+			fill: url(#shading);
+		}
+
 	}
 
 	.marks {
@@ -155,9 +192,7 @@
 			stroke: rgba(255, 255, 255, 0.3);
 		}
 
-		.shading {
-			opacity: 0.5;
-		}
+
 
 		.frets {
 			line {
@@ -177,6 +212,9 @@
 	@media print {
 		rect.neck {
 			fill: white;
+
+			-webkit-filter: none;
+			filter: none;
 		}
 
 		.frets {
@@ -191,7 +229,7 @@
 				&.zero {
 					stroke: black;
 					stroke-width: 6;
-					-webkit-filter:none;
+					-webkit-filter: none;
 					filter: none;
 				}
 			}

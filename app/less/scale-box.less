@@ -2,26 +2,43 @@
 
 #scale-box {
     .interval {
-        fill: rgba(0,0,0,0.3);
+
+        fill: rgba(0, 0, 0, 0.3);
+
+        @media (prefers-color-scheme: dark) {
+            fill: rgba(255, 255, 255, 0.3);
+        }
+
         font-size: 8px;
     }
+
     .root {
         fill: @colorBase;
     }
-    polyline, line {
+
+    polyline,
+    line {
         stroke: rgb(173, 173, 173);
         fill: transparent;
     }
+
     text {
         tspan {
             font-size: 8px;
         }
+
         // cursor: pointer;
         // &.highlighted {
         //     fill: green;
         // }
         &.sharpflat {
             font-size: 9px;
+        }
+
+        fill: black;
+
+        @media (prefers-color-scheme: dark) {
+            fill: white;
         }
     }
 }
