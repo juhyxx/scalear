@@ -2,8 +2,7 @@
 
 #neck {
 	rect {
-		-webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .4));
-		filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .4));
+		filter: url(#neckshadow);
 	}
 
 	.fingers {
@@ -53,9 +52,9 @@
 
 		rect,
 		circle {
+			
 			@media screen {
-				-webkit-filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .3));
-				filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, .3));
+				filter: url(#neckshadow);
 			}
 		}
 	}
@@ -100,7 +99,6 @@
 
 	.strings {
 		line {
-			stroke: red;
 			stroke: url(#str2);
 
 			@media screen {

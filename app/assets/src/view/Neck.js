@@ -65,7 +65,7 @@ export default class Neck extends View {
     const shading = new SvgGroup(el, { className: 'shading' });
     const frets = new SvgGroup(el, { className: 'frets' });
     const marks = new SvgGroup(el, { className: 'marks' });
-    const strings = new SvgGroup(el, { className: 'strings' });
+    this.renderStrings(el)
     const fingers = new SvgGroup(el, { className: 'fingers' });
 
     this.labels = new SvgGroup(el, { className: 'labels' });
@@ -76,7 +76,8 @@ export default class Neck extends View {
     if (!instruments[this.model.instrument].fretless) {
       this.renderFrets(frets.el);
     }
-    this.renderStrings(strings.el);
+
+   
     this.renderFingers(fingers.el);
     this.renderLabels(this.labels.el);
   }
@@ -202,14 +203,15 @@ export default class Neck extends View {
   }
 
   renderStrings(el) {
-    this.model.tunning.forEach((item, i) => {
-      new SvgLine(el, {
+    let strings = this.model.tunning.map((item, i) => ({
+        class: SvgLine, 
         x1: 0,
         x2: this.model.fretWidth + this.model.fretCount * this.model.fretWidth,
         y1: i * this.model.stringDistance + this.model.stringDistance / 2,
         y2: i * this.model.stringDistance + this.model.stringDistance / 2
-      });
-    }, this);
+      
+    }));
+    new SvgGroup(el, { className: 'strings' , children: strings});
   }
 
   renderFingers(parentEl) {
