@@ -1,5 +1,4 @@
 import Select from './Select.js';
-import {q} from '../shortcuts.js';
 
 export default class SelectTwoLevel extends Select {
   render(data) {

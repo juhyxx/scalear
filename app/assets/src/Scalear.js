@@ -6,6 +6,7 @@ import { notes, notesWithBs } from './enums/notes.js';
 import { q } from './shortcuts.js';
 import Svg from './svg/Svg.js';
 import Neck from './view/Neck.js';
+import Piano from "./view/Piano.js"
 import Box from './view/Box.js';
 import Select from './view/Select.js';
 import SelectTwoLevel from './view/SelectTwoLevel.js';
@@ -62,6 +63,7 @@ export default class Scalear extends Application {
     });
 
     const neckView = new Neck(Svg.get('svg'), this.model);
+    const pianoView = new Piano(Svg.get('svg'), this.model);
     const scaleBox = new Box(Svg.get('svg'), this.model);
 
     neckSelect.on('change', (e) => this.model.neckType = e.target.value);
@@ -71,6 +73,7 @@ export default class Scalear extends Application {
     q('#note-names').addEventListener('change', (e) => this.model.namesVisible = e.target.checked);
     q('#frets-count').addEventListener('input', (e) => this.model.fretCount = e.target.value);
     q('#print').addEventListener('click', (e) => window.print());
+    this._neckSelect = neckSelect
   }
 
   modelUpdate(model, changeName) {
@@ -88,6 +91,10 @@ export default class Scalear extends Application {
         break;
       case 'namesVisible':
         q('#note-names')[model.namesVisible ? 'setAttribute' : 'removeAttribute']('checked', true);
+        break
+      case "instrument":
+        q('#frets-count').disabled = instruments[model.instrument].group === "piano"
+        this._neckSelect.disabled = instruments[model.instrument].group === "piano"
     }
     this.route = Application.prepareHashString([
       '', instruments[model.instrument].name, model.scaleName, model.rootNoteName, '',

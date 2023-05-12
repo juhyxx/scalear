@@ -15,7 +15,7 @@ export default class Neck extends View {
     super();
     this._parentEl = svgParent;
     this.model = model;
-    this.modelUpdate(this.model);
+    this.modelUpdate(this.model, "init");
   }
 
   modelUpdate(model, changeName) {
@@ -30,8 +30,20 @@ export default class Neck extends View {
       case 'scale':
         this.showScale();
         break;
-      default:
-        if (this._mainGroup) {
+
+      case "init":
+      case "neckType":
+      case "fretCount":
+      case "instrument":
+        if (instruments[model.instrument].group === "piano") {
+          if (this._mainGroup) {
+            this._mainGroup.remove();
+            this._mainGroup = undefined
+          }
+          break
+        }
+
+        if (this._mainGroup && this._mainGroup.remove) {
           this._mainGroup.remove();
         }
         this.render();
@@ -77,7 +89,7 @@ export default class Neck extends View {
       this.renderFrets(frets.el);
     }
 
-   
+
     this.renderFingers(fingers.el);
     this.renderLabels(this.labels.el);
   }
@@ -198,20 +210,21 @@ export default class Neck extends View {
         note = note % notes.length;
       }
     });
+
     this._notesMap = notesMap;
     this._labelsMap = labelsMap;
   }
 
   renderStrings(el) {
     let strings = this.model.tunning.map((item, i) => ({
-        class: SvgLine, 
-        x1: 0,
-        x2: this.model.fretWidth + this.model.fretCount * this.model.fretWidth,
-        y1: i * this.model.stringDistance + this.model.stringDistance / 2,
-        y2: i * this.model.stringDistance + this.model.stringDistance / 2
-      
+      class: SvgLine,
+      x1: 0,
+      x2: this.model.fretWidth + this.model.fretCount * this.model.fretWidth,
+      y1: i * this.model.stringDistance + this.model.stringDistance / 2,
+      y2: i * this.model.stringDistance + this.model.stringDistance / 2
+
     }));
-    new SvgGroup(el, { className: 'strings' , children: strings});
+    new SvgGroup(el, { className: 'strings', children: strings });
   }
 
   renderFingers(parentEl) {

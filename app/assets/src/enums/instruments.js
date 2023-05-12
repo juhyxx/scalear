@@ -13,7 +13,9 @@ const Ais = 10;
 const B = 11;
 
 
-const instruments = [{
+const instruments = [
+
+  {
   name: 'Guitar Standard',
   group: 'guitar',
   tunning: [E, B, G, D, A, E],
@@ -37,7 +39,10 @@ const instruments = [{
   name: 'Guitar 7-string',
   group: 'guitar',
   tunning: [E, B, G, D, A, E, B],
-}, {
+},   {
+  name: 'Piano',
+  group: 'piano'
+},{
   group: 'bass',
   name: 'Bass Standard',
   tunning: [G, D, A, E],
@@ -93,7 +98,15 @@ const instrumentsGrouped = [{
       return item.group === 'guitar' ? item : undefined;
     });
   }(),
-}, {
+},  {
+  name: 'Piano',
+  group: 'piano',
+  options: function() {
+    return instruments.filter(function(item) {
+      return item.group === 'piano' ? item : undefined;
+    });
+  }(),
+},{
   name: 'Bass',
   group: 'bass',
   options: function() {

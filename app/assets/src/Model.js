@@ -75,13 +75,13 @@ export default class Model {
   }
 
   get stringsCount() {
-    return this.tunning.length;
+    return this.tunning && this.tunning.length || 6;
   }
   get stringDistance() {
     return 20;
   }
   get neckWidth() {
-    return this.stringDistance * this.stringsCount;
+    return this.stringDistance * this.stringsCount || 130;
   }
   get fretWidth() {
     return Math.round(this.neckHeight / this.fretCount);
