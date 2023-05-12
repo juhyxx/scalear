@@ -2,6 +2,7 @@
 
 ## What is it?
 Tool for string instruments such as guitar for learning scales and chords as pictures. 
+Ane also piano.
 
 Inspired by http://www.all-guitar-chords.com/ and others.
 
