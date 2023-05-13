@@ -39,6 +39,7 @@ export default class Scalear extends Application {
     }
   }
 
+
   init() {
     const neckSelect = new Switch('#necktype .two-values-switch', this.model);
     const rootSelect = new Select({
@@ -73,10 +74,15 @@ export default class Scalear extends Application {
     q('#note-names').addEventListener('change', (e) => this.model.namesVisible = e.target.checked);
     q('#frets-count').addEventListener('input', (e) => this.model.fretCount = e.target.value);
     q('#print').addEventListener('click', (e) => window.print());
+
     this._neckSelect = neckSelect
+    this._scaleSelect = scaleSelect
+    this._rootSelect =  rootSelect
+    this._instrumentSelect =  instrumentSelect
   }
 
   modelUpdate(model, changeName) {
+    //console.debug("scalear:", changeName)
     switch (changeName) {
       case 'rootNote':
         q('#root').innerHTML = model.rootNoteName;
@@ -129,6 +135,11 @@ export default class Scalear extends Application {
           this.model.scale = 0;
         }
       }
+    }
+    else {
+      this.model.scale = this._scaleSelect.value;
+      this.model.rootNote = this._rootSelect.value;
+      this.model.instrument = this._instrumentSelect.value;
     }
   }
 }

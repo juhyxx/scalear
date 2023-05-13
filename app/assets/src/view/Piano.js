@@ -17,6 +17,7 @@ export default class Piano extends View {
   }
 
   modelUpdate(model, changeName) {
+    //console.debug("PIANO:", changeName)
     switch (changeName) {
       case 'highlighted':
         this.highlightNotes(model.highlighted);
