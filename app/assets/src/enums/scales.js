@@ -265,7 +265,7 @@ const scalesGrouped = [{
     });
   }(),
 }, {
-  name: 'Dminished Chords',
+  name: 'Diminished Chords',
   group: 'dim-chords',
   options: function() {
     return scales.filter(function(item) {
