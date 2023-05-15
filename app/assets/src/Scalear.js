@@ -77,8 +77,8 @@ export default class Scalear extends Application {
 
     this._neckSelect = neckSelect
     this._scaleSelect = scaleSelect
-    this._rootSelect =  rootSelect
-    this._instrumentSelect =  instrumentSelect
+    this._rootSelect = rootSelect
+    this._instrumentSelect = instrumentSelect
   }
 
   modelUpdate(model, changeName) {

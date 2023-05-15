@@ -28,4 +28,4 @@ const notesWithBs = [
   'B', // 11
 ]
 
-export {notes, notesWithBs};
+export { notes, notesWithBs };

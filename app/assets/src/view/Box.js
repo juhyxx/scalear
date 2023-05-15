@@ -71,8 +71,8 @@ export default class Box extends View {
           ],
         });
       }
-      const hasSharps = [0, 2, 4,  7, 9, 11].includes(rootNote)
-      const content = hasSharps ?  notes[item] : notesWithBs[item];
+      const hasSharps = [0, 2, 4, 7, 9, 11].includes(rootNote)
+      const content = hasSharps ? notes[item] : notesWithBs[item];
       const hasSharp = content.length > 1;
       const noteName = new SvgText(this._mainGroup.el, {
         x: 10 + width * index,
@@ -81,15 +81,15 @@ export default class Box extends View {
         className: index === 0 ? 'root' : undefined,
         textContent: content.charAt(0),
       });
-    if (content.length > 1) {
-     new SvgText(this._mainGroup.el, {
-        x: 20 + width * index,
-        y: 60,
-        note: item,
-        className:"sharpflat " + (index === 0 ? 'root' : undefined),
-        textContent: content.charAt(1),
-      });
-    }
+      if (content.length > 1) {
+        new SvgText(this._mainGroup.el, {
+          x: 20 + width * index,
+          y: 60,
+          note: item,
+          className: "sharpflat " + (index === 0 ? 'root' : undefined),
+          textContent: content.charAt(1),
+        });
+      }
 
       //  if (this.model.highlighted !== undefined && this.model.highlighted === item) {
       //    noteName.addClass('highlighted');

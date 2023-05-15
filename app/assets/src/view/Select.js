@@ -1,5 +1,5 @@
 import View from '../View.js';
-import {q} from '../shortcuts.js';
+import { q } from '../shortcuts.js';
 
 export default class Select extends View {
   get el() {
@@ -13,7 +13,7 @@ export default class Select extends View {
     return this._el.value
   }
 
-  constructor({selector, propertyName, model, data, watchOption}) {
+  constructor({ selector, propertyName, model, data, watchOption }) {
     super();
     this.el = selector;
     this._propertyName = propertyName;

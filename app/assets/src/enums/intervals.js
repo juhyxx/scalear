@@ -19,4 +19,4 @@ const intervals = [
   '11', // 17
 ];
 
-export {intervals};
+export { intervals };

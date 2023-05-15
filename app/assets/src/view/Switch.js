@@ -1,5 +1,5 @@
 import View from '../View.js';
-import {q} from '../shortcuts.js';
+import { q } from '../shortcuts.js';
 
 export default class Switch extends View {
   get el() {
@@ -21,7 +21,7 @@ export default class Switch extends View {
     else {
       this.el.removeAttribute("disabled")
     }
-     
+
   }
 
   constructor(selector, model) {

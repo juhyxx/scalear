@@ -1,5 +1,5 @@
 const APP = {
-  version: '0.7.1',
+  version: '0.7.2',
   defaults: {
     highlighted: undefined,
     fretCount: 14,
@@ -11,4 +11,4 @@ const APP = {
   },
 };
 
-export {APP};
+export { APP };
