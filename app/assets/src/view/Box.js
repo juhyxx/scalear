@@ -9,9 +9,12 @@ import SvgText from '../svg/element/Text.js';
 import SvgPolyline from '../svg/element/Polyline.js';
 
 export default class Box extends View {
+  #parentEl;
+  #mainGroup;
+
   constructor(svgParent, model) {
     super();
-    this._parentEl = svgParent;
+    this.#parentEl = svgParent;
     this.model = model;
     this.modelUpdate(this.model);
   }
@@ -31,15 +34,15 @@ export default class Box extends View {
     const width = 35;
     const horizonWidth = 8;
 
-    if (this._mainGroup) {
-      this._mainGroup.remove();
+    if (this.#mainGroup) {
+      this.#mainGroup.remove();
     }
 
     const scale = scales[scaleId].notes.slice().map((item) => {
       return (item + rootNote) % notes.length;
     });
 
-    this._mainGroup = new SvgGroup(this._parentEl, {
+    this.#mainGroup = new SvgGroup(this.#parentEl, {
       id: 'scale-box',
       transform: 'translate(' + (250 - (-50 + scale.length * width) / 2) + ',' + stringCount * 17 + ')',
     });
@@ -48,14 +51,14 @@ export default class Box extends View {
     scale.forEach((item, index) => {
 
       if (index < scale.length - 1) {
-        new SvgText(this._mainGroup.el, {
+        new SvgText(this.#mainGroup.el, {
           x: 10 + width / 2 + width * index,
           y: 50,
           className: 'interval',
           textContent: intervals[scales[scaleId].notes[index + 1] - scales[scaleId].notes[index]],
         });
 
-        new SvgPolyline(this._mainGroup.el, {
+        new SvgPolyline(this.#mainGroup.el, {
           points: [
             [16 + width * index, 52],
             [16 + width * index, 47],
@@ -63,7 +66,7 @@ export default class Box extends View {
           ],
         });
 
-        new SvgPolyline(this._mainGroup.el, {
+        new SvgPolyline(this.#mainGroup.el, {
           points: [
             [16 + width - horizonWidth + width * index, 47],
             [16 + width + width * index, 47],
@@ -74,7 +77,7 @@ export default class Box extends View {
       const hasSharps = [0, 2, 4, 7, 9, 11].includes(rootNote)
       const content = hasSharps ? notes[item] : notesWithBs[item];
       const hasSharp = content.length > 1;
-      const noteName = new SvgText(this._mainGroup.el, {
+      const noteName = new SvgText(this.#mainGroup.el, {
         x: 10 + width * index,
         y: 65,
         note: item,
@@ -82,7 +85,7 @@ export default class Box extends View {
         textContent: content.charAt(0),
       });
       if (content.length > 1) {
-        new SvgText(this._mainGroup.el, {
+        new SvgText(this.#mainGroup.el, {
           x: 20 + width * index,
           y: 60,
           note: item,
@@ -109,7 +112,7 @@ export default class Box extends View {
       //     this.model.highlighted = parseInt(noteName.el.getAttribute('note'), 10);
       //   }
       // }, false);
-      new SvgText(this._mainGroup.el, {
+      new SvgText(this.#mainGroup.el, {
         x: 13 + width * index,
         y: 75,
         className: 'interval',

@@ -21,7 +21,6 @@ export default class Switch extends View {
     else {
       this.el.removeAttribute("disabled")
     }
-
   }
 
   constructor(selector, model) {

@@ -1,69 +1,86 @@
-import {scales} from './enums/scales.js';
-import {notes} from './enums/notes.js';
-import {instruments} from './enums/instruments.js';
+import { scales } from './enums/scales.js';
+import { notes } from './enums/notes.js';
+import { instruments } from './enums/instruments.js';
 
 export default class Model {
+
+  #nameStates = ["Names", "Intervals", "Off"];
+  #stateIndex = 0;
+  #rootNote = 0;
+  #instrument = 0;
+  #scale = 0;
+  #fretCount = 12;
+  #higlighted;
+  #neckType = 'gibson';
+  #updateHandlers = [];
+  #tunning;
+
   get rootNote() {
-    return this._rootNote || 0;
+    return this.#rootNote || 0;
   }
   get rootNoteName() {
     return notes[this.rootNote];
   }
   set rootNote(rootNote) {
     if (this.rootNote !== rootNote) {
-      this._rootNote = parseInt(rootNote, 10);
+      this.#rootNote = parseInt(rootNote, 10);
       this.onUpdate('rootNote');
     }
   }
 
   get instrument() {
-    return this._instrument || 0;
+    return this.#instrument || 0;
   }
   set instrument(instrument) {
     if (this.instrument !== instrument) {
-      this._instrument = parseInt(instrument, 10);
+      this.#instrument = parseInt(instrument, 10);
       this.onUpdate('instrument');
     }
   }
 
   get scale() {
-    return this._scale || 0;
+    return this.#scale || 0;
   }
   get scaleName() {
     return scales[this.scale].name;
   }
   set scale(scale) {
     if (this.scale !== scale) {
-      this._scale = parseInt(scale, 10);
+      this.#scale = parseInt(scale, 10);
       this.onUpdate('scale');
     }
   }
 
   get fretCount() {
-    return this._fretCount || 12;
+    return this.#fretCount || 12;
   }
   set fretCount(fretCount) {
     fretCount = parseInt(fretCount, 10);
     fretCount = isNaN(fretCount) ? 12 : fretCount;
     fretCount = Math.min(fretCount, 25);
     fretCount = Math.max(fretCount, 10);
-    this._fretCount = fretCount;
+    this.#fretCount = fretCount;
     this.onUpdate('fretCount');
   }
 
-  get namesVisible() {
-    return !!this._namesVisible;
+  get names() {
+    return this.#nameStates[this.#stateIndex];
   }
-  set namesVisible(namesVisible) {
-    this._namesVisible = !!namesVisible;
-    this.onUpdate('namesVisible');
+
+
+  toggleNames() {
+    this.#stateIndex = this.#stateIndex + 1;
+    if (this.#stateIndex >= this.#nameStates.length) {
+      this.#stateIndex = 0;
+    }
+    this.onUpdate('names');
   }
 
   get neckType() {
-    return this._neckType || 'gibson';
+    return this.#neckType || 'gibson';
   }
   set neckType(neckType) {
-    this._neckType = neckType;
+    this.#neckType = neckType;
     this.onUpdate('neckType');
   }
 
@@ -71,7 +88,7 @@ export default class Model {
     return instruments[this.instrument].tunning;
   }
   set tunning(tunning) {
-    return this._tunning = tunning;
+    return this.#tunning = tunning;
   }
 
   get stringsCount() {
@@ -91,28 +108,24 @@ export default class Model {
   }
 
   get highlighted() {
-    return this._higlighted;
+    return this.#higlighted;
   }
 
   set highlighted(highlighted) {
-    this._higlighted = highlighted;
+    this.#higlighted = highlighted;
     this.onUpdate('highlighted');
   }
 
-  constructor() {
-    this.namesVisible = true;
-  }
-
   onUpdate(change) {
-    this._updateHandlers = this._updateHandlers || [];
-    this._updateHandlers.forEach((handler) => {
+    this.#updateHandlers = this.#updateHandlers || [];
+    this.#updateHandlers.forEach((handler) => {
       handler.fn.call(handler.scope, this, change);
     });
   }
 
   addUpdateHandler(fn, scope) {
-    this._updateHandlers = this._updateHandlers || [];
-    this._updateHandlers.push({fn: fn, scope: scope});
+    this.#updateHandlers = this.#updateHandlers || [];
+    this.#updateHandlers.push({ fn: fn, scope: scope });
   }
 
   toJSON() {

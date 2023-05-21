@@ -119,6 +119,11 @@ const scales = [
     name: 'Major chord',
     notes: [C, E, G],
     group: 'major-chords',
+  },
+  {
+    name: 'Major 6th chord',
+    notes: [C, E, G, A],
+    group: 'major-chords',
   }, {
     name: 'Major 7th chord',
     notes: [C, E, G, B],
@@ -146,6 +151,10 @@ const scales = [
   }, {
     name: 'Minor chord',
     notes: [C, Dis, G],
+    group: 'minor-chords',
+  }, {
+    name: 'Minor 6th chord',
+    notes: [C, Dis, G, A],
     group: 'minor-chords',
   }, {
     name: 'Minor 7th chord',

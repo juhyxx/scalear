@@ -1,6 +1,8 @@
 import Svg from './Svg.js';
 
 export default class Element extends Svg {
+  #el;
+  
   constructor(parent, params) {
     super(...arguments);
 
@@ -18,17 +20,17 @@ export default class Element extends Svg {
   }
 
   get className() {
-    return this._el.getAttribute('class') || '';
+    return this.#el.getAttribute('class') || '';
   }
   set className(name) {
-    return this._el.setAttribute('class', name);
+    return this.#el.setAttribute('class', name);
   }
 
   get el() {
-    return this._el;
+    return this.#el;
   }
   set el(el) {
-    return this._el = el;
+    return this.#el = el;
   }
 
   remove() {
@@ -36,12 +38,12 @@ export default class Element extends Svg {
   }
 
   show() {
-    this._el.style.display = 'block';
+    this.#el.style.display = 'block';
     return this;
   }
 
   hide() {
-    this._el.style.display = 'none';
+    this.#el.style.display = 'none';
     return this;
   }
 
@@ -59,11 +61,11 @@ export default class Element extends Svg {
   }
 
   showWithOpacity() {
-    this._el.style.opacity = 1;
+    this.#el.style.opacity = 1;
   }
 
   hideWithOpacity() {
-    this._el.style.opacity = 0;
+    this.#el.style.opacity = 0;
   }
 
   render() {
@@ -72,6 +74,7 @@ export default class Element extends Svg {
     Object.keys(this.params).map((key) => {
       switch (key) {
         case 'id':
+          this.el[key] = this[key];
         case 'textContent':
           this.el[key] = this[key];
           break;

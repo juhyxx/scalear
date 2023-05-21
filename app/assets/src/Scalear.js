@@ -12,8 +12,15 @@ import Select from './view/Select.js';
 import SelectTwoLevel from './view/SelectTwoLevel.js';
 import Switch from './view/Switch.js';
 import Model from './Model.js';
+import StateToggle from './view/StateToggle.js';
 
 export default class Scalear extends Application {
+#neckSelect;
+#scaleSelect;
+#rootSelect;
+#instrumentSelect;
+#nameSelect;
+
   get name() {
     return 'Scalear ' + APP.version;
   }
@@ -34,9 +41,6 @@ export default class Scalear extends Application {
     q('nav').className = '';
     q('svg').setAttribute('class', '');
     document.title = this.model.rootNoteName + ' ' + this.model.scaleName + ' (' + this.name + ')';
-    if (this.model.namesVisible) {
-      q('#note-names').setAttribute('checked', 'checked');
-    }
   }
 
 
@@ -62,6 +66,11 @@ export default class Scalear extends Application {
       data: instrumentsGrouped,
       watchOption: 'instrument',
     });
+    const nameSelect = new StateToggle({
+      selector: '#names',    
+      model: this.model,
+      watchOption: 'names',
+    });
 
     const neckView = new Neck(Svg.get('svg'), this.model);
     const pianoView = new Piano(Svg.get('svg'), this.model);
@@ -71,14 +80,15 @@ export default class Scalear extends Application {
     scaleSelect.on('change', (e) => this.model.scale = e.target.value);
     rootSelect.on('change', (e) => this.model.rootNote = e.target.value);
     instrumentSelect.on('change', (e) => this.model.instrument = e.target.value);
-    q('#note-names').addEventListener('change', (e) => this.model.namesVisible = e.target.checked);
+    nameSelect.on('change', (e) => {this.model.toggleNames()});
     q('#frets-count').addEventListener('input', (e) => this.model.fretCount = e.target.value);
     q('#print').addEventListener('click', (e) => window.print());
 
-    this._neckSelect = neckSelect
-    this._scaleSelect = scaleSelect
-    this._rootSelect = rootSelect
-    this._instrumentSelect = instrumentSelect
+    this.#neckSelect = neckSelect
+    this.#scaleSelect = scaleSelect
+    this.#rootSelect = rootSelect
+    this.#instrumentSelect = instrumentSelect
+    this.#nameSelect = nameSelect
   }
 
   modelUpdate(model, changeName) {
@@ -95,12 +105,9 @@ export default class Scalear extends Application {
       case 'neckType':
         document.body.classList[model.neckType === 'fender' ? 'add' : 'remove']('dark');
         break;
-      case 'namesVisible':
-        q('#note-names')[model.namesVisible ? 'setAttribute' : 'removeAttribute']('checked', true);
-        break
       case "instrument":
         q('#frets-count').disabled = instruments[model.instrument].group === "piano"
-        this._neckSelect.disabled = instruments[model.instrument].group === "piano"
+        this.#neckSelect.disabled = instruments[model.instrument].group === "piano"
     }
     this.route = Application.prepareHashString([
       '', instruments[model.instrument].name, model.scaleName, model.rootNoteName, '',
@@ -137,9 +144,10 @@ export default class Scalear extends Application {
       }
     }
     else {
-      this.model.scale = this._scaleSelect.value;
-      this.model.rootNote = this._rootSelect.value;
-      this.model.instrument = this._instrumentSelect.value;
+      this.model.scale = this.#scaleSelect.value;
+      this.model.rootNote = this.#rootSelect.value;
+      this.model.instrument = this.#instrumentSelect.value;
+
     }
   }
 }

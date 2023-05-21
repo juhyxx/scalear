@@ -8,12 +8,19 @@ import SvgCircle from '../svg/element/Circle.js';
 import SvgRectangle from '../svg/element/Rectangle.js';
 import SvgLine from '../svg/element/Line.js';
 import SvgText from '../svg/element/Text.js';
-
+import { intervals } from '../enums/intervals.js';
 
 export default class Neck extends View {
+  #parentEl;
+  #mainGroup;
+  #fingers;
+  #labels;
+  #notesMap;
+  #labelsMap;
+
   constructor(svgParent, model) {
     super();
-    this._parentEl = svgParent;
+    this.#parentEl = svgParent;
     this.model = model;
     this.modelUpdate(this.model, "init");
   }
@@ -23,44 +30,42 @@ export default class Neck extends View {
       case 'highlighted':
         this.highlightNotes(model.highlighted);
         break;
-      case 'namesVisible':
-        this.labels[model.namesVisible ? 'showWithOpacity' : 'hideWithOpacity']();
-        break;
       case 'rootNote':
       case 'scale':
         this.showScale();
         break;
-
+      case "names":
+        this.labels.el.setAttribute("class", model.names.toLowerCase())
+        break
       case "init":
       case "neckType":
       case "fretCount":
       case "instrument":
         if (instruments[model.instrument].group === "piano") {
-          if (this._mainGroup) {
-            this._mainGroup.remove();
-            this._mainGroup = undefined
+          if (this.#mainGroup) {
+            this.#mainGroup.remove();
+            this.#mainGroup = undefined
           }
           break
         }
 
-        if (this._mainGroup && this._mainGroup.remove) {
-          this._mainGroup.remove();
+        if (this.#mainGroup && this.#mainGroup.remove) {
+          this.#mainGroup.remove();
         }
         this.render();
         this.showScale(model.scale);
-        this.labels[model.namesVisible ? 'showWithOpacity' : 'hideWithOpacity']();
         this.highlightNotes(model.highlighted);
         break;
     }
   }
 
   render() {
-    this._mainGroup = new SvgGroup(this._parentEl, {
+    this.#mainGroup = new SvgGroup(this.#parentEl, {
       id: 'neck',
       className: this.model.neckType,
       transform: 'translate(0,2.5) ',
     });
-    new SvgRectangle(this._mainGroup.el, {
+    new SvgRectangle(this.#mainGroup.el, {
       className: 'neck',
       x: this.model.fretWidth,
       y: 0,
@@ -69,7 +74,8 @@ export default class Neck extends View {
       fill: this.model.neckType === 'fender' ? 'url(#gradientfender)' : 'url(#gradient)',
     });
 
-    this.renderGroups(this._mainGroup.el);
+    this.renderGroups(this.#mainGroup.el);
+    this.labels.el.setAttribute("class", this.model.names.toLowerCase())
     this.mapNotes();
   }
 
@@ -80,7 +86,7 @@ export default class Neck extends View {
     this.renderStrings(el)
     const fingers = new SvgGroup(el, { className: 'fingers' });
 
-    this.labels = new SvgGroup(el, { className: 'labels' });
+    this.labels = new SvgGroup(el, { id: 'labels' });
     if (!instruments[this.model.instrument].fretless) {
       this.renderShading(shading.el);
     }
@@ -203,16 +209,16 @@ export default class Neck extends View {
     this.model.tunning.forEach((note, string) => {
       for (fret = 0; fret <= this.model.fretCount; fret++) {
         notesMapItem = notesMap.has(note) ? notesMap.get(note) : [];
-        notesMapItem.push(this._fingers[string][fret]);
+        notesMapItem.push(this.#fingers[string][fret]);
         notesMap.set(note, notesMapItem);
-        labelsMap.set(this._fingers[string][fret], this._labels[string][fret]);
+        labelsMap.set(this.#fingers[string][fret], this.#labels[string][fret]);
         note++;
         note = note % notes.length;
       }
     });
 
-    this._notesMap = notesMap;
-    this._labelsMap = labelsMap;
+    this.#notesMap = notesMap;
+    this.#labelsMap = labelsMap;
   }
 
   renderStrings(el) {
@@ -222,7 +228,6 @@ export default class Neck extends View {
       x2: this.model.fretWidth + this.model.fretCount * this.model.fretWidth,
       y1: i * this.model.stringDistance + this.model.stringDistance / 2,
       y2: i * this.model.stringDistance + this.model.stringDistance / 2
-
     }));
     new SvgGroup(el, { className: 'strings', children: strings });
   }
@@ -255,14 +260,14 @@ export default class Neck extends View {
         fingers[string].push(group);
       }
     }
-    this._fingers = fingers;
+    this.#fingers = fingers;
   }
 
   renderLabels(parentEl) {
 
     let fretArray;
 
-    this._labels = this.model.tunning.slice().map((noteNumber, string) => {
+    this.#labels = this.model.tunning.slice().map((noteNumber, string) => {
       fretArray = new Array(this.model.fretCount + 2).join('0').split('');
       return fretArray.map((item, i) => {
         let content = {
@@ -302,6 +307,20 @@ export default class Neck extends View {
               x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
               y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
               textContent: content.flat.charAt(1),
+            },
+            {
+              class: SvgText,
+              className: 'interval',
+              x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
+              y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
+              textContent: "",
+            },
+            {
+              class: SvgText,
+              className: 'interval-sign',
+              x: i * this.model.fretWidth + (this.model.fretWidth / 2) - 2 - correction,
+              y: this.model.stringDistance * string + (this.model.stringDistance / 2) + 3,
+              textContent: "",
             }
           ]
         });
@@ -312,21 +331,26 @@ export default class Neck extends View {
   showAllNotes(note) {
     const hasSharps = [0, 2, 4, 7, 9, 11].includes(this.model.rootNote)
 
-    this._notesMap.get(note).forEach((item) => {
+    this.#notesMap.get(note).forEach((item) => {
       item.show();
-      this._labelsMap.get(item).show();
-      this._labelsMap.get(item).el.querySelectorAll(hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.add('hide'));
-      this._labelsMap.get(item).el.querySelectorAll(!hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.remove('hide'));
+      this.#labelsMap.get(item).show();
+      this.#labelsMap.get(item).el.querySelectorAll(hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.add('hide'));
+      this.#labelsMap.get(item).el.querySelectorAll(!hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.remove('hide'));
 
       if (note === this.model.rootNote) {
         item.el.querySelector('rect').classList.add('visible');
         item.el.querySelector('circle').classList.remove('visible');
-        this._labelsMap.get(item).className = 'root';
+        this.#labelsMap.get(item).className = 'root';
       } else {
-        this._labelsMap.get(item).className = '';
+        this.#labelsMap.get(item).className = '';
         item.el.querySelector('rect').classList.remove('visible');
         item.el.querySelector('circle').classList.add('visible');
       }
+
+      let interval = intervals[(12 + note - this.model.rootNote) % 12]
+
+      this.#labelsMap.get(item).el.querySelector(".interval").textContent = interval[0]
+      this.#labelsMap.get(item).el.querySelector(".interval-sign").textContent = interval[1]
     });
   }
 
@@ -336,19 +360,19 @@ export default class Neck extends View {
   }
 
   clear() {
-    this._fingers = this._fingers || [];
-    this._fingers.forEach((item, i) => {
+    this.#fingers = this.#fingers || [];
+    this.#fingers.forEach((item, i) => {
       item.map((finger, j) => {
         finger.hide().className = '';
-        this._labelsMap.get(finger).hide();
+        this.#labelsMap.get(finger).hide();
       });
     });
   }
 
   highlightNotes(note) {
-    this._fingers.forEach((item) => item.map((finger) => finger.removeClass('highlighted')));
+    this.#fingers.forEach((item) => item.map((finger) => finger.removeClass('highlighted')));
     if (note !== undefined) {
-      this._notesMap.get(note).forEach((item) => item.addClass('highlighted'));
+      this.#notesMap.get(note).forEach((item) => item.addClass('highlighted'));
     }
   }
 }

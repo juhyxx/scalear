@@ -11,8 +11,10 @@
     <link rel="stylesheet" href="scalear.css">
 	<script type="module">
         import Scalear from "./src/Scalear.js"
+        let app = new Scalear();
+        (app).run()
 
-        (new Scalear()).run()
+        window.scalear = app;
     </script>
 	
 </head>
@@ -106,8 +108,7 @@
 					<option>25</option>
 				</datalist>
             </label>
-            <label class="toggle">
-                <input tabindex="5" type="checkbox" id="note-names">
+            <label id="names" class="state-toggle">
 				<div class="toggle-box"><div>Names</div></div>
             </label>
             <label id="necktype">

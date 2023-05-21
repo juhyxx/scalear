@@ -1,11 +1,13 @@
 export default class View {
+  #model;
+  
   get model() {
-    return this._model;
+    return this.#model;
   }
 
   set model(model) {
-    this._model = model;
-    this._model.addUpdateHandler(this.modelUpdate, this);
+    this.#model = model;
+    this.#model.addUpdateHandler(this.modelUpdate, this);
   }
 
   on(eventName, fn) {

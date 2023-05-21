@@ -73,7 +73,7 @@
 		}
 	}
 
-	.labels {
+	#labels {
 		#label {
 			fill: rgba(0, 0, 0, 0.7);
 
@@ -90,7 +90,8 @@
 				fill: white;
 			}
 
-			.index {
+			.index,
+			.interval-sign  {
 				font-size: 4px;
 				transform: translate(4px, -3px);
 			}
@@ -104,10 +105,45 @@
 			}
 		}
 
-		opacity: 0;
+
 
 		tspan {
 			font-size: 5px;
+		}
+
+		&.names {
+			.interval {
+				display: none;
+			}
+
+			.interval-sign {
+				display: none;
+			}
+		}
+
+		&.intervals {
+			text {
+				display: none;
+
+				&.interval,
+				&.interval-sign {
+					display: block;
+				}
+
+			}
+
+		}
+
+		&.off {
+			display: none;
+
+			.interval {
+				display: none;
+			}
+
+			.interval-sign {
+				display: none;
+			}
 		}
 	}
 

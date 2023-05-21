@@ -52,14 +52,14 @@
 
 		rect,
 		circle {
-			
+
 			@media screen {
 				filter: url(#neckshadow);
 			}
 		}
 	}
 
-	.labels {
+	#labels {
 		#label {
 			fill: rgba(0, 0, 0, 0.7);
 
@@ -76,7 +76,8 @@
 				fill: white;
 			}
 
-			.index {
+			.index,
+			.interval-sign {
 				font-size: 4px;
 				transform: translate(4px, -3px);
 			}
@@ -88,9 +89,45 @@
 			@media print {
 				fill: black;
 			}
+
+
 		}
 
-		opacity: 0;
+		&.names {
+			.interval {
+				display: none;
+			}
+
+			.interval-sign {
+				display: none;
+			}
+		}
+
+		&.intervals {
+			text {
+				display: none;
+
+				&.interval,
+				&.interval-sign {
+					display: block;
+				}
+
+			}
+
+		}
+
+		&.off {
+			display: none;
+
+			.interval {
+				display: none;
+			}
+
+			.interval-sign {
+				display: none;
+			}
+		}
+
 
 		tspan {
 			font-size: 5px;
