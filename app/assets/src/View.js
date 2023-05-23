@@ -1,6 +1,6 @@
 export default class View {
   #model;
-  
+
   get model() {
     return this.#model;
   }

@@ -70,10 +70,9 @@ export default class Piano extends View {
       height: this.model.neckWidth,
     });
 
-    this.keyCount = 20;
+    this.keyCount = this.model.keyCount;
     this.keyWidth = this.model.neckHeight / this.keyCount;
     this.blackKeyWidth = Math.round(this.keyWidth * 2 / 3);
-
     this.renderGroups(this.#mainGroup.el);
     this.labels.el.setAttribute("class", this.model.names.toLowerCase())
     this.mapNotes();
@@ -221,8 +220,6 @@ export default class Piano extends View {
     for (let i = 0; i <= this.keyCount + ((Math.round(this.keyCount / 7)) * 5); i++) {
       let noteNumber = i % 12;
       let content = notes[noteNumber];
-      let correction = content.length > 1 ? 1 : 0;
-      let hasSharp = content.length > 1;
 
       if ([0, 2, 4, 5, 7, 9, 11].includes(noteNumber)) {
         let y = 103;

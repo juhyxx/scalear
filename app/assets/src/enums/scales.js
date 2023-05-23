@@ -164,11 +164,11 @@ const scales = [
     name: 'Minor 9th chord',
     notes: [C, Dis, G, B, 14],
     group: 'minor-chords',
-  },{
+  }, {
     name: 'Dominant 9th chord',
     notes: [C, Dis, G, Bb, 14],
     group: 'minor-chords',
-  },  {
+  }, {
     name: 'Minor 11th chord',
     notes: [C, Dis, G, B, 14, 17],
     group: 'minor-chords',

@@ -14,6 +14,17 @@ export default class Model {
   #neckType = 'gibson';
   #updateHandlers = [];
   #tunning;
+  #keyCount = 20;
+
+  get keyCount() {
+    return this.#keyCount;
+  }
+
+  set keyCount(count) {
+    this.#keyCount = count;
+    this.onUpdate('keyCount');
+  }
+
 
   get rootNote() {
     return this.#rootNote || 0;

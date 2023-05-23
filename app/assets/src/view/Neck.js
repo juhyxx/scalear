@@ -95,7 +95,6 @@ export default class Neck extends View {
       this.renderFrets(frets.el);
     }
 
-
     this.renderFingers(fingers.el);
     this.renderLabels(this.labels.el);
   }

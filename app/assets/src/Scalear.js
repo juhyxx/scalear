@@ -15,11 +15,11 @@ import Model from './Model.js';
 import StateToggle from './view/StateToggle.js';
 
 export default class Scalear extends Application {
-#neckSelect;
-#scaleSelect;
-#rootSelect;
-#instrumentSelect;
-#nameSelect;
+  #neckSelect;
+  #scaleSelect;
+  #rootSelect;
+  #instrumentSelect;
+  #nameSelect;
 
   get name() {
     return 'Scalear ' + APP.version;
@@ -67,7 +67,7 @@ export default class Scalear extends Application {
       watchOption: 'instrument',
     });
     const nameSelect = new StateToggle({
-      selector: '#names',    
+      selector: '#names',
       model: this.model,
       watchOption: 'names',
     });
@@ -80,7 +80,7 @@ export default class Scalear extends Application {
     scaleSelect.on('change', (e) => this.model.scale = e.target.value);
     rootSelect.on('change', (e) => this.model.rootNote = e.target.value);
     instrumentSelect.on('change', (e) => this.model.instrument = e.target.value);
-    nameSelect.on('change', (e) => {this.model.toggleNames()});
+    nameSelect.on('change', (e) => { this.model.toggleNames() });
     q('#frets-count').addEventListener('input', (e) => this.model.fretCount = e.target.value);
     q('#print').addEventListener('click', (e) => window.print());
 
