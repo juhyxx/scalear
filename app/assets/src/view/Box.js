@@ -44,7 +44,7 @@ export default class Box extends View {
 
     this.#mainGroup = new SvgGroup(this.#parentEl, {
       id: 'scale-box',
-      transform: 'translate(' + (250 - (-50 + scale.length * width) / 2) + ',' + stringCount * 17 + ')',
+      transform: 'translate(' + (250 - (-50 + scale.length * width) / 2) + ',0)',
     });
 
 
@@ -53,24 +53,24 @@ export default class Box extends View {
       if (index < scale.length - 1) {
         new SvgText(this.#mainGroup.el, {
           x: 10 + width / 2 + width * index,
-          y: 50,
+          y: 10,
           className: 'interval',
           textContent: intervals[scales[scaleId].notes[index + 1] - scales[scaleId].notes[index]],
         });
 
         new SvgPolyline(this.#mainGroup.el, {
           points: [
-            [16 + width * index, 52],
-            [16 + width * index, 47],
-            [16 + horizonWidth + width * index, 47],
+            [16 + width * index, 10],
+            [16 + width * index, 7],
+            [16 + horizonWidth + width * index, 7],
           ],
         });
 
         new SvgPolyline(this.#mainGroup.el, {
           points: [
-            [16 + width - horizonWidth + width * index, 47],
-            [16 + width + width * index, 47],
-            [16 + width + width * index, 52],
+            [16 + width - horizonWidth + width * index, 7],
+            [16 + width + width * index, 7],
+            [16 + width + width * index, 10],
           ],
         });
       }
@@ -79,7 +79,7 @@ export default class Box extends View {
       const hasSharp = content.length > 1;
       const noteName = new SvgText(this.#mainGroup.el, {
         x: 10 + width * index,
-        y: 65,
+        y: 25,
         note: item,
         className: index === 0 ? 'root' : undefined,
         textContent: content.charAt(0),
@@ -87,7 +87,7 @@ export default class Box extends View {
       if (content.length > 1) {
         new SvgText(this.#mainGroup.el, {
           x: 20 + width * index,
-          y: 60,
+          y: 20,
           note: item,
           className: "sharpflat " + (index === 0 ? 'root' : undefined),
           textContent: content.charAt(1),
@@ -114,7 +114,7 @@ export default class Box extends View {
       // }, false);
       new SvgText(this.#mainGroup.el, {
         x: 13 + width * index,
-        y: 75,
+        y: 35,
         className: 'interval',
         textContent: intervals[scales[scaleId].notes[index]],
       });

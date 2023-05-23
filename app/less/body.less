@@ -8,6 +8,9 @@ body {
 	font-family: "Ubuntu", sans-serif;
 	background-color: #bfa98e;
 	background: linear-gradient(lighten(#bfa98e, 30%), #bfa98e);
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
 	@media print {
 		background: white;
@@ -47,10 +50,11 @@ body {
 		margin: 1rem;
 		transition: opacity 2s, transform 1s;
 		transform-origin: 5% 100%;
-
+		&#board {
 		@media screen {
 			margin-top: 10rem;
 		}
+	}
 
 		&.loading {
 			opacity: 0;
