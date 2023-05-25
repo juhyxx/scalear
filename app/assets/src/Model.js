@@ -117,7 +117,6 @@ export default class Model {
   get neckHeight() {
     return 500;
   }
-
   get highlighted() {
     return this.#higlighted;
   }

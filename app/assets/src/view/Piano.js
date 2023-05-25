@@ -17,6 +17,17 @@ export default class Piano extends View {
   #labels;
   #notesMap;
 
+  get keyCount() {
+    return this.model.keyCount
+  }
+  get keyWidth() {
+    return this.model.neckHeight / this.keyCount;
+  }
+
+  get blackKeyWidth() {
+    return Math.round(this.keyWidth * 2 / 3);
+  }
+
   constructor(svgParent, model) {
     super();
     this.#parentEl = svgParent;
@@ -60,19 +71,10 @@ export default class Piano extends View {
 
   render() {
     this.#mainGroup = new SvgGroup(this.#parentEl, {
-      id: 'piano'
+      id: 'piano', children: [{
+        class: SvgRectangle, className: 'piano', x: 0, y: 0, width: "90%", height: this.model.neckWidth
+      }]
     });
-    new SvgRectangle(this.#mainGroup.el, {
-      className: 'piano',
-      x: 0,
-      y: 0,
-      width: "90%",
-      height: this.model.neckWidth,
-    });
-
-    this.keyCount = this.model.keyCount;
-    this.keyWidth = this.model.neckHeight / this.keyCount;
-    this.blackKeyWidth = Math.round(this.keyWidth * 2 / 3);
     this.renderGroups(this.#mainGroup.el);
     this.labels.el.setAttribute("class", this.model.names.toLowerCase())
     this.mapNotes();
@@ -81,8 +83,8 @@ export default class Piano extends View {
   renderGroups(el) {
     const keys = new SvgGroup(el, { className: 'keys' });
     const fingers = new SvgGroup(el, { className: 'fingers' });
-
     this.labels = new SvgGroup(el, { id: 'labels' });
+
     this.renderKeys(keys.el)
     this.renderFingers(fingers.el);
     this.renderLabels(this.labels.el);
@@ -95,56 +97,20 @@ export default class Piano extends View {
 
     for (let i = 0; i <= this.keyCount; i++) {
       keys.push(
-        {
-          class: SvgRectangle,
-          x: i * this.keyWidth,
-          y: 0,
-          width: Math.round(this.keyWidth - 2),
-          height: this.model.neckWidth,
-        }
+        { class: SvgRectangle, x: i * this.keyWidth, y: 0, width: Math.round(this.keyWidth - 2), height: this.model.neckWidth }
       );
       if ([0, 1, 3, 4, 5].includes(i % 7)) {
-        blackKeys.push(
-          {
-            class: SvgRectangle,
-            x: Math.round((i * this.keyWidth) + (this.blackKeyWidth) - 1),
-            y: 0,
-            width: this.blackKeyWidth,
-            height: Math.round(this.model.neckWidth * 2 / 3),
-            index: i
-          }
-        );
+        blackKeys.push({ class: SvgRectangle, x: Math.round((i * this.keyWidth) + (this.blackKeyWidth) - 1), y: 0, width: this.blackKeyWidth, height: Math.round(this.model.neckWidth * 2 / 3), index: i });
         reflection.push({
-          class: SvgRectangle,
-          className: 'reflection',
-          x: Math.round((i * this.keyWidth) + (this.blackKeyWidth) + this.blackKeyWidth - 4),
-          y: 0,
-          width: this.blackKeyWidth / 10,
-          height: Math.round(this.model.neckWidth * 2 / 3) - 6,
-          index: i
-        })
-        reflection.push({
-          class: SvgRectangle,
-          className: 'reflection',
-          x: Math.round((i * this.keyWidth) + (this.blackKeyWidth)),
-          y: 0,
-          width: this.blackKeyWidth / 10,
-          height: Math.round(this.model.neckWidth * 2 / 3) - 6,
-          index: i
+          class: SvgRectangle, className: 'reflection', x: Math.round((i * this.keyWidth) + (this.blackKeyWidth) + this.blackKeyWidth - 4), y: 0, width: this.blackKeyWidth / 10, height: Math.round(this.model.neckWidth * 2 / 3) - 6, index: i
+        }, {
+          class: SvgRectangle, className: 'reflection', x: Math.round((i * this.keyWidth) + (this.blackKeyWidth)), y: 0, width: this.blackKeyWidth / 10, height: Math.round(this.model.neckWidth * 2 / 3) - 6, index: i
         })
       }
     }
-
-    new SvgGroup(el, {
-      children: keys,
-      className: "white"
-    });
-    new SvgGroup(el, {
-      children: [...blackKeys, ...reflection],
-      className: "black"
-    });
+    new SvgGroup(el, { children: keys, className: "white" });
+    new SvgGroup(el, { children: [...blackKeys, ...reflection], className: "black" });
   }
-
 
   mapNotes() {
     const notesMap = new Map();
@@ -162,7 +128,6 @@ export default class Piano extends View {
     this.#labelsMap = labelsMap;
   }
 
-
   renderFingers(parentEl) {
     const fingers = [];
     for (let i = 0; i <= this.keyCount; i++) {
@@ -172,19 +137,8 @@ export default class Piano extends View {
 
       fingers.push(new SvgGroup(parentEl, {
         children: [
-          {
-            class: SvgCircle,
-            x: x,
-            y: y,
-            radius: radius,
-          },
-          {
-            class: SvgRectangle,
-            x: x - radius,
-            y: y - radius,
-            width: radius * 2,
-            height: radius * 2,
-          }
+          { class: SvgCircle, x: x, y: y, radius: radius },
+          { class: SvgRectangle, x: x - radius, y: y - radius, width: radius * 2, height: radius * 2 }
         ]
       }));
 
@@ -193,19 +147,8 @@ export default class Piano extends View {
         x = x + this.keyWidth / 2
         fingers.push(new SvgGroup(parentEl, {
           children: [
-            {
-              class: SvgCircle,
-              x: x,
-              y: y,
-              radius: radius,
-            },
-            {
-              class: SvgRectangle,
-              x: x - radius,
-              y: y - radius,
-              width: radius * 2,
-              height: radius * 2,
-            }
+            { class: SvgCircle, x: x, y: y, radius: radius },
+            { class: SvgRectangle, x: x - radius, y: y - radius, width: radius * 2, height: radius * 2 }
           ]
         }));
       }
@@ -228,25 +171,9 @@ export default class Piano extends View {
           new SvgGroup(parentEl, {
             id: 'label',
             children: [
-              {
-                class: SvgText,
-                x, y,
-                textContent: content,
-              },
-              {
-                class: SvgText,
-                x: x,
-                y: y,
-                textContent: "",
-                className: "interval"
-              },
-              {
-                class: SvgText,
-                className: 'interval-sign',
-                x: x,
-                y: y,
-                textContent: "",
-              }
+              { class: SvgText, x, y, textContent: content },
+              { class: SvgText, x: x, y: y, textContent: "", className: "interval" },
+              { class: SvgText, className: 'interval-sign', x: x, y: y, textContent: "" }
             ]
           })
         )
@@ -257,54 +184,18 @@ export default class Piano extends View {
         let content = {
           "sharp": notes[noteNumber],
           "flat": notesWithBs[noteNumber],
-        }
+        };
 
         labels.push(
           new SvgGroup(parentEl, {
             id: 'label',
             children: [
-              {
-                class: SvgText,
-                x: x,
-                y: y,
-                textContent: content.sharp.charAt(0),
-                className: "sharp"
-              },
-              {
-                class: SvgText,
-                className: 'index sharp',
-                x: x,
-                y: y,
-                textContent: content.sharp.charAt(1),
-              },
-              {
-                class: SvgText,
-                x: x,
-                y: y,
-                textContent: content.flat.charAt(0),
-                className: "flat"
-              },
-              {
-                class: SvgText,
-                className: 'index flat',
-                x: x,
-                y: y,
-                textContent: content.flat.charAt(1),
-              },
-              {
-                class: SvgText,
-                x: x,
-                y: y,
-                textContent: "",
-                className: "interval"
-              },
-              {
-                class: SvgText,
-                className: 'interval-sign',
-                x: x,
-                y: y,
-                textContent: "",
-              }
+              { class: SvgText, x: x, y: y, textContent: content.sharp.charAt(0), className: "sharp" },
+              { class: SvgText, className: 'index sharp', x: x, y: y, textContent: content.sharp.charAt(1) },
+              { class: SvgText, x: x, y: y, textContent: content.flat.charAt(0), className: "flat" },
+              { class: SvgText, className: 'index flat', x: x, y: y, textContent: content.flat.charAt(1) },
+              { class: SvgText, x: x, y: y, textContent: "", className: "interval" },
+              { class: SvgText, className: 'interval-sign', x: x, y: y, textContent: "" }
             ]
           })
         )
@@ -321,23 +212,24 @@ export default class Piano extends View {
 
     this.#notesMap.get(note).forEach((item) => {
       item.show();
-      this.#labelsMap.get(item).show();
-      this.#labelsMap.get(item).el.querySelectorAll(hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.add('hide'));
-      this.#labelsMap.get(item).el.querySelectorAll(!hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.remove('hide'));
+      const labelItem = this.#labelsMap.get(item);
+      labelItem.show();
+      labelItem.el.querySelectorAll(hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.add('hide'));
+      labelItem.el.querySelectorAll(!hasSharps ? '.flat' : ".sharp").forEach(item => item.classList.remove('hide'));
 
       if (note === this.model.rootNote) {
         item.el.querySelector('rect').classList.add('visible');
         item.el.querySelector('circle').classList.remove('visible');
-        this.#labelsMap.get(item).className = 'root';
+        labelItem.className = 'root';
       } else {
-        this.#labelsMap.get(item).className = '';
+        labelItem.className = '';
         item.el.querySelector('rect').classList.remove('visible');
         item.el.querySelector('circle').classList.add('visible');
       }
-      let interval = intervals[(12 + note - this.model.rootNote) % 12]
+      let interval = intervals[(12 + note - this.model.rootNote) % 12];
 
-      this.#labelsMap.get(item).el.querySelector(".interval").textContent = interval[0]
-      this.#labelsMap.get(item).el.querySelector(".interval-sign").textContent = interval[1]
+      labelItem.el.querySelector(".interval").textContent = interval[0];
+      labelItem.el.querySelector(".interval-sign").textContent = interval[1];
     });
   }
 
