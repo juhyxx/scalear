@@ -8,12 +8,18 @@ body {
 	font-family: "Ubuntu", sans-serif;
 	background-color: #bfa98e;
 	background: linear-gradient(lighten(#bfa98e, 30%), #bfa98e);
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+	display: grid;
+	gap: 2rem;
+	grid-template-areas:
+		"header"
+		"main"
+		"footer";
+	grid-template-rows: fit-content(20%) minmax(380px, 550px)  fit-content(20%);
+	scroll-behavior: auto;
 
 	@media print {
 		background: white;
+		grid-template-rows: fit-content(20%) 320px  fit-content(20%);
 	}
 
 	@media (prefers-color-scheme: dark) {
@@ -24,6 +30,7 @@ body {
 	@media screen {
 		height: 100vh;
 		overflow: hidden;
+	
 	}
 
 	h1 {
@@ -45,25 +52,13 @@ body {
 	}
 
 	svg {
-		width: 100%;
-		opacity: 1;
-		margin: 1rem;
-		transition: opacity 2s, transform 1s;
-		transform-origin: 5% 100%;
 		&#board {
-		@media screen {
-			margin-top: 10rem;
-		}
-	}
-
-		&.loading {
-			opacity: 0;
+			grid-area: main;
+			margin-left: 1rem;
 		}
 
-		// @media screen   and (max-width: 600px) {
-		// 	width: auto;
-		// 	height: 80vw;
-		// 	transform: rotate(90deg) translateX(-300px);
-		// }
+		&#box {
+			grid-area: footer;
+		}
 	}
 }

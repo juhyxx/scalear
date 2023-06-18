@@ -1,25 +1,25 @@
 @import "variables";
 
 nav {
-  width: 97vw;
+  grid-area: header;
+  width: 100vw;
   user-select: none;
   background: linear-gradient(darken(@colorBase, 3%) 0%, @colorBase 15%, @colorBase 75%, darken(@colorBase, 3%) 100%);
   color: white;
-  padding: 1rem 2em;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   align-items: center;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.2);
-  transition: transform 2s;
-  transition-delay: 0.5s;
-  transition-timing-function: cubic-bezier(0.1, 0.1);
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   align-content: flex-start;
-  transform: translate3d(0, 0, 0);
-  transform-origin: top center;
   top: 0;
   border-bottom: 2px solid white;
-  position: fixed;
+
+  #logo {
+    margin-left: 1rem;
+  }
 
   @media screen and (min-width: 1150px) {
     #logo {
@@ -53,7 +53,6 @@ nav {
 
   &.loading,
   .fullscreen & {
-
     transform: rotate3d(1, 0, 0, 90deg);
   }
 

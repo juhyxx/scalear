@@ -20,54 +20,6 @@
 </head>
 
 <body>
-    <h1 class="title"><span id="root"></span> <span id="name"></span></h1>
-    <svg id="board" version="1.0" encoding="UTF-8" width="100%" preserveAspectRatio="xMinYMin slice" viewBox="0 0 560 160" class="loading">
-        <defs>
-            <filter id="neckshadow" x="-1" y="-1" width="300%" height="300%">
-                <feOffset result="offOut" in="SourceAlpha" dx="0" dy="1" />
-                <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
-                <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-            </filter>
-            <filter id="fret" x="0" y="0" width="200%" height="200%">
-                <feOffset result="offOut" in="SourceAlpha" dx="1" dy="0" />
-                <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-            </filter>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#3b2b2b" />
-                <stop offset="40%" style="stop-color:#573a34;" />
-                <stop offset="60%" style="stop-color:#573a34;" />
-                <stop offset="100%" style="stop-color:#3b2b2b;" />
-            </linearGradient>
-            <linearGradient id="str" x1="0%" y1="0%" x2="0%" y2="5" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" style="stop-color:#736e27" />
-                <stop offset="100%" style="stop-color:#c6c6c6;" />
-            </linearGradient>
-            <linearGradient id="str2"xlink:href="#str"spreadMethod="repeat" />
-            <linearGradient id="gradientfender" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#e4cda7" />
-                <stop offset="30%" style="stop-color:#d4bb90;" />
-                <stop offset="60%" style="stop-color:#d4bb90;" />
-                <stop offset="100%" style="stop-color:#e4cda7;" />
-            </linearGradient>
-            <linearGradient id="blackkeys" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:black" />
-                <stop offset="92%" style="stop-color:#000000;" />
-                <stop offset="93%" style="stop-color:#343434;" />
-                <stop offset="100%" style="stop-color:#343434;" />
-            </linearGradient>
-            <linearGradient id="shading" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="5%" stop-opacity="0.5" style="stop-color:black" />
-                <stop offset="5%" stop-opacity="0.2" style="stop-color:black" />
-                <stop offset="20%" stop-opacity="0" style="stop-color:black" />
-                <stop offset="80%" stop-opacity="0" style="stop-color:black" />
-                <stop offset="95%" stop-opacity="0.2" style="stop-color:black" />
-                <stop offset="100%" stop-opacity="0.5" style="stop-color:black" />
-            </linearGradient>
-        </defs>
-    </svg>
-
-    <svg id="box" version="1.0" encoding="UTF-8" width="100%" preserveAspectRatio="xMinYMin slice" viewBox="0 0 560 40"></svg>
-
     <nav class="loading">
 		<div id="logo"></div>
         <div>
@@ -124,6 +76,55 @@
             </label>
         </div>
     </nav>
+    <h1 class="title"><span id="root"></span> <span id="name"></span></h1>
+    <svg id="board" version="1.0" encoding="UTF-8" width="100%" preserveAspectRatio="xMinYMin slice" viewBox="0 0 560 160" class="loading">
+        <defs>
+            <filter id="neckshadow" x="-1" y="-1" width="300%" height="300%">
+                <feOffset result="offOut" in="SourceAlpha" dx="0" dy="1" />
+                <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
+                <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+            </filter>
+            <filter id="fret" x="0" y="0" width="200%" height="200%">
+                <feOffset result="offOut" in="SourceAlpha" dx="1" dy="0" />
+                <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+            </filter>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#3b2b2b" />
+                <stop offset="40%" style="stop-color:#573a34;" />
+                <stop offset="60%" style="stop-color:#573a34;" />
+                <stop offset="100%" style="stop-color:#3b2b2b;" />
+            </linearGradient>
+            <linearGradient id="str" x1="0%" y1="0%" x2="0%" y2="5" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" style="stop-color:#736e27" />
+                <stop offset="100%" style="stop-color:#c6c6c6;" />
+            </linearGradient>
+            <linearGradient id="str2"xlink:href="#str"spreadMethod="repeat" />
+            <linearGradient id="gradientfender" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#e4cda7" />
+                <stop offset="30%" style="stop-color:#d4bb90;" />
+                <stop offset="60%" style="stop-color:#d4bb90;" />
+                <stop offset="100%" style="stop-color:#e4cda7;" />
+            </linearGradient>
+            <linearGradient id="blackkeys" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:black" />
+                <stop offset="92%" style="stop-color:#000000;" />
+                <stop offset="93%" style="stop-color:#343434;" />
+                <stop offset="100%" style="stop-color:#343434;" />
+            </linearGradient>
+            <linearGradient id="shading" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="5%" stop-opacity="0.5" style="stop-color:black" />
+                <stop offset="5%" stop-opacity="0.2" style="stop-color:black" />
+                <stop offset="20%" stop-opacity="0" style="stop-color:black" />
+                <stop offset="80%" stop-opacity="0" style="stop-color:black" />
+                <stop offset="95%" stop-opacity="0.2" style="stop-color:black" />
+                <stop offset="100%" stop-opacity="0.5" style="stop-color:black" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <svg id="box" version="1.0" encoding="UTF-8" width="100%" preserveAspectRatio="xMinYMin slice" viewBox="0 0 560 40"></svg>
+
+
 </body>
 
 </html>
