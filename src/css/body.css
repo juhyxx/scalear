@@ -1,0 +1,79 @@
+@import url(//fonts.googleapis.com/css?family=Ubuntu:500);
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Ubuntu", sans-serif;
+    background-color: #bfa98e;
+    background: linear-gradient(lighten(#bfa98e, 30%), #bfa98e);
+
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Ubuntu", sans-serif;
+        background-color: var(--color-secondary);
+        /* LESS lighten(#bfa98e, 30%) replaced with a lighter color */
+        background: linear-gradient(#e7d7c2, var(--color-secondary));
+        display: grid;
+        gap: 2rem;
+        grid-template-areas:
+            "header"
+            "main"
+            "footer";
+        grid-template-rows: fit-content(20%) minmax(380px, 550px) fit-content(20%);
+        scroll-behavior: auto;
+
+        /* media queries must be outside the body selector in CSS */
+    }
+
+    @media print {
+        body {
+            background: white;
+            grid-template-rows: fit-content(20%) 320px fit-content(20%);
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        body {
+            background-color: var(--colorDark);
+            /* LESS lighten(#000, 20%) replaced with #333 */
+            background: linear-gradient(#333, black);
+        }
+    }
+
+    @media screen {
+        body {
+            height: 100vh;
+            overflow: hidden;
+        }
+    }
+
+    h1 {
+        margin-top: 1rem;
+    }
+
+    #version-info {
+        display: none;
+        text-transform: none;
+    }
+
+    @media screen {
+        h1 {
+            visibility: hidden;
+            display: none;
+            margin-left: 4.5rem;
+            margin-bottom: 0.5em;
+            color: var(--colorBase);
+            margin-top: 40px;
+        }
+    }
+
+    svg#board {
+        grid-area: main;
+        margin-left: 1rem;
+    }
+
+    svg#box {
+        grid-area: footer;
+    }

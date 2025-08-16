@@ -1,5 +1,3 @@
-@import "variables";
-
 #scale-box {
     .interval {
 
@@ -13,7 +11,7 @@
     }
 
     .root {
-        fill: @colorBase;
+        fill: var(--color-base)
     }
 
     polyline,

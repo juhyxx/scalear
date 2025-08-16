@@ -1,0 +1,18 @@
+#print {
+    span {
+        opacity: 0.5;
+        transition: opacity 0.8s;
+        background: url("../assets/printer-icon.svg") no-repeat center center;
+        height: 42px;
+        width: 42px;
+
+        display: flex;
+        cursor: pointer;
+
+        &:hover,
+        &:focus {
+            opacity: 1;
+        }
+    }
+
+}

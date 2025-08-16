@@ -1,27 +1,19 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Scalear</title>
+    <script src="./app.js?0.8.4"" type="module" defer></script>
+    <title>Scalear 0.8.4</title>
     <meta name="description" content="Tool for displaing notes on string instruments and easy printing.">
     <meta name="keyword" content="guitar, 7-string guitar, ukulele, tunning, scales, fretless bass">
-
-    <link rel="stylesheet" href="scalear.css">
-	<script type="module">
-        import Scalear from "./src/Scalear.js"
-        let app = new Scalear();
-        (app).run()
-
-        window.scalear = app;
-    </script>
-	
+    <link rel="stylesheet" href="style.css?0.8.4"">
 </head>
 
 <body>
+    
     <nav class="loading">
-		<div id="logo"></div>
+		<div id="logo" title="Scalear 0.8.4"></div>
         <div>
             <label>
                 <div>Root</div>
@@ -68,7 +60,7 @@
             <label id="necktype">
                 <span class="two-values-switch" tabindex="6">
                     <span id="fender" selected="selected"><div>Light</div></span>
-                	<span id="gibson"><div>Dark</div></span>
+                    <span id="gibson"><div>Dark</div></span>
                 </span>
             </label>
 			<label id="print">

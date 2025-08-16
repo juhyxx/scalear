@@ -1,0 +1,23 @@
+label {
+    div {
+        color: #bfa98e;
+        transition: color 0.4s;
+
+        font-size: 0.9rem;
+        margin-bottom: 1px;
+
+    }
+
+    &:hover,
+    &:focus {
+        div {
+            color: white;
+
+        }
+    }
+
+    --colorBase: #bfa98e;
+    --colorHighlight: white;
+    --colorDark: #000000;
+    --color-secondary: #ffcc00;
+}

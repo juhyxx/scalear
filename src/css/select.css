@@ -1,0 +1,29 @@
+select {
+    padding: 6px;
+    outline: none;
+    font-size: 1.3rem;
+    border-radius: 8px;
+    font-family: "Ubuntu", sans-serif;
+    background-color: #bfa98e;
+    color: var(--color-base) cursor: pointer;
+    border: 0;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+    font-size: 1rem;
+
+    optgroup {
+        background-color: var(--color-base) color: white;
+    }
+
+    option {
+        color: var(--color-base) background-color: white;
+        text-shadow: none;
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+
+    &:focus {
+        box-shadow: inset 3px 3px 3px rgba(255, 255, 255, 0.3), 0 0 3px black, 0 0 8px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 165, 0, 0.5);
+    }
+}

@@ -1,0 +1,19 @@
+@import url(./css/body.css);
+@import url(./css/filter.css);
+@import url(./css/nav.css);
+@import url(./css/label.css);
+@import url(./css/neck.css);
+@import url(./css/piano.css);
+@import url(./css/print-button.css);
+@import url(./css/select.css);
+@import url(./css/scale-box.css);
+@import url(./css/state-toggle.css);
+@import url(./css/toggle.css);
+@import url(./css/two-values-switch.css);
+
+:root {
+    --color-base: #732c2c;
+    --color-highlight: #ffb733;
+    --color-dark: #454545;
+    --color-secondary: #bfa98e;
+}
