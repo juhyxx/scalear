@@ -1,0 +1,46 @@
+toggle-button::part(wrapper) {
+
+    flex-basis: 2rem;
+    cursor: pointer;
+    color: var(--color-base);
+    background-color: #bfa98e;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.25rem;
+    position: relative;
+
+}
+
+toggle-button::part(container) {
+    display: flex;
+    flex-basis: 2rem;
+    width: 6rem;
+    position: relative;
+    transition: left 1s ease-in-out;
+
+}
+
+toggle-button::part(label) {
+    color: var(--color-secondary);
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: inset 0.25rem 0.25rem 0.25rem rgba(255, 255, 255, 0.2),
+        0 0 0.25rem black,
+        0 0 8px rgba(255, 255, 255, 0.3),
+        0 0 40px rgba(255, 165, 0, 0.5);
+
+}
+
+toggle-item {
+    width: 6rem;
+    flex: 1 0 6rem;
+    text-align: center;
+    text-shadow: 0px -1px 0 rgba(255, 255, 255, 0.4);
+    display: flex;
+    height: 2rem;
+    justify-content: center;
+    align-items: center;
+}

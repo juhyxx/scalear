@@ -10,9 +10,7 @@ import Piano from './view/Piano.js';
 import Box from './view/Box.js';
 import Select from './view/Select.js';
 import SelectTwoLevel from './view/SelectTwoLevel.js';
-import Switch from './view/Switch.js';
 import Model from './Model.js';
-import StateToggle from './view/StateToggle.js';
 
 export default class Scalear extends Application {
     #neckSelect;
@@ -40,20 +38,10 @@ export default class Scalear extends Application {
         q('#frets-count').value = this.model.fretCount;
         q('nav').className = '';
         q('svg').setAttribute('class', '');
-        document.title =
-            this.model.rootNoteName +
-            ' ' +
-            this.model.scaleName +
-            ' (' +
-            this.name +
-            ')';
+        document.title = `${this.model.rootNoteName} ${this.model.scaleName} (${this.name})`;
     }
 
     init() {
-        const neckSelect = new Switch(
-            '#necktype .two-values-switch',
-            this.model
-        );
         const rootSelect = new Select({
             selector: '#root-selector',
             model: this.model,
@@ -74,37 +62,43 @@ export default class Scalear extends Application {
             data: instrumentsGrouped,
             watchOption: 'instrument'
         });
-        const nameSelect = new StateToggle({
-            selector: '#names',
-            model: this.model,
-            watchOption: 'names'
+
+        const notes = document.querySelector('#notes');
+        this.model.n;
+        const fretboardSelect = document.querySelector('#fretboard');
+
+        notes.addEventListener('change', (e) => {
+            console.log('Notes changed:', e.detail.value);
+            this.model.names = e.detail.value;
+        });
+        fretboardSelect.addEventListener('change', (e) => {
+            console.log('Fretboard changed:', e.detail.value);
+            this.model.neckType = e.detail.value;
         });
 
         const neckView = new Neck(Svg.get('svg#board'), this.model);
         const pianoView = new Piano(Svg.get('svg#board'), this.model);
         const scaleBox = new Box(Svg.get('svg#box'), this.model);
 
-        neckSelect.on('change', (e) => (this.model.neckType = e.target.value));
+        // neckSelect.on('change', (e) => (this.model.neckType = e.target.value));
         scaleSelect.on('change', (e) => (this.model.scale = e.target.value));
         rootSelect.on('change', (e) => (this.model.rootNote = e.target.value));
         instrumentSelect.on(
             'change',
             (e) => (this.model.instrument = e.target.value)
         );
-        nameSelect.on('change', (e) => {
-            this.model.toggleNames();
-        });
+
         q('#frets-count').addEventListener(
             'input',
             (e) => (this.model.fretCount = e.target.value)
         );
         q('#print').addEventListener('click', (e) => window.print());
 
-        this.#neckSelect = neckSelect;
+        //this.#neckSelect = neckSelect;
         this.#scaleSelect = scaleSelect;
         this.#rootSelect = rootSelect;
         this.#instrumentSelect = instrumentSelect;
-        this.#nameSelect = nameSelect;
+        //this.#nameSelect = nameSelect;
     }
 
     modelUpdate(model, changeName) {
@@ -112,23 +106,11 @@ export default class Scalear extends Application {
         switch (changeName) {
             case 'rootNote':
                 q('#root').innerHTML = model.rootNoteName;
-                document.title =
-                    model.rootNoteName +
-                    ' ' +
-                    model.scaleName +
-                    ' (' +
-                    this.name +
-                    ')';
+                document.title = `${model.rootNoteName} ${model.scaleName} (${this.name})`;
                 break;
             case 'scale':
                 q('#name').innerHTML = model.scaleName;
-                document.title =
-                    model.rootNoteName +
-                    ' ' +
-                    model.scaleName +
-                    ' (' +
-                    this.name +
-                    ')';
+                document.title = `${model.rootNoteName} ${model.scaleName} (${this.name})`;
                 break;
             case 'neckType':
                 document.body.classList[
@@ -138,8 +120,8 @@ export default class Scalear extends Application {
             case 'instrument':
                 q('#frets-count').disabled =
                     instruments[model.instrument].group === 'piano';
-                this.#neckSelect.disabled =
-                    instruments[model.instrument].group === 'piano';
+            // this.#neckSelect.disabled =
+            //     instruments[model.instrument].group === 'piano';
         }
         this.route = Application.prepareHashString(
             [

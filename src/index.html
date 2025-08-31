@@ -3,17 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <script src="./app.js?0.8.4"" type="module" defer></script>
-    <title>Scalear 0.8.4</title>
+    <script src="./app.js?0.8.5"" type="module" defer></script>
+    <title>Scalear 0.8.5</title>
     <meta name="description" content="Tool for displaing notes on string instruments and easy printing.">
     <meta name="keyword" content="guitar, 7-string guitar, ukulele, tunning, scales, fretless bass">
-    <link rel="stylesheet" href="style.css?0.8.4"">
+    <link rel="stylesheet" href="style.css?0.8.5"">
 </head>
 
 <body>
     
     <nav class="loading">
-		<div id="logo" title="Scalear 0.8.4"></div>
+		<div id="logo" title="Scalear 0.8.5"></div>
         <div>
             <label>
                 <div>Root</div>
@@ -54,15 +54,21 @@
 					<option>25</option>
 				</datalist>
             </label>
-            <label id="names" class="state-toggle">
-				<div class="toggle-box"><div>Names</div></div>
-            </label>
-            <label id="necktype">
-                <span class="two-values-switch" tabindex="6">
-                    <span id="fender" selected="selected"><div>Light</div></span>
-                    <span id="gibson"><div>Dark</div></span>
-                </span>
-            </label>
+    
+            <label><div>Notes</div>
+            <toggle-button id="notes">
+                <toggle-item value="names">Names</toggle-item>
+                <toggle-item value="intervals">Intervals</toggle-item>
+                <toggle-item value="none">None</toggle-item>
+            </toggle-button></label>
+            
+            <label><div>Fretboard</div>
+            <toggle-button id="fretboard">
+                <toggle-item value="fender">Light</toggle-item>
+                <toggle-item value="gibson">Dark</toggle-item>
+                <toggle-item value="lines">B&W</toggle-item>
+            </toggle-button></label>
+
 			<label id="print">
                 <span tabindex="7"></span>
             </label>

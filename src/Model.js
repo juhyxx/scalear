@@ -3,8 +3,7 @@ import { notes } from './enums/notes.js';
 import { instruments } from './enums/instruments.js';
 
 export default class Model {
-    #nameStates = ['Names', 'Intervals', 'Off'];
-    #stateIndex = 0;
+    #nameState = 'fender';
     #rootNote = 0;
     #instrument = 0;
     #scale = 0;
@@ -73,22 +72,29 @@ export default class Model {
     }
 
     get names() {
-        return this.#nameStates[this.#stateIndex];
+        return this.#nameState;
     }
 
-    toggleNames() {
-        this.#stateIndex = this.#stateIndex + 1;
-        if (this.#stateIndex >= this.#nameStates.length) {
-            this.#stateIndex = 0;
-        }
+    set names(state) {
+        this.#nameState = state;
         this.onUpdate('names');
     }
+
+    // toggleNames() {
+    //     this.#stateIndex = this.#stateIndex + 1;
+    //     if (this.#stateIndex >= this.#nameStates.length) {
+    //         this.#stateIndex = 0;
+    //     }
+
+    //     this.onUpdate('names');
+    // }
 
     get neckType() {
         return this.#neckType || 'gibson';
     }
     set neckType(neckType) {
         this.#neckType = neckType;
+
         this.onUpdate('neckType');
     }
 
@@ -124,6 +130,7 @@ export default class Model {
     }
 
     onUpdate(change) {
+        console.log('Model updated:', change);
         this.#updateHandlers = this.#updateHandlers || [];
         this.#updateHandlers.forEach((handler) => {
             handler.fn.call(handler.scope, this, change);

@@ -11,6 +11,8 @@
 @import url(./css/toggle.css);
 @import url(./css/two-values-switch.css);
 
+@import url(./components/ToggleButton.css);
+
 :root {
     --color-base: #732c2c;
     --color-highlight: #ffb733;

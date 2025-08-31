@@ -1,6 +1,6 @@
 label {
-    div {
-        color: #bfa98e;
+    &>div {
+        color: var(--color-secondary);
         transition: color 0.4s;
 
         font-size: 0.9rem;
@@ -10,14 +10,9 @@ label {
 
     &:hover,
     &:focus {
-        div {
+        &>div {
             color: white;
 
         }
     }
-
-    --colorBase: #bfa98e;
-    --colorHighlight: white;
-    --colorDark: #000000;
-    --color-secondary: #ffcc00;
 }

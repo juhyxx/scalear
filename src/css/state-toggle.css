@@ -8,7 +8,6 @@
         padding: 0 1rem;
         display: flex;
         align-items: center;
-        border-radius: 5px;
         text-shadow: none;
         user-select: none;
         box-shadow: inset 0 0 3px black, inset 0 0 3px black, inset 0 0 20px rgba(0, 0, 0, 0.4);

@@ -25,7 +25,6 @@
 
             fill: white;
 
-
             @media (prefers-color-scheme: dark) {
 
                 fill: black;
@@ -41,7 +40,6 @@
             &.visible {
                 display: block;
             }
-
 
             &.highlighted {
                 fill: green;
@@ -111,10 +109,9 @@
                 }
 
             }
-
         }
 
-        &.off {
+        &.none {
             display: none;
 
             .interval {
@@ -239,6 +236,43 @@
                     stroke-width: 6;
                 }
             }
+        }
+    }
+
+    &.lines {
+        rect.neck {
+            fill: white;
+
+            -webkit-filter: none;
+            filter: none;
+        }
+
+        .frets {
+            line {
+                stroke: black !important;
+                stroke-width: 1;
+
+                text {
+                    stroke: transparent;
+                }
+
+                &.zero {
+                    stroke: black;
+                    stroke-width: 6;
+                    -webkit-filter: none;
+                    filter: none;
+                }
+            }
+        }
+
+        .strings {
+            line {
+                stroke: black;
+            }
+        }
+
+        .shading {
+            display: none;
         }
     }
 
