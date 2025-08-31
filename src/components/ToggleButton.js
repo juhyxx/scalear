@@ -31,14 +31,8 @@ export class ToggleButton extends HTMLElement {
     }
 
     selectItem(index) {
-        this.shadowRoot.querySelector('[part=container]').style.left = `${
-            -index * 6
-        }rem`;
-        console.log(
-            index,
-            index * 6 - 2 * 6,
-            this.#items[index].getAttribute('value')
-        );
+        this.shadowRoot.querySelector('[part=container]').style.left = `${-index * 6}rem`;
+        console.log(index, index * 6 - 2 * 6, this.#items[index].getAttribute('value'));
         setTimeout(() => {
             this.dispatchEvent(
                 new CustomEvent('change', {
@@ -59,8 +53,6 @@ export class ToggleItem extends HTMLElement {
     }
 
     connectedCallback() {
-        this.innerHTML = `<div  data-value="${this.getAttribute('value')}">${
-            this.innerText
-        } </div>`;
+        this.innerHTML = `<div  data-value="${this.getAttribute('value')}">${this.innerText} </div>`;
     }
 }

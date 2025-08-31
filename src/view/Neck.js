@@ -71,10 +71,7 @@ export default class Neck extends View {
             y: 0,
             width: this.model.fretCount * this.model.fretWidth,
             height: this.model.neckWidth,
-            fill:
-                this.model.neckType === 'fender'
-                    ? 'url(#gradientfender)'
-                    : 'url(#gradient)'
+            fill: this.model.neckType === 'fender' ? 'url(#gradientfender)' : 'url(#gradient)'
         });
 
         this.renderGroups(this.#mainGroup.el);
@@ -117,57 +114,37 @@ export default class Neck extends View {
             if (i <= this.model.fretCount) {
                 if (i % 12 === 0) {
                     new SvgCircle(el, {
-                        x:
-                            (i - 1) * this.model.fretWidth +
-                            1.5 * this.model.fretWidth -
-                            3,
+                        x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth - 3,
                         y: this.model.neckWidth + 8,
                         radius: 2,
                         className: 'border'
                     });
                     new SvgCircle(el, {
-                        x:
-                            (i - 1) * this.model.fretWidth +
-                            1.5 * this.model.fretWidth +
-                            3,
+                        x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth + 3,
                         y: this.model.neckWidth + 8,
                         radius: 2,
                         className: 'border'
                     });
                     if (this.model.neckType === 'fender') {
                         new SvgCircle(el, {
-                            x:
-                                (i - 1) * this.model.fretWidth +
-                                1.5 * this.model.fretWidth,
-                            y:
-                                this.model.stringDistance +
-                                this.model.neckWidth / 2,
+                            x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
+                            y: this.model.stringDistance + this.model.neckWidth / 2,
                             radius: this.model.fretWidth / 6
                         });
                         new SvgCircle(el, {
-                            x:
-                                (i - 1) * this.model.fretWidth +
-                                1.5 * this.model.fretWidth,
-                            y:
-                                -this.model.stringDistance +
-                                this.model.neckWidth / 2,
+                            x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
+                            y: -this.model.stringDistance + this.model.neckWidth / 2,
                             radius: this.model.fretWidth / 6
                         });
                     } else {
                         new SvgRectangle(el, {
-                            x:
-                                (i - 1) * this.model.fretWidth +
-                                5 +
-                                this.model.fretWidth,
+                            x: (i - 1) * this.model.fretWidth + 5 + this.model.fretWidth,
                             y: 5 + this.model.neckWidth / 2,
                             height: (this.model.neckWidth - 10 * 5) / 2,
                             width: this.model.fretWidth - 2 * 5
                         });
                         new SvgRectangle(el, {
-                            x:
-                                (i - 1) * this.model.fretWidth +
-                                5 +
-                                this.model.fretWidth,
+                            x: (i - 1) * this.model.fretWidth + 5 + this.model.fretWidth,
                             y: 4 * 5,
                             height: (this.model.neckWidth - 10 * 5) / 2,
                             width: this.model.fretWidth - 2 * 5
@@ -175,27 +152,20 @@ export default class Neck extends View {
                     }
                 } else {
                     new SvgCircle(el, {
-                        x:
-                            (i - 1) * this.model.fretWidth +
-                            1.5 * this.model.fretWidth,
+                        x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
                         y: this.model.neckWidth + 8,
                         radius: 2,
                         className: 'border'
                     });
                     if (this.model.neckType === 'fender') {
                         new SvgCircle(el, {
-                            x:
-                                (i - 1) * this.model.fretWidth +
-                                1.5 * this.model.fretWidth,
+                            x: (i - 1) * this.model.fretWidth + 1.5 * this.model.fretWidth,
                             y: this.model.neckWidth / 2,
                             radius: this.model.fretWidth / 6
                         });
                     } else {
                         new SvgRectangle(el, {
-                            x:
-                                (i - 1) * this.model.fretWidth +
-                                5 +
-                                this.model.fretWidth,
+                            x: (i - 1) * this.model.fretWidth + 5 + this.model.fretWidth,
                             y: 4 * 5,
                             height: this.model.neckWidth - 8 * 5,
                             width: this.model.fretWidth - 2 * 5
@@ -215,11 +185,7 @@ export default class Neck extends View {
                 y2: this.model.neckWidth
             });
             new SvgText(el, {
-                x:
-                    i * this.model.fretWidth -
-                    this.model.fretWidth +
-                    2 * this.model.fretWidth -
-                    2,
+                x: i * this.model.fretWidth - this.model.fretWidth + 2 * this.model.fretWidth - 2,
                 y: this.model.neckWidth + 10,
                 textContent: i
             });
@@ -244,10 +210,7 @@ export default class Neck extends View {
                 notesMapItem = notesMap.has(note) ? notesMap.get(note) : [];
                 notesMapItem.push(this.#fingers[string][fret]);
                 notesMap.set(note, notesMapItem);
-                labelsMap.set(
-                    this.#fingers[string][fret],
-                    this.#labels[string][fret]
-                );
+                labelsMap.set(this.#fingers[string][fret], this.#labels[string][fret]);
                 note++;
                 note = note % notes.length;
             }
@@ -261,9 +224,7 @@ export default class Neck extends View {
         let strings = this.model.tunning.map((item, i) => ({
             class: SvgLine,
             x1: 0,
-            x2:
-                this.model.fretWidth +
-                this.model.fretCount * this.model.fretWidth,
+            x2: this.model.fretWidth + this.model.fretCount * this.model.fretWidth,
             y1: i * this.model.stringDistance + this.model.stringDistance / 2,
             y2: i * this.model.stringDistance + this.model.stringDistance / 2
         }));
@@ -282,24 +243,14 @@ export default class Neck extends View {
                     children: [
                         {
                             class: SvgCircle,
-                            x:
-                                i * this.model.fretWidth +
-                                this.model.fretWidth / 2,
-                            y:
-                                this.model.stringDistance * string +
-                                this.model.stringDistance / 2,
+                            x: i * this.model.fretWidth + this.model.fretWidth / 2,
+                            y: this.model.stringDistance * string + this.model.stringDistance / 2,
                             radius: radius
                         },
                         {
                             class: SvgRectangle,
-                            x:
-                                i * this.model.fretWidth +
-                                this.model.fretWidth / 2 -
-                                radius,
-                            y:
-                                this.model.stringDistance * string +
-                                this.model.stringDistance / 2 -
-                                radius,
+                            x: i * this.model.fretWidth + this.model.fretWidth / 2 - radius,
+                            y: this.model.stringDistance * string + this.model.stringDistance / 2 - radius,
                             width: radius * 2,
                             height: radius * 2
                         }
@@ -329,86 +280,44 @@ export default class Neck extends View {
                     children: [
                         {
                             class: SvgText,
-                            x:
-                                i * this.model.fretWidth +
-                                this.model.fretWidth / 2 -
-                                2 -
-                                correction,
-                            y:
-                                this.model.stringDistance * string +
-                                this.model.stringDistance / 2 +
-                                3,
+                            x: i * this.model.fretWidth + this.model.fretWidth / 2 - 2 - correction,
+                            y: this.model.stringDistance * string + this.model.stringDistance / 2 + 3,
                             textContent: content.sharp.charAt(0),
                             className: 'sharp'
                         },
                         {
                             class: SvgText,
                             className: 'index sharp',
-                            x:
-                                i * this.model.fretWidth +
-                                this.model.fretWidth / 2 -
-                                2 -
-                                correction,
-                            y:
-                                this.model.stringDistance * string +
-                                this.model.stringDistance / 2 +
-                                3,
+                            x: i * this.model.fretWidth + this.model.fretWidth / 2 - 2 - correction,
+                            y: this.model.stringDistance * string + this.model.stringDistance / 2 + 3,
                             textContent: content.sharp.charAt(1)
                         },
                         {
                             class: SvgText,
-                            x:
-                                i * this.model.fretWidth +
-                                this.model.fretWidth / 2 -
-                                2 -
-                                correction,
-                            y:
-                                this.model.stringDistance * string +
-                                this.model.stringDistance / 2 +
-                                3,
+                            x: i * this.model.fretWidth + this.model.fretWidth / 2 - 2 - correction,
+                            y: this.model.stringDistance * string + this.model.stringDistance / 2 + 3,
                             textContent: content.flat.charAt(0),
                             className: 'flat'
                         },
                         {
                             class: SvgText,
                             className: 'index flat',
-                            x:
-                                i * this.model.fretWidth +
-                                this.model.fretWidth / 2 -
-                                2 -
-                                correction,
-                            y:
-                                this.model.stringDistance * string +
-                                this.model.stringDistance / 2 +
-                                3,
+                            x: i * this.model.fretWidth + this.model.fretWidth / 2 - 2 - correction,
+                            y: this.model.stringDistance * string + this.model.stringDistance / 2 + 3,
                             textContent: content.flat.charAt(1)
                         },
                         {
                             class: SvgText,
                             className: 'interval',
-                            x:
-                                i * this.model.fretWidth +
-                                this.model.fretWidth / 2 -
-                                2 -
-                                correction,
-                            y:
-                                this.model.stringDistance * string +
-                                this.model.stringDistance / 2 +
-                                3,
+                            x: i * this.model.fretWidth + this.model.fretWidth / 2 - 2 - correction,
+                            y: this.model.stringDistance * string + this.model.stringDistance / 2 + 3,
                             textContent: ''
                         },
                         {
                             class: SvgText,
                             className: 'interval-sign',
-                            x:
-                                i * this.model.fretWidth +
-                                this.model.fretWidth / 2 -
-                                2 -
-                                correction,
-                            y:
-                                this.model.stringDistance * string +
-                                this.model.stringDistance / 2 +
-                                3,
+                            x: i * this.model.fretWidth + this.model.fretWidth / 2 - 2 - correction,
+                            y: this.model.stringDistance * string + this.model.stringDistance / 2 + 3,
                             textContent: ''
                         }
                     ]
@@ -444,12 +353,8 @@ export default class Neck extends View {
 
             let interval = intervals[(12 + note - this.model.rootNote) % 12];
 
-            this.#labelsMap
-                .get(item)
-                .el.querySelector('.interval').textContent = interval[0];
-            this.#labelsMap
-                .get(item)
-                .el.querySelector('.interval-sign').textContent = interval[1];
+            this.#labelsMap.get(item).el.querySelector('.interval').textContent = interval[0];
+            this.#labelsMap.get(item).el.querySelector('.interval-sign').textContent = interval[1];
         });
     }
 
@@ -472,13 +377,9 @@ export default class Neck extends View {
     }
 
     highlightNotes(note) {
-        this.#fingers.forEach((item) =>
-            item.map((finger) => finger.removeClass('highlighted'))
-        );
+        this.#fingers.forEach((item) => item.map((finger) => finger.removeClass('highlighted')));
         if (note !== undefined) {
-            this.#notesMap
-                .get(note)
-                .forEach((item) => item.addClass('highlighted'));
+            this.#notesMap.get(note).forEach((item) => item.addClass('highlighted'));
         }
     }
 }

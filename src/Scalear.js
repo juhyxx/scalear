@@ -83,15 +83,9 @@ export default class Scalear extends Application {
         // neckSelect.on('change', (e) => (this.model.neckType = e.target.value));
         scaleSelect.on('change', (e) => (this.model.scale = e.target.value));
         rootSelect.on('change', (e) => (this.model.rootNote = e.target.value));
-        instrumentSelect.on(
-            'change',
-            (e) => (this.model.instrument = e.target.value)
-        );
+        instrumentSelect.on('change', (e) => (this.model.instrument = e.target.value));
 
-        q('#frets-count').addEventListener(
-            'input',
-            (e) => (this.model.fretCount = e.target.value)
-        );
+        q('#frets-count').addEventListener('input', (e) => (this.model.fretCount = e.target.value));
         q('#print').addEventListener('click', (e) => window.print());
 
         //this.#neckSelect = neckSelect;
@@ -113,24 +107,15 @@ export default class Scalear extends Application {
                 document.title = `${model.rootNoteName} ${model.scaleName} (${this.name})`;
                 break;
             case 'neckType':
-                document.body.classList[
-                    model.neckType === 'fender' ? 'add' : 'remove'
-                ]('dark');
+                document.body.classList[model.neckType === 'fender' ? 'add' : 'remove']('dark');
                 break;
             case 'instrument':
-                q('#frets-count').disabled =
-                    instruments[model.instrument].group === 'piano';
+                q('#frets-count').disabled = instruments[model.instrument].group === 'piano';
             // this.#neckSelect.disabled =
             //     instruments[model.instrument].group === 'piano';
         }
         this.route = Application.prepareHashString(
-            [
-                '',
-                instruments[model.instrument].name,
-                model.scaleName,
-                model.rootNoteName,
-                ''
-            ].join('/')
+            ['', instruments[model.instrument].name, model.scaleName, model.rootNoteName, ''].join('/')
         );
         localStorage.defaults = model.toJSON();
     }
@@ -151,9 +136,7 @@ export default class Scalear extends Application {
             if (params[0]) {
                 try {
                     this.model.instrument = instruments.filter(
-                        (item) =>
-                            Application.prepareHashString(item.name) ===
-                            params[0]
+                        (item) => Application.prepareHashString(item.name) === params[0]
                     )[0].id;
                 } catch (e) {
                     this.model.instrument = 0;
@@ -162,9 +145,7 @@ export default class Scalear extends Application {
             if (params[1]) {
                 try {
                     this.model.scale = scales.filter(
-                        (item) =>
-                            Application.prepareHashString(item.name) ===
-                            params[1]
+                        (item) => Application.prepareHashString(item.name) === params[1]
                     )[0].id;
                 } catch (e) {
                     this.model.scale = 0;

@@ -44,8 +44,7 @@ export default class Box extends View {
 
         this.#mainGroup = new SvgGroup(this.#parentEl, {
             id: 'scale-box',
-            transform:
-                'translate(' + (250 - (-50 + scale.length * width) / 2) + ',0)'
+            transform: 'translate(' + (250 - (-50 + scale.length * width) / 2) + ',0)'
         });
 
         scale.forEach((item, index) => {
@@ -54,11 +53,7 @@ export default class Box extends View {
                     x: 10 + width / 2 + width * index,
                     y: 10,
                     className: 'interval',
-                    textContent:
-                        intervals[
-                            scales[scaleId].notes[index + 1] -
-                                scales[scaleId].notes[index]
-                        ]
+                    textContent: intervals[scales[scaleId].notes[index + 1] - scales[scaleId].notes[index]]
                 });
 
                 new SvgPolyline(this.#mainGroup.el, {
@@ -92,8 +87,7 @@ export default class Box extends View {
                     x: 20 + width * index,
                     y: 20,
                     note: item,
-                    className:
-                        'sharpflat ' + (index === 0 ? 'root' : undefined),
+                    className: 'sharpflat ' + (index === 0 ? 'root' : undefined),
                     textContent: content.charAt(1)
                 });
             }
