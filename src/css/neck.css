@@ -25,10 +25,10 @@
 
             fill: white;
 
-            @media (prefers-color-scheme: dark) {
+            /* @media (prefers-color-scheme: dark) {
 
                 fill: black;
-            }
+            } */
 
             @media print {
                 stroke: black;
@@ -59,12 +59,10 @@
         #label {
             fill: rgba(0, 0, 0, 0.7);
 
-            @media (prefers-color-scheme: dark) {
-                fill: white
-            }
+
 
             font-family: "Ubuntu",
-            sans-serif;
+                sans-serif;
             font-size: 7px;
             display: none;
 
@@ -240,6 +238,19 @@
     }
 
     &.lines {
+
+        rect,
+        circle,
+        line {
+            filter: none;
+        }
+
+        circle {
+            stroke: #000000;
+            stroke-width: 1px;
+
+        }
+
         rect.neck {
             fill: white;
 

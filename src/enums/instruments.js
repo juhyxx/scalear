@@ -1,15 +1,19 @@
-const C = 0;
-const Cis = 1;
-const D = 2;
-const Dis = 3;
-const E = 4;
-const F = 5;
-const Fis = 6;
-const G = 7;
-const Gis = 8;
-const A = 9;
-const Ais = 10;
-const B = 11;
+const Note = Object.freeze({
+    C: 0,
+    Cis: 1,
+    D: 2,
+    Dis: 3,
+    E: 4,
+    F: 5,
+    Fis: 6,
+    G: 7,
+    Gis: 8,
+    A: 9,
+    Ais: 10,
+    B: 11
+});
+
+const { C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B } = Note;
 
 const instruments = [
     {

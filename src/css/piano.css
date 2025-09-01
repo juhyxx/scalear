@@ -78,14 +78,12 @@
         #label {
             fill: rgba(0, 0, 0, 0.7);
 
-            @media (prefers-color-scheme: dark) {
-                fill: white
-            }
+
 
             font-family: "Ubuntu",
-            sans-serif;
+                sans-serif;
             font-size: 7px;
-            //display: none;
+
 
             &.root {
                 fill: white;

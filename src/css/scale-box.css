@@ -25,18 +25,12 @@
             font-size: 8px;
         }
 
-        // cursor: pointer;
-        // &.highlighted {
-        //     fill: green;
-        // }
         &.sharpflat {
             font-size: 9px;
         }
 
         fill: black;
 
-        @media (prefers-color-scheme: dark) {
-            fill: white;
-        }
+
     }
 }

@@ -27,7 +27,6 @@ body {
     @media (prefers-color-scheme: dark) {
         body {
             background-color: var(--colorDark);
-            /* LESS lighten(#000, 20%) replaced with #333 */
             background: linear-gradient(#333, black);
         }
     }
