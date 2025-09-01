@@ -68,17 +68,15 @@ export default class Scalear extends Application {
         const fretboardSelect = document.querySelector('#fretboard');
 
         notes.addEventListener('change', (e) => {
-            console.log('Notes changed:', e.detail.value);
             this.model.names = e.detail.value;
         });
         fretboardSelect.addEventListener('change', (e) => {
-            console.log('Fretboard changed:', e.detail.value);
             this.model.neckType = e.detail.value;
         });
 
         const neckView = new Neck(Svg.get('svg#board'), this.model);
-        const pianoView = new Piano(Svg.get('svg#board'), this.model);
-        const scaleBox = new Box(Svg.get('svg#box'), this.model);
+        //const pianoView = new Piano(Svg.get('svg#board'), this.model);
+        //const scaleBox = new Box(Svg.get('svg#box'), this.model);
 
         // neckSelect.on('change', (e) => (this.model.neckType = e.target.value));
         scaleSelect.on('change', (e) => (this.model.scale = e.target.value));

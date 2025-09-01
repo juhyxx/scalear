@@ -130,7 +130,6 @@ export default class Model {
     }
 
     onUpdate(change) {
-        console.log('Model updated:', change);
         this.#updateHandlers = this.#updateHandlers || [];
         this.#updateHandlers.forEach((handler) => {
             handler.fn.call(handler.scope, this, change);

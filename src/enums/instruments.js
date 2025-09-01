@@ -46,10 +46,10 @@ const instruments = [
         group: 'guitar',
         tunning: [E, B, G, D, A, E, B]
     },
-    {
-        name: 'Piano',
-        group: 'piano'
-    },
+    // {
+    //     name: 'Piano',
+    //     group: 'piano'
+    // },
     {
         group: 'bass',
         name: 'Bass Standard',
@@ -115,15 +115,15 @@ const instrumentsGrouped = [
             });
         })()
     },
-    {
-        name: 'Piano',
-        group: 'piano',
-        options: (function () {
-            return instruments.filter(function (item) {
-                return item.group === 'piano' ? item : undefined;
-            });
-        })()
-    },
+    // {
+    //     name: 'Piano',
+    //     group: 'piano',
+    //     options: (function () {
+    //         return instruments.filter(function (item) {
+    //             return item.group === 'piano' ? item : undefined;
+    //         });
+    //     })()
+    // },
     {
         name: 'Bass',
         group: 'bass',

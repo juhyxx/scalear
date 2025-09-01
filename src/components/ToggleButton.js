@@ -32,7 +32,6 @@ export class ToggleButton extends HTMLElement {
 
     selectItem(index) {
         this.shadowRoot.querySelector('[part=container]').style.left = `${-index * 6}rem`;
-        console.log(index, index * 6 - 2 * 6, this.#items[index].getAttribute('value'));
         setTimeout(() => {
             this.dispatchEvent(
                 new CustomEvent('change', {
