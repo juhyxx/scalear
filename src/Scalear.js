@@ -3,21 +3,16 @@ import { APP } from './enums/app.js';
 import { scalesGrouped, scales } from './enums/scales.js';
 import { instrumentsGrouped, instruments } from './enums/instruments.js';
 import { notes, notesWithBs } from './enums/notes.js';
-import { q } from './shortcuts.js';
 import Svg from './svg/Svg.js';
 import Neck from './view/Neck.js';
-import Piano from './view/Piano.js';
-import Box from './view/Box.js';
 import Select from './view/Select.js';
 import SelectTwoLevel from './view/SelectTwoLevel.js';
 import Model from './Model.js';
 
 export default class Scalear extends Application {
-    #neckSelect;
     #scaleSelect;
     #rootSelect;
     #instrumentSelect;
-    #nameSelect;
 
     get name() {
         return 'Scalear ' + APP.version;
@@ -33,11 +28,11 @@ export default class Scalear extends Application {
     }
 
     setDefaults() {
-        q('#name').innerHTML = this.model.scaleName;
-        q('#root').innerHTML = this.model.rootNoteName;
-        q('#frets-count').value = this.model.fretCount;
-        q('nav').className = '';
-        q('svg').setAttribute('class', '');
+        document.querySelector('#name').innerHTML = this.model.scaleName;
+        document.querySelector('#root').innerHTML = this.model.rootNoteName;
+        document.querySelector('#frets-count').value = this.model.fretCount;
+        document.querySelector('nav').className = '';
+        document.querySelector('svg').setAttribute('class', '');
         document.title = `${this.model.rootNoteName} ${this.model.scaleName} (${this.name})`;
     }
 
@@ -64,53 +59,45 @@ export default class Scalear extends Application {
         });
 
         const notes = document.querySelector('#notes');
-        this.model.n;
-        const fretboardSelect = document.querySelector('#fretboard');
+        const fretBoardSelect = document.querySelector('#fretboard');
+        const neckView = new Neck(Svg.get('svg#board'), this.model);
 
         notes.addEventListener('change', (e) => {
             this.model.names = e.detail.value;
         });
-        fretboardSelect.addEventListener('change', (e) => {
+        fretBoardSelect.addEventListener('change', (e) => {
             this.model.neckType = e.detail.value;
         });
 
-        const neckView = new Neck(Svg.get('svg#board'), this.model);
-        //const pianoView = new Piano(Svg.get('svg#board'), this.model);
-        //const scaleBox = new Box(Svg.get('svg#box'), this.model);
-
-        // neckSelect.on('change', (e) => (this.model.neckType = e.target.value));
         scaleSelect.on('change', (e) => (this.model.scale = e.target.value));
         rootSelect.on('change', (e) => (this.model.rootNote = e.target.value));
         instrumentSelect.on('change', (e) => (this.model.instrument = e.target.value));
 
-        q('#frets-count').addEventListener('input', (e) => (this.model.fretCount = e.target.value));
-        q('#print').addEventListener('click', (e) => window.print());
+        document
+            .querySelector('#frets-count')
+            .addEventListener('input', (e) => (this.model.fretCount = e.target.value));
+        document.querySelector('#print').addEventListener('click', (e) => window.print());
 
-        //this.#neckSelect = neckSelect;
         this.#scaleSelect = scaleSelect;
         this.#rootSelect = rootSelect;
         this.#instrumentSelect = instrumentSelect;
-        //this.#nameSelect = nameSelect;
     }
 
     modelUpdate(model, changeName) {
-        //console.debug("scalear:", changeName)
         switch (changeName) {
             case 'rootNote':
-                q('#root').innerHTML = model.rootNoteName;
+                document.querySelector('#root').innerHTML = model.rootNoteName;
                 document.title = `${model.rootNoteName} ${model.scaleName} (${this.name})`;
                 break;
             case 'scale':
-                q('#name').innerHTML = model.scaleName;
+                document.querySelector('#name').innerHTML = model.scaleName;
                 document.title = `${model.rootNoteName} ${model.scaleName} (${this.name})`;
                 break;
             case 'neckType':
                 document.body.classList[model.neckType === 'fender' ? 'add' : 'remove']('dark');
                 break;
             case 'instrument':
-                q('#frets-count').disabled = instruments[model.instrument].group === 'piano';
-            // this.#neckSelect.disabled =
-            //     instruments[model.instrument].group === 'piano';
+                document.querySelector('#frets-count').disabled = instruments[model.instrument].group === 'piano';
         }
         this.route = Application.prepareHashString(
             ['', instruments[model.instrument].name, model.scaleName, model.rootNoteName, ''].join('/')

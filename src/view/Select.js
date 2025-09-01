@@ -1,12 +1,11 @@
 import View from '../View.js';
-import { q } from '../shortcuts.js';
 
 export default class Select extends View {
     get el() {
         return this._el;
     }
     set el(selector) {
-        this._el = q(selector);
+        this._el = document.querySelector(selector);
     }
 
     get value() {
