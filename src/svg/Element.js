@@ -17,6 +17,9 @@ export default class Element extends Svg {
             this.params = params;
             this.render();
         }
+        Object.keys(this.params?.attribute || {}).forEach((key) => {
+            this.el.setAttribute(key, this.params.attribute[key]);
+        });
     }
 
     get className() {

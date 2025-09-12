@@ -1,4 +1,4 @@
-const notes = [
+export const Notes = [
     'C', // 0
     'C♯', // 1
     'D', // 2
@@ -13,7 +13,7 @@ const notes = [
     'B' // 11
 ];
 
-const notesWithBs = [
+export const NotesWithBs = [
     'C', // 0
     'D♭', // 1
     'D', // 2
@@ -27,5 +27,3 @@ const notesWithBs = [
     'B♭', // 10
     'B' // 11
 ];
-
-export { notes, notesWithBs };

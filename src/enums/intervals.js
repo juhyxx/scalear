@@ -1,4 +1,4 @@
-const intervals = [
+export const Intervals = [
     '1', // 0
     '2♭', // 1
     '2♯', // 2
@@ -18,5 +18,3 @@ const intervals = [
     '10♯', // 16
     '11' // 17
 ];
-
-export { intervals };

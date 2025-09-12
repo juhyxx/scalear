@@ -1,18 +1,55 @@
-import Application from './Application.js';
 import { APP } from './enums/app.js';
 import { scalesGrouped, scales } from './enums/scales.js';
-import { instrumentsGrouped, instruments } from './enums/instruments.js';
-import { notes, notesWithBs } from './enums/notes.js';
+import { InstrumentsGrouped, Instruments } from './enums/instruments.js';
+import { Notes, NotesWithBs } from './enums/notes.js';
 import Svg from './svg/Svg.js';
 import Neck from './view/Neck.js';
 import Select from './view/Select.js';
 import SelectTwoLevel from './view/SelectTwoLevel.js';
 import Model from './Model.js';
 
-export default class Scalear extends Application {
+export default class Scalear {
     #scaleSelect;
     #rootSelect;
     #instrumentSelect;
+    #model;
+
+    get model() {
+        return this.#model;
+    }
+
+    set model(model) {
+        this.#model = model;
+        this.#model.addUpdateHandler(this.modelUpdate, this);
+    }
+
+    get route() {
+        const params = (location.hash.slice(1) || '/').split('/');
+
+        params.shift();
+        params.pop();
+        return params || [];
+    }
+    set route(route) {
+        window.location.hash = route;
+    }
+
+    static run() {
+        return new this().run();
+    }
+
+    run() {
+        this.onBoot.call(this);
+        window.addEventListener('hashchange', () => this.onRouteChange(this.route));
+    }
+
+    static prepareHashString(text) {
+        return text
+            .toLowerCase()
+            .replace(/ /g, '-')
+            .replace(/[ \(\)]/g, '')
+            .replace(/♯/g, '#');
+    }
 
     get name() {
         return 'Scalear ' + APP.version;
@@ -40,7 +77,7 @@ export default class Scalear extends Application {
         const rootSelect = new Select({
             selector: '#root-selector',
             model: this.model,
-            data: notesWithBs,
+            data: NotesWithBs,
             watchOption: 'rootNote'
         });
         const scaleSelect = new SelectTwoLevel({
@@ -54,7 +91,7 @@ export default class Scalear extends Application {
             selector: '#instrument-selector',
             propertyName: 'name',
             model: this.model,
-            data: instrumentsGrouped,
+            data: InstrumentsGrouped,
             watchOption: 'instrument'
         });
 
@@ -97,10 +134,10 @@ export default class Scalear extends Application {
                 document.body.classList[model.neckType === 'fender' ? 'add' : 'remove']('dark');
                 break;
             case 'instrument':
-                document.querySelector('#frets-count').disabled = instruments[model.instrument].group === 'piano';
+                document.querySelector('#frets-count').disabled = Instruments[model.instrument].group === 'piano';
         }
-        this.route = Application.prepareHashString(
-            ['', instruments[model.instrument].name, model.scaleName, model.rootNoteName, ''].join('/')
+        this.route = Scalear.prepareHashString(
+            ['', Instruments[model.instrument].name, model.scaleName, model.rootNoteName, ''].join('/')
         );
         localStorage.defaults = model.toJSON();
     }
@@ -110,9 +147,9 @@ export default class Scalear extends Application {
 
         if (params.length > 0) {
             if (params[2]) {
-                for (note = 0; note < notes.length; note++) {
-                    const item = notes[note];
-                    if (Application.prepareHashString(item) === params[2]) {
+                for (note = 0; note < Notes.length; note++) {
+                    const item = Notes[note];
+                    if (Scalear.prepareHashString(item) === params[2]) {
                         break;
                     }
                 }
@@ -120,8 +157,8 @@ export default class Scalear extends Application {
             }
             if (params[0]) {
                 try {
-                    this.model.instrument = instruments.filter(
-                        (item) => Application.prepareHashString(item.name) === params[0]
+                    this.model.instrument = Instruments.filter(
+                        (item) => Scalear.prepareHashString(item.name) === params[0]
                     )[0].id;
                 } catch (e) {
                     this.model.instrument = 0;
@@ -130,7 +167,7 @@ export default class Scalear extends Application {
             if (params[1]) {
                 try {
                     this.model.scale = scales.filter(
-                        (item) => Application.prepareHashString(item.name) === params[1]
+                        (item) => Scalear.prepareHashString(item.name) === params[1]
                     )[0].id;
                 } catch (e) {
                     this.model.scale = 0;

@@ -1,5 +1,5 @@
 const APP = {
-    version: '0.8.7',
+    version: '0.8.8',
     defaults: {
         highlighted: undefined,
         fretCount: 14,

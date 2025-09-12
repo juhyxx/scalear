@@ -2,7 +2,7 @@ import View from '../View.js';
 
 import { scales } from '../enums/scales.js';
 import { notes, notesWithBs } from '../enums/notes.js';
-import { intervals } from '../enums/intervals.js';
+import { Intervals } from '../enums/intervals.js';
 
 import SvgGroup from '../svg/element/Group.js';
 import SvgText from '../svg/element/Text.js';
@@ -53,7 +53,7 @@ export default class Box extends View {
                     x: 10 + width / 2 + width * index,
                     y: 10,
                     className: 'interval',
-                    textContent: intervals[scales[scaleId].notes[index + 1] - scales[scaleId].notes[index]]
+                    textContent: Intervals[scales[scaleId].notes[index + 1] - scales[scaleId].notes[index]]
                 });
 
                 new SvgPolyline(this.#mainGroup.el, {
@@ -92,29 +92,11 @@ export default class Box extends View {
                 });
             }
 
-            //  if (this.model.highlighted !== undefined && this.model.highlighted === item) {
-            //    noteName.addClass('highlighted');
-            //  }
-
-            // noteName.el.addEventListener('click', () => {
-            //   if (noteName.hasClass('highlighted')) {
-            //     noteName.removeClass('highlighted');
-            //     this.model.highlighted = undefined;
-            //   } else {
-            //     const items = document.querySelectorAll('#scale-box text.highlighted');
-
-            //     for (let i = 0, item = items[i]; i < items.length; i++) {
-            //       item.setAttribute('class', item.getAttribute('class').replace('highlighted', '') || '');
-            //     }
-            //     noteName.addClass('highlighted');
-            //     this.model.highlighted = parseInt(noteName.el.getAttribute('note'), 10);
-            //   }
-            // }, false);
             new SvgText(this.#mainGroup.el, {
                 x: 13 + width * index,
                 y: 35,
                 className: 'interval',
-                textContent: intervals[scales[scaleId].notes[index]]
+                textContent: Intervals[scales[scaleId].notes[index]]
             });
         });
     }

@@ -1,14 +1,14 @@
 import View from '../View.js';
 
 import { scales } from '../enums/scales.js';
-import { instruments } from '../enums/instruments.js';
-import { notes, notesWithBs } from '../enums/notes.js';
+import { Instruments } from '../enums/instruments.js';
+import { Notes, NotesWithBs } from '../enums/notes.js';
 import SvgGroup from '../svg/element/Group.js';
 import SvgCircle from '../svg/element/Circle.js';
 import SvgRectangle from '../svg/element/Rectangle.js';
 import SvgLine from '../svg/element/Line.js';
 import SvgText from '../svg/element/Text.js';
-import { intervals } from '../enums/intervals.js';
+import { Intervals } from '../enums/intervals.js';
 
 export default class Neck extends View {
     #parentEl;
@@ -27,9 +27,9 @@ export default class Neck extends View {
 
     modelUpdate(model, changeName) {
         switch (changeName) {
-            case 'highlighted':
-                this.highlightNotes(model.highlighted);
-                break;
+            // case 'highlighted':
+            //     this.highlightNotes(model.highlighted);
+            //     break;
             case 'rootNote':
             case 'scale':
                 this.showScale();
@@ -41,7 +41,7 @@ export default class Neck extends View {
             case 'neckType':
             case 'fretCount':
             case 'instrument':
-                if (instruments[model.instrument].group === 'piano') {
+                if (Instruments[model.instrument].group === 'piano') {
                     if (this.#mainGroup) {
                         this.#mainGroup.remove();
                         this.#mainGroup = undefined;
@@ -54,9 +54,10 @@ export default class Neck extends View {
                 }
                 this.render();
                 this.showScale(model.scale);
-                this.highlightNotes(model.highlighted);
+                // this.highlightNotes(model.highlighted);
                 break;
         }
+        this.showBox();
     }
 
     render() {
@@ -87,11 +88,11 @@ export default class Neck extends View {
         const fingers = new SvgGroup(el, { className: 'fingers' });
 
         this.labels = new SvgGroup(el, { id: 'labels' });
-        if (!instruments[this.model.instrument].fretless) {
+        if (!Instruments[this.model.instrument].fretless) {
             this.renderShading(shading.el);
         }
         this.renderMarks(marks.el);
-        if (!instruments[this.model.instrument].fretless) {
+        if (!Instruments[this.model.instrument].fretless) {
             this.renderFrets(frets.el);
         }
 
@@ -212,7 +213,7 @@ export default class Neck extends View {
                 notesMap.set(note, notesMapItem);
                 labelsMap.set(this.#fingers[string][fret], this.#labels[string][fret]);
                 note++;
-                note = note % notes.length;
+                note = note % Notes.length;
             }
         });
 
@@ -240,6 +241,10 @@ export default class Neck extends View {
             for (let i = 0; i <= this.model.fretCount; i++) {
                 const radius = this.model.stringDistance / 3;
                 const group = new SvgGroup(parentEl, {
+                    attribute: {
+                        'data-string': string,
+                        'data-fret': i
+                    },
                     children: [
                         {
                             class: SvgCircle,
@@ -269,8 +274,8 @@ export default class Neck extends View {
             fretArray = new Array(this.model.fretCount + 2).join('0').split('');
             return fretArray.map((item, i) => {
                 let content = {
-                    sharp: notes[(noteNumber + i) % notes.length],
-                    flat: notesWithBs[(noteNumber + i) % notes.length]
+                    sharp: Notes[(noteNumber + i) % Notes.length],
+                    flat: NotesWithBs[(noteNumber + i) % Notes.length]
                 };
                 let correction = content.length > 1 ? 1 : 0;
                 let hasSharp = content.length > 1;
@@ -351,7 +356,7 @@ export default class Neck extends View {
                 item.el.querySelector('circle').classList.add('visible');
             }
 
-            let interval = intervals[(12 + note - this.model.rootNote) % 12];
+            let interval = Intervals[(12 + note - this.model.rootNote) % 12];
 
             this.#labelsMap.get(item).el.querySelector('.interval').textContent = interval[0];
             this.#labelsMap.get(item).el.querySelector('.interval-sign').textContent = interval[1];
@@ -362,8 +367,16 @@ export default class Neck extends View {
         this.clear();
         scales[scale || this.model.scale].notes
             .slice()
-            .map((item) => (item + this.model.rootNote) % notes.length)
+            .map((item) => (item + this.model.rootNote) % Notes.length)
             .forEach((note) => this.showAllNotes(note));
+    }
+
+    showBox() {
+        // this.#fingers.forEach((string) => {
+        //     string.forEach((finger) => {
+        //         console.log(finger);
+        //     });
+        // });
     }
 
     clear() {
@@ -376,10 +389,10 @@ export default class Neck extends View {
         });
     }
 
-    highlightNotes(note) {
-        this.#fingers.forEach((item) => item.map((finger) => finger.removeClass('highlighted')));
-        if (note !== undefined) {
-            this.#notesMap.get(note).forEach((item) => item.addClass('highlighted'));
-        }
-    }
+    // highlightNotes(note) {
+    //     this.#fingers.forEach((item) => item.map((finger) => finger.removeClass('highlighted')));
+    //     if (note !== undefined) {
+    //         this.#notesMap.get(note).forEach((item) => item.addClass('highlighted'));
+    //     }
+    // }
 }

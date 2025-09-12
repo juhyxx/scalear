@@ -1,4 +1,4 @@
-const Note = Object.freeze({
+export const Note = Object.freeze({
     C: 0,
     Cis: 1,
     D: 2,
@@ -13,9 +13,9 @@ const Note = Object.freeze({
     B: 11
 });
 
-const { C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B } = Note;
+export const { C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B } = Note;
 
-const instruments = [
+export const Instruments = [
     {
         name: 'Guitar Standard',
         group: 'guitar',
@@ -101,34 +101,25 @@ const instruments = [
     }
 ];
 
-instruments.forEach((item, index) => {
+Instruments.forEach((item, index) => {
     item.id = index;
 });
 
-const instrumentsGrouped = [
+export const InstrumentsGrouped = [
     {
         name: 'Guitar',
         group: 'guitar',
         options: (function () {
-            return instruments.filter(function (item) {
+            return Instruments.filter(function (item) {
                 return item.group === 'guitar' ? item : undefined;
             });
         })()
     },
-    // {
-    //     name: 'Piano',
-    //     group: 'piano',
-    //     options: (function () {
-    //         return instruments.filter(function (item) {
-    //             return item.group === 'piano' ? item : undefined;
-    //         });
-    //     })()
-    // },
     {
         name: 'Bass',
         group: 'bass',
         options: (function () {
-            return instruments.filter(function (item) {
+            return Instruments.filter(function (item) {
                 return item.group === 'bass' ? item : undefined;
             });
         })()
@@ -137,7 +128,7 @@ const instrumentsGrouped = [
         name: 'Ukulele',
         group: 'ukulele',
         options: (function () {
-            return instruments.filter(function (item) {
+            return Instruments.filter(function (item) {
                 return item.group === 'ukulele' ? item : undefined;
             });
         })()
@@ -146,11 +137,9 @@ const instrumentsGrouped = [
         name: 'Other',
         group: 'other',
         options: (function () {
-            return instruments.filter(function (item) {
+            return Instruments.filter(function (item) {
                 return item.group === 'other' ? item : undefined;
             });
         })()
     }
 ];
-
-export { instruments, instrumentsGrouped };

@@ -1,6 +1,6 @@
 import { scales } from './enums/scales.js';
-import { notes } from './enums/notes.js';
-import { instruments } from './enums/instruments.js';
+import { Notes } from './enums/notes.js';
+import { Instruments } from './enums/instruments.js';
 
 export default class Model {
     #nameState = 'fender';
@@ -11,7 +11,7 @@ export default class Model {
     #higlighted;
     #neckType = 'gibson';
     #updateHandlers = [];
-    #tunning;
+    #tunning = [];
     #keyCount = 20;
 
     get keyCount() {
@@ -27,7 +27,7 @@ export default class Model {
         return this.#rootNote || 0;
     }
     get rootNoteName() {
-        return notes[this.rootNote];
+        return Notes[this.rootNote];
     }
     set rootNote(rootNote) {
         if (this.rootNote !== rootNote) {
@@ -80,15 +80,6 @@ export default class Model {
         this.onUpdate('names');
     }
 
-    // toggleNames() {
-    //     this.#stateIndex = this.#stateIndex + 1;
-    //     if (this.#stateIndex >= this.#nameStates.length) {
-    //         this.#stateIndex = 0;
-    //     }
-
-    //     this.onUpdate('names');
-    // }
-
     get neckType() {
         return this.#neckType || 'gibson';
     }
@@ -99,7 +90,7 @@ export default class Model {
     }
 
     get tunning() {
-        return instruments[this.instrument].tunning;
+        return Instruments[this.instrument].tunning;
     }
     set tunning(tunning) {
         return (this.#tunning = tunning);
