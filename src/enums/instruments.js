@@ -1,4 +1,4 @@
-export const Note = Object.freeze({
+export const NOTE = Object.freeze({
     C: 0,
     Cis: 1,
     D: 2,
@@ -13,9 +13,9 @@ export const Note = Object.freeze({
     B: 11
 });
 
-export const { C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B } = Note;
+export const { C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B } = NOTE;
 
-export const Instruments = [
+export const INSTRUMENTS = [
     {
         name: 'Guitar Standard',
         group: 'guitar',
@@ -46,10 +46,6 @@ export const Instruments = [
         group: 'guitar',
         tunning: [E, B, G, D, A, E, B]
     },
-    // {
-    //     name: 'Piano',
-    //     group: 'piano'
-    // },
     {
         group: 'bass',
         name: 'Bass Standard',
@@ -76,12 +72,6 @@ export const Instruments = [
         tunning: [E, B, G, Cis]
     },
 
-    // {
-    // 	group: 'ukulele',
-    // 	name: 'Ukulele ADG♭B',
-    // 	tunning: [B, Fis, D, A]
-    // },
-
     {
         group: 'other',
         name: 'Violin',
@@ -101,16 +91,16 @@ export const Instruments = [
     }
 ];
 
-Instruments.forEach((item, index) => {
+INSTRUMENTS.forEach((item, index) => {
     item.id = index;
 });
 
-export const InstrumentsGrouped = [
+export const INSTRUMENT_GROUPS = [
     {
         name: 'Guitar',
         group: 'guitar',
         options: (function () {
-            return Instruments.filter(function (item) {
+            return INSTRUMENTS.filter(function (item) {
                 return item.group === 'guitar' ? item : undefined;
             });
         })()
@@ -119,7 +109,7 @@ export const InstrumentsGrouped = [
         name: 'Bass',
         group: 'bass',
         options: (function () {
-            return Instruments.filter(function (item) {
+            return INSTRUMENTS.filter(function (item) {
                 return item.group === 'bass' ? item : undefined;
             });
         })()
@@ -128,7 +118,7 @@ export const InstrumentsGrouped = [
         name: 'Ukulele',
         group: 'ukulele',
         options: (function () {
-            return Instruments.filter(function (item) {
+            return INSTRUMENTS.filter(function (item) {
                 return item.group === 'ukulele' ? item : undefined;
             });
         })()
@@ -137,7 +127,7 @@ export const InstrumentsGrouped = [
         name: 'Other',
         group: 'other',
         options: (function () {
-            return Instruments.filter(function (item) {
+            return INSTRUMENTS.filter(function (item) {
                 return item.group === 'other' ? item : undefined;
             });
         })()

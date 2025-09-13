@@ -1,6 +1,6 @@
 import { APP } from './enums/app.js';
-import { scalesGrouped, scales } from './enums/scales.js';
-import { InstrumentsGrouped, Instruments } from './enums/instruments.js';
+import { scalesGrouped, SCALES } from './enums/scales.js';
+import { INSTRUMENT_GROUPS, INSTRUMENTS } from './enums/instruments.js';
 import { Notes, NotesWithBs } from './enums/notes.js';
 import Svg from './svg/Svg.js';
 import Neck from './view/Neck.js';
@@ -91,7 +91,7 @@ export default class Scalear {
             selector: '#instrument-selector',
             propertyName: 'name',
             model: this.model,
-            data: InstrumentsGrouped,
+            data: INSTRUMENT_GROUPS,
             watchOption: 'instrument'
         });
 
@@ -134,10 +134,10 @@ export default class Scalear {
                 document.body.classList[model.neckType === 'fender' ? 'add' : 'remove']('dark');
                 break;
             case 'instrument':
-                document.querySelector('#frets-count').disabled = Instruments[model.instrument].group === 'piano';
+                document.querySelector('#frets-count').disabled = INSTRUMENTS[model.instrument].group === 'piano';
         }
         this.route = Scalear.prepareHashString(
-            ['', Instruments[model.instrument].name, model.scaleName, model.rootNoteName, ''].join('/')
+            ['', INSTRUMENTS[model.instrument].name, model.scaleName, model.rootNoteName, ''].join('/')
         );
         localStorage.defaults = model.toJSON();
     }
@@ -145,38 +145,38 @@ export default class Scalear {
     onRouteChange(params) {
         let note;
 
-        if (params.length > 0) {
-            if (params[2]) {
-                for (note = 0; note < Notes.length; note++) {
-                    const item = Notes[note];
-                    if (Scalear.prepareHashString(item) === params[2]) {
-                        break;
-                    }
-                }
-                this.model.rootNote = note < 12 ? note : 0;
-            }
-            if (params[0]) {
-                try {
-                    this.model.instrument = Instruments.filter(
-                        (item) => Scalear.prepareHashString(item.name) === params[0]
-                    )[0].id;
-                } catch (e) {
-                    this.model.instrument = 0;
-                }
-            }
-            if (params[1]) {
-                try {
-                    this.model.scale = scales.filter(
-                        (item) => Scalear.prepareHashString(item.name) === params[1]
-                    )[0].id;
-                } catch (e) {
-                    this.model.scale = 0;
-                }
-            }
-        } else {
-            this.model.scale = this.#scaleSelect.value;
-            this.model.rootNote = this.#rootSelect.value;
-            this.model.instrument = this.#instrumentSelect.value;
-        }
+        // if (params.length > 0) {
+        //     if (params[2]) {
+        //         for (note = 0; note < Notes.length; note++) {
+        //             const item = Notes[note];
+        //             if (Scalear.prepareHashString(item) === params[2]) {
+        //                 break;
+        //             }
+        //         }
+        //         this.model.rootNote = note < 12 ? note : 0;
+        //     }
+        //     if (params[0]) {
+        //         try {
+        //             this.model.instrument = Instruments.filter(
+        //                 (item) => Scalear.prepareHashString(item.name) === params[0]
+        //             )[0].id;
+        //         } catch (e) {
+        //             this.model.instrument = 0;
+        //         }
+        //     }
+        //     if (params[1]) {
+        //         try {
+        //             this.model.scale = scales.filter(
+        //                 (item) => Scalear.prepareHashString(item.name) === params[1]
+        //             )[0].id;
+        //         } catch (e) {
+        //             this.model.scale = 0;
+        //         }
+        //     }
+        // } else {
+        //     this.model.scale = this.#scaleSelect.value;
+        //     this.model.rootNote = this.#rootSelect.value;
+        //     this.model.instrument = this.#instrumentSelect.value;
+        // }
     }
 }

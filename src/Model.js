@@ -1,6 +1,6 @@
-import { scales } from './enums/scales.js';
+import { SCALES } from './enums/scales.js';
 import { Notes } from './enums/notes.js';
-import { Instruments } from './enums/instruments.js';
+import { INSTRUMENTS } from './enums/instruments.js';
 
 export default class Model {
     #nameState = 'fender';
@@ -8,7 +8,6 @@ export default class Model {
     #instrument = 0;
     #scale = 0;
     #fretCount = 12;
-    #higlighted;
     #neckType = 'gibson';
     #updateHandlers = [];
     #tunning = [];
@@ -50,7 +49,7 @@ export default class Model {
         return this.#scale || 0;
     }
     get scaleName() {
-        return scales[this.scale].name;
+        return SCALES[this.scale].name;
     }
     set scale(scale) {
         if (this.scale !== scale) {
@@ -90,7 +89,7 @@ export default class Model {
     }
 
     get tunning() {
-        return Instruments[this.instrument].tunning;
+        return INSTRUMENTS[this.instrument].tunning;
     }
     set tunning(tunning) {
         return (this.#tunning = tunning);
@@ -98,26 +97,6 @@ export default class Model {
 
     get stringsCount() {
         return (this.tunning && this.tunning.length) || 6;
-    }
-    get stringDistance() {
-        return 20;
-    }
-    get neckWidth() {
-        return this.stringDistance * this.stringsCount || 130;
-    }
-    get fretWidth() {
-        return Math.round(this.neckHeight / this.fretCount);
-    }
-    get neckHeight() {
-        return 500;
-    }
-    get highlighted() {
-        return this.#higlighted;
-    }
-
-    set highlighted(highlighted) {
-        this.#higlighted = highlighted;
-        this.onUpdate('highlighted');
     }
 
     onUpdate(change) {

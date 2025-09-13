@@ -16,7 +16,7 @@ const Ais = 10;
 const Bb = 10;
 const B = 11;
 
-const scales = [
+const SCALES = [
     {
         name: 'Chromatic',
         notes: [C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B],
@@ -274,16 +274,16 @@ const scales = [
     }
 ];
 
-scales.forEach((item, index) => {
+SCALES.forEach((item, index) => {
     item.id = index;
 });
 
-const scalesGrouped = [
+const SCALE_GROUPS = [
     {
         name: 'Diatonic Scales',
         group: 'dia-scales',
         options: (function () {
-            return scales.filter(function (item) {
+            return SCALES.filter(function (item) {
                 return item.group === 'dia-scales' ? item : undefined;
             });
         })()
@@ -292,7 +292,7 @@ const scalesGrouped = [
         name: 'Other Scales',
         group: 'scales',
         options: (function () {
-            return scales.filter(function (item) {
+            return SCALES.filter(function (item) {
                 return item.group === 'scales' ? item : undefined;
             });
         })()
@@ -301,7 +301,7 @@ const scalesGrouped = [
         name: 'Pentatonic scales',
         group: 'pentatonic',
         options: (function () {
-            return scales.filter(function (item) {
+            return SCALES.filter(function (item) {
                 return item.group === 'pentatonic' ? item : undefined;
             });
         })()
@@ -310,7 +310,7 @@ const scalesGrouped = [
         name: 'Hexatonic scales',
         group: 'hexatonic',
         options: (function () {
-            return scales.filter(function (item) {
+            return SCALES.filter(function (item) {
                 return item.group === 'hexatonic' ? item : undefined;
             });
         })()
@@ -319,7 +319,7 @@ const scalesGrouped = [
         name: 'Major Chords',
         group: 'major-chords',
         options: (function () {
-            return scales.filter(function (item) {
+            return SCALES.filter(function (item) {
                 return item.group === 'major-chords' ? item : undefined;
             });
         })()
@@ -328,7 +328,7 @@ const scalesGrouped = [
         name: 'Minor Chords',
         group: 'minor-chords',
         options: (function () {
-            return scales.filter(function (item) {
+            return SCALES.filter(function (item) {
                 return item.group === 'minor-chords' ? item : undefined;
             });
         })()
@@ -337,7 +337,7 @@ const scalesGrouped = [
         name: 'Diminished Chords',
         group: 'dim-chords',
         options: (function () {
-            return scales.filter(function (item) {
+            return SCALES.filter(function (item) {
                 return item.group === 'dim-chords' ? item : undefined;
             });
         })()
@@ -346,11 +346,11 @@ const scalesGrouped = [
         name: 'Intervals',
         group: 'intervals',
         options: (function () {
-            return scales.filter(function (item) {
+            return SCALES.filter(function (item) {
                 return item.group === 'intervals' ? item : undefined;
             });
         })()
     }
 ];
 
-export { scales, scalesGrouped };
+export { SCALES, SCALE_GROUPS as scalesGrouped };
