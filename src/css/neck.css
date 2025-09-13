@@ -5,7 +5,7 @@
 
     .fingers {
         rect {
-            fill: var(--color-base);
+            fill: #febbbb;
 
 
             @media print {
@@ -22,33 +22,21 @@
         }
 
         circle {
-
             fill: white;
-
-            /* @media (prefers-color-scheme: dark) {
-
-                fill: black;
-            } */
 
             @media print {
                 stroke: black;
             }
-
 
             display: none;
 
             &.visible {
                 display: block;
             }
-
-            &.highlighted {
-                fill: green;
-            }
         }
 
         rect,
         circle {
-
             @media screen {
                 filter: url(#neckshadow);
             }
@@ -66,9 +54,7 @@
             font-size: 7px;
             display: none;
 
-            &.root {
-                fill: white;
-            }
+
 
             .index,
             .interval-sign {
