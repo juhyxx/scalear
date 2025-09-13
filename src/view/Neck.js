@@ -2,7 +2,7 @@ import View from '../View.js';
 
 import { SCALES } from '../enums/scales.js';
 import { INSTRUMENTS } from '../enums/instruments.js';
-import { Notes, NotesWithBs } from '../enums/notes.js';
+import { NOTES_SHARP, NOTES_BS } from '../enums/notes.js';
 import SvgGroup from '../svg/element/Group.js';
 import SvgCircle from '../svg/element/Circle.js';
 import SvgRectangle from '../svg/element/Rectangle.js';
@@ -213,7 +213,7 @@ export default class Neck extends View {
                 notesMap.set(note, notesMapItem);
                 labelsMap.set(this.#fingers[string][fret], this.#labels[string][fret]);
                 note++;
-                note = note % Notes.length;
+                note = note % NOTES_SHARP.length;
             }
         });
 
@@ -274,8 +274,8 @@ export default class Neck extends View {
             fretArray = new Array(this.model.fretCount + 2).join('0').split('');
             return fretArray.map((item, i) => {
                 let content = {
-                    sharp: Notes[(noteNumber + i) % Notes.length],
-                    flat: NotesWithBs[(noteNumber + i) % Notes.length]
+                    sharp: NOTES_SHARP[(noteNumber + i) % NOTES_SHARP.length],
+                    flat: NOTES_BS[(noteNumber + i) % NOTES_SHARP.length]
                 };
                 let correction = content.length > 1 ? 1 : 0;
                 let hasSharp = content.length > 1;
@@ -367,7 +367,7 @@ export default class Neck extends View {
         this.clear();
         SCALES[scale || this.model.scale].notes
             .slice()
-            .map((item) => (item + this.model.rootNote) % Notes.length)
+            .map((item) => (item + this.model.rootNote) % NOTES_SHARP.length)
             .forEach((note) => this.showAllNotes(note));
     }
 

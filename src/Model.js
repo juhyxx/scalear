@@ -1,5 +1,5 @@
 import { SCALES } from './enums/scales.js';
-import { Notes } from './enums/notes.js';
+import { NOTES_SHARP } from './enums/notes.js';
 import { INSTRUMENTS } from './enums/instruments.js';
 
 export default class Model {
@@ -26,7 +26,7 @@ export default class Model {
         return this.#rootNote || 0;
     }
     get rootNoteName() {
-        return Notes[this.rootNote];
+        return NOTES_SHARP[this.rootNote];
     }
     set rootNote(rootNote) {
         if (this.rootNote !== rootNote) {

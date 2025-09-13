@@ -1,20 +1,4 @@
-const C = 0;
-const Cis = 1;
-const Db = 1;
-const D = 2;
-const Dis = 3;
-const Eb = 3;
-const E = 4;
-const F = 5;
-const Fis = 6;
-const Gb = 6;
-const G = 7;
-const Gis = 8;
-const Ab = 8;
-const A = 9;
-const Ais = 10;
-const Bb = 10;
-const B = 11;
+import { C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B, Bb, Db, Gb, Ab } from './notes.js';
 
 const SCALES = [
     {

@@ -1,19 +1,4 @@
-export const NOTE = Object.freeze({
-    C: 0,
-    Cis: 1,
-    D: 2,
-    Dis: 3,
-    E: 4,
-    F: 5,
-    Fis: 6,
-    G: 7,
-    Gis: 8,
-    A: 9,
-    Ais: 10,
-    B: 11
-});
-
-export const { C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B } = NOTE;
+import { C, Cis, D, Dis, E, F, Fis, G, Gis, A, Ais, B, Bb, Db, Gb, Ab } from './notes.js';
 
 export const INSTRUMENTS = [
     {

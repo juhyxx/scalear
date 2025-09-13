@@ -1,7 +1,7 @@
 import { APP } from './enums/app.js';
 import { scalesGrouped, SCALES } from './enums/scales.js';
 import { INSTRUMENT_GROUPS, INSTRUMENTS } from './enums/instruments.js';
-import { Notes, NotesWithBs } from './enums/notes.js';
+import { NOTES_SHARP, NOTES_BS } from './enums/notes.js';
 import Svg from './svg/Svg.js';
 import Neck from './view/Neck.js';
 import Select from './view/Select.js';
@@ -77,7 +77,7 @@ export default class Scalear {
         const rootSelect = new Select({
             selector: '#root-selector',
             model: this.model,
-            data: NotesWithBs,
+            data: NOTES_BS,
             watchOption: 'rootNote'
         });
         const scaleSelect = new SelectTwoLevel({
