@@ -98,6 +98,7 @@ export default class Scalear {
         const notes = document.querySelector('#notes');
         const fretBoardSelect = document.querySelector('#fretboard');
         const neckView = new Neck(Svg.get('svg#board'), this.model);
+        const notesPerString = document.querySelector('#notes-per-string');
 
         notes.addEventListener('change', (e) => {
             this.model.names = e.detail.value;
@@ -109,6 +110,9 @@ export default class Scalear {
         scaleSelect.on('change', (e) => (this.model.scale = e.target.value));
         rootSelect.on('change', (e) => (this.model.rootNote = e.target.value));
         instrumentSelect.on('change', (e) => (this.model.instrument = e.target.value));
+        notesPerString.addEventListener('change', (e) => {
+            this.model.notePerString = e.detail.value;
+        });
 
         document
             .querySelector('#frets-count')

@@ -31,6 +31,10 @@ export default class Neck extends View {
         return 500;
     }
 
+    get showBox() {
+        return true;
+    }
+
     constructor(svgParent, model) {
         super();
         this.#parentEl = svgParent;
@@ -42,7 +46,7 @@ export default class Neck extends View {
         switch (changeName) {
             case 'rootNote':
             case 'scale':
-                this.showScale();
+                this.renderData();
                 break;
             case 'names':
                 this.labels.el.setAttribute('class', model.names.toLowerCase());
@@ -50,14 +54,52 @@ export default class Neck extends View {
             case 'init':
             case 'neckType':
             case 'fretCount':
+            case 'notePerString':
             case 'instrument':
                 if (this.#mainGroup && this.#mainGroup.remove) {
                     this.#mainGroup.remove();
                 }
                 this.render();
-                this.showScale(model.scale);
+                this.renderData();
                 break;
         }
+    }
+
+    renderData() {
+        this.clear();
+        const hasSharps = [0, 2, 4, 7, 9, 11].includes(this.model.rootNote);
+
+        if (this.model.notePerStringOff) {
+            this.#mainGroup.el.classList.remove('box-on');
+        } else {
+            this.#mainGroup.el.classList.add('box-on');
+        }
+
+        this.model.data.forEach((strings, string) => {
+            strings.forEach((note, fret) => {
+                if (note) {
+                    if (note.isRoot) {
+                        this.#fingers[string][fret].el.querySelector('rect').classList.add('visible');
+                    } else {
+                        this.#fingers[string][fret].el.querySelector('circle').classList.add('visible');
+                    }
+                    if (note.box) {
+                        this.#fingers[string][fret].el.querySelector('rect').classList.add('box');
+                        this.#fingers[string][fret].el.querySelector('circle').classList.add('box');
+                    }
+                    this.#labels[string][fret].el
+                        .querySelectorAll(hasSharps ? '.flat' : '.sharp')
+                        .forEach((item) => item.classList.add('hide'));
+
+                    this.#labels[string][fret].el
+                        .querySelectorAll(!hasSharps ? '.flat' : '.sharp')
+                        .forEach((item) => item.classList.remove('hide'));
+
+                    this.#fingers[string][fret].show();
+                    this.#labels[string][fret].show();
+                }
+            });
+        });
     }
 
     render() {
@@ -361,14 +403,6 @@ export default class Neck extends View {
             this.#labelsMap.get(item).el.querySelector('.interval').textContent = interval[0];
             this.#labelsMap.get(item).el.querySelector('.interval-sign').textContent = interval[1];
         });
-    }
-
-    showScale(scale) {
-        this.clear();
-        SCALES[scale || this.model.scale].notes
-            .slice()
-            .map((item) => (item + this.model.rootNote) % NOTES_SHARP.length)
-            .forEach((note) => this.showAllNotes(note));
     }
 
     clear() {

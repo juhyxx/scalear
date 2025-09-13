@@ -11,16 +11,8 @@ export default class Model {
     #neckType = 'gibson';
     #updateHandlers = [];
     #tunning = [];
-    #keyCount = 20;
-
-    get keyCount() {
-        return this.#keyCount;
-    }
-
-    set keyCount(count) {
-        this.#keyCount = count;
-        this.onUpdate('keyCount');
-    }
+    #notePerString = 3;
+    #notePerStringOff = true;
 
     get rootNote() {
         return this.#rootNote || 0;
@@ -99,7 +91,54 @@ export default class Model {
         return (this.tunning && this.tunning.length) || 6;
     }
 
+    get notePerString() {
+        return this.#notePerString;
+    }
+    get notePerStringOff() {
+        return this.#notePerStringOff;
+    }
+    set notePerString(value) {
+        value = parseInt(value, 10);
+        if (isNaN(value)) {
+            this.#notePerStringOff = true;
+        } else {
+            this.#notePerString = value;
+            this.#notePerStringOff = false;
+        }
+
+        this.onUpdate('notePerString');
+    }
+
+    get data() {
+        const selectedScale = SCALES[this.scale].notes.map((note) => (note + this.rootNote) % 12);
+        const data = Array.from({ length: this.stringsCount }, (_, index) => {
+            return Array.from({ length: this.#fretCount + 1 }, (_, fretIndex) => {
+                const note = (this.tunning[index] + fretIndex) % 12;
+                if (selectedScale.indexOf(note) >= 0) {
+                    return { id: note, name: NOTES_SHARP[note], isRoot: note === this.rootNote, box: false };
+                }
+                return null;
+            });
+        });
+
+        let scaleIndex = 0;
+        for (let string = this.stringsCount - 1; string >= 0; string--) {
+            const subNotes = Array.from(
+                { length: this.notePerString },
+                (_, i) => selectedScale[(scaleIndex + i) % selectedScale.length]
+            );
+            data[string].filter((note) => note && subNotes.includes(note.id)).forEach((data) => (data.box = true));
+
+            scaleIndex += this.notePerString;
+            scaleIndex = scaleIndex % selectedScale.length;
+        }
+
+        return data;
+    }
+
     onUpdate(change) {
+        const _ = this.data;
+
         this.#updateHandlers = this.#updateHandlers || [];
         this.#updateHandlers.forEach((handler) => {
             handler.fn.call(handler.scope, this, change);

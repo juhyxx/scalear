@@ -4,9 +4,15 @@
     }
 
     .fingers {
+
+
         rect {
             fill: #febbbb;
 
+            .box-on & {
+                opacity: 0.2;
+                filter: none;
+            }
 
             @media print {
                 fill: black;
@@ -14,6 +20,7 @@
                 filter: none;
             }
 
+            filter: url(#neckshadow);
             display: none;
 
             &.visible {
@@ -24,10 +31,16 @@
         circle {
             fill: white;
 
+            .box-on & {
+                opacity: 0.2;
+                filter: none;
+            }
+
             @media print {
                 stroke: black;
             }
 
+            filter: url(#neckshadow);
             display: none;
 
             &.visible {
@@ -38,8 +51,13 @@
         rect,
         circle {
             @media screen {
-                filter: url(#neckshadow);
+                /* filter: url(#neckshadow); */
             }
+        }
+
+        .box-on & .box {
+            opacity: 1;
+            filter: url(#neckshadow);
         }
     }
 
