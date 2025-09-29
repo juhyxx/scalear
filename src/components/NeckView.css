@@ -1,0 +1,868 @@
+/* #neck {
+    rect {
+        filter: url(#neck-shadow);
+    }
+
+    .fingers {
+        rect {
+            fill: var(--color-base);
+
+            .box-on & {
+                opacity: 0.2;
+                filter: none;
+            }
+
+            @media print {
+                fill: black;
+                -webkit-filter: none;
+                filter: none;
+            }
+
+            filter: url(#neck-shadow);
+            display: none;
+
+            &.visible {
+                display: block;
+            }
+        }
+
+        circle {
+            fill: white;
+
+            .box-on & {
+                opacity: 0.2;
+                filter: none;
+            }
+
+            @media print {
+                stroke: black;
+            }
+
+            filter: url(#neck-shadow);
+            display: none;
+
+
+            &.visible {
+                display: block;
+            }
+        }
+
+
+        .box-on & .box {
+            opacity: 1;
+            filter: url(#neck-shadow);
+        }
+    }
+
+    #labels {
+        #label {
+            fill: rgba(0, 0, 0, 0.7);
+
+
+
+            font-family: "Ubuntu",
+                sans-serif;
+            font-size: 7px;
+            display: none;
+
+
+
+            .index,
+            .interval-sign {
+                font-size: 4px;
+                transform: translate(4px, -3px);
+            }
+
+            .hide {
+                display: none;
+            }
+
+            @media print {
+                fill: black;
+            }
+
+            &.root {
+                fill: white;
+            }
+
+        }
+
+        &.names {
+            .interval {
+                display: none;
+            }
+
+            .interval-sign {
+                display: none;
+            }
+        }
+
+        &.intervals {
+            text {
+                display: none;
+
+                &.interval,
+                &.interval-sign {
+                    display: block;
+                }
+
+            }
+        }
+
+        &.none {
+            display: none;
+
+            .interval {
+                display: none;
+            }
+
+            .interval-sign {
+                display: none;
+            }
+        }
+
+
+        tspan {
+            font-size: 5px;
+        }
+    }
+
+    .strings {
+        line {
+            stroke: url(#str2);
+
+            @media screen {
+                -webkit-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .5));
+                filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .5));
+            }
+        }
+
+        line:nth-child(n) {
+            stroke-width: 0.8;
+        }
+
+        line:nth-child(2) {
+            stroke-width: 0.8;
+        }
+
+        line:nth-child(3) {
+            stroke-width: 1;
+        }
+
+        line:nth-child(4) {
+            stroke-width: 1.5;
+        }
+
+        line:nth-child(5) {
+            stroke-width: 1.8;
+        }
+
+        line:nth-child(6) {
+            stroke-width: 2;
+        }
+
+        line:nth-child(7) {
+            stroke-width: 2.4;
+        }
+    }
+
+    .frets {
+        line {
+            stroke: rgba(255, 255, 204, 0.4);
+
+
+            &.zero {
+                stroke: #dddddd;
+                stroke-width: 6;
+                -webkit-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .3));
+                filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .3));
+            }
+        }
+
+        text {
+            fill: gray;
+            font-family: "Ubuntu", sans-serif;
+            font-size: 6px;
+        }
+    }
+
+    .shading {
+        opacity: 0.5;
+
+        rect {
+            fill: url(#shading);
+        }
+
+    }
+
+    .marks {
+        @media screen {
+            rect {
+                fill: rgba(214, 215, 207, 0.4);
+            }
+
+            .border {
+                fill: gray;
+                stroke: none;
+            }
+        }
+
+        @media print {
+            fill: #bbbbbb;
+        }
+
+        stroke: transparent;
+    }
+
+    .light & {
+        .marks {
+            fill: #474747;
+            stroke: rgba(255, 255, 255, 0.3);
+        }
+
+
+
+        .frets {
+            line {
+                stroke: rgba(255, 255, 255, 0.5);
+
+                &.zero {
+                    @media screen {
+                        stroke: white;
+                    }
+
+                    stroke-width: 6;
+                }
+            }
+        }
+    }
+
+    &.lines {
+
+        rect,
+        circle,
+        line {
+            filter: none;
+        }
+
+        circle {
+            stroke: #000000;
+            stroke-width: 1px;
+
+        }
+
+        rect.fretboard {
+            fill: white;
+
+            -webkit-filter: none;
+            filter: none;
+        }
+
+        .frets {
+            line {
+                stroke: black !important;
+                stroke-width: 1;
+
+                text {
+                    stroke: transparent;
+                }
+
+                &.zero {
+                    stroke: black;
+                    stroke-width: 6;
+                    -webkit-filter: none;
+                    filter: none;
+                }
+            }
+        }
+
+        .strings {
+            line {
+                stroke: black;
+            }
+        }
+
+        .shading {
+            display: none;
+        }
+    }
+
+    @media print {
+        rect.fretboard {
+            fill: white;
+
+            -webkit-filter: none;
+            filter: none;
+        }
+
+        .frets {
+            line {
+                stroke: black !important;
+                stroke-width: 1;
+
+                text {
+                    stroke: transparent;
+                }
+
+                &.zero {
+                    stroke: black;
+                    stroke-width: 6;
+                    -webkit-filter: none;
+                    filter: none;
+                }
+            }
+        }
+
+        .strings {
+            line {
+                stroke: black;
+            }
+        }
+
+        .shading {
+            display: none;
+        }
+    }
+} */
+
+
+neck-view {
+
+    &[neck-type="light"] {
+        #fret-board-bg {
+            filter: url(#neck-shadow);
+            fill: url(#gradient-light);
+        }
+
+        #shading {
+            opacity: 0.5;
+
+            rect {
+                fill: url(#shading);
+            }
+
+        }
+
+        #marks {
+
+            stroke: transparent;
+
+            #rectangles {
+                display: none;
+            }
+
+            #circles {
+                circle {
+                    fill: rgb(96, 96, 96);
+                    stroke-width: 1px;
+                    stroke: rgba(255, 255, 255, 0.229);
+                }
+            }
+
+            .border {
+                fill: gray;
+                stroke: none;
+            }
+        }
+
+        #fingers {
+            g {
+
+
+                circle,
+                rect {
+                    fill: var(--color-base);
+
+                    fill: white;
+                    stroke: rgba(0, 0, 0, 0.321);
+                    stroke-width: 1px;
+                    filter: url(#neck-shadow);
+                }
+
+                rect {
+                    fill: var(--color-base);
+                    display: none;
+                }
+
+                display: none;
+
+                &.visible {
+                    display: block;
+                }
+
+                &.box {
+
+                    circle,
+                    rect {
+                        filter: url(#neck-shadow);
+                    }
+                }
+
+                &.root {
+                    circle {
+                        display: none;
+                    }
+
+                    rect {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        &:not([note-per-string="off"]) {
+            #fingers g:not(.box) {
+                opacity: 0.2;
+
+                circle,
+                rect {
+                    filter: none;
+                }
+
+            }
+        }
+
+        &[notes="intervals"] {
+
+            #labels g .interval {
+                display: block;
+            }
+
+            #labels g .interval-sign {
+                display: block;
+            }
+
+            #labels g .sharp,
+            #labels g .flat {
+                display: none;
+            }
+
+        }
+
+
+
+
+        #strings {
+            line {
+                stroke: url(#str2);
+
+                @media screen {
+                    -webkit-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .5));
+                    filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .5));
+                }
+            }
+
+            line:nth-child(n) {
+                stroke-width: 0.8;
+            }
+
+            line:nth-child(2) {
+                stroke-width: 0.8;
+            }
+
+            line:nth-child(3) {
+                stroke-width: 1;
+            }
+
+            line:nth-child(4) {
+                stroke-width: 1.5;
+            }
+
+            line:nth-child(5) {
+                stroke-width: 1.8;
+            }
+
+            line:nth-child(6) {
+                stroke-width: 2;
+            }
+
+            line:nth-child(7) {
+                stroke-width: 2.4;
+            }
+        }
+
+        #frets {
+            line {
+                stroke: rgba(255, 255, 204, 0.6);
+
+
+                &.zero {
+                    stroke: #dddddd;
+                    stroke-width: 6;
+                    -webkit-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .3));
+                    filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .3));
+                }
+            }
+
+            text {
+                fill: gray;
+                font-size: 6px;
+                font-family: "Ubuntu", sans-serif;
+            }
+        }
+
+    }
+
+    &[neck-type="dark"] {
+        #fret-board-bg {
+            filter: url(#neck-shadow);
+            fill: url(#gradient-dark);
+        }
+
+        #shading {
+            opacity: 0.5;
+
+            rect {
+                fill: url(#shading);
+            }
+
+        }
+
+        #marks {
+
+            stroke: transparent;
+
+            #circles {
+                display: none;
+            }
+
+            rect {
+                fill: rgba(214, 215, 207, 0.2);
+            }
+
+            .border {
+                fill: gray;
+                stroke: none;
+            }
+        }
+
+        #fingers {
+            g {
+
+
+                circle,
+                rect {
+                    fill: var(--color-base);
+
+                    fill: white;
+                    stroke: rgba(0, 0, 0, 0.321);
+                    stroke-width: 1px;
+                    filter: url(#neck-shadow);
+                }
+
+                rect {
+                    fill: var(--color-base);
+                    display: none;
+                }
+
+                display: none;
+
+                &.visible {
+                    display: block;
+                }
+
+                &.box {
+
+                    circle,
+                    rect {
+                        filter: url(#neck-shadow);
+                    }
+                }
+
+                &.root {
+                    circle {
+                        display: none;
+                    }
+
+                    rect {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        &:not([note-per-string="off"]) {
+            #fingers g:not(.box) {
+                opacity: 0.2;
+
+                circle,
+                rect {
+                    filter: none;
+                }
+
+            }
+        }
+
+        &[notes="intervals"] {
+
+            #labels g .interval {
+                display: block;
+            }
+
+            #labels g .interval-sign {
+                display: block;
+            }
+
+            #labels g .sharp,
+            #labels g .flat {
+                display: none;
+            }
+
+        }
+
+
+        #strings {
+            line {
+                stroke: url(#str2);
+
+                @media screen {
+                    -webkit-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .5));
+                    filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .5));
+                }
+            }
+
+            line:nth-child(n) {
+                stroke-width: 0.8;
+            }
+
+            line:nth-child(2) {
+                stroke-width: 0.8;
+            }
+
+            line:nth-child(3) {
+                stroke-width: 1;
+            }
+
+            line:nth-child(4) {
+                stroke-width: 1.5;
+            }
+
+            line:nth-child(5) {
+                stroke-width: 1.8;
+            }
+
+            line:nth-child(6) {
+                stroke-width: 2;
+            }
+
+            line:nth-child(7) {
+                stroke-width: 2.4;
+            }
+        }
+
+        #frets {
+            line {
+                stroke: rgba(255, 255, 204, 0.4);
+
+
+                &.zero {
+                    stroke: #dddddd;
+                    stroke-width: 6;
+                    -webkit-filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .3));
+                    filter: drop-shadow(2px 2px 1px rgba(0, 0, 0, .3));
+                }
+            }
+
+            text {
+                fill: gray;
+                font-size: 6px;
+                font-family: "Ubuntu", sans-serif;
+            }
+        }
+    }
+
+    &[neck-type="bw"] {
+        #fret-board-bg {
+            fill: white;
+        }
+
+        #marks {
+
+            #rectangles {
+                display: none;
+            }
+        }
+
+        #frets {
+            line {
+                stroke: black !important;
+                stroke-width: 1;
+
+                text {
+                    stroke: transparent;
+                }
+
+                &.zero {
+                    stroke: black;
+                    stroke-width: 6;
+                    -webkit-filter: none;
+                    filter: none;
+                }
+            }
+
+            text {
+                fill: gray;
+                font-size: 6px;
+                font-family: "Ubuntu", sans-serif;
+            }
+        }
+
+        #strings {
+            line {
+                stroke: black;
+            }
+        }
+
+        #fingers {
+            g {
+
+
+                circle,
+                rect {
+                    fill: var(--color-base);
+
+                    fill: white;
+                    stroke: rgba(0, 0, 0, 1);
+                    stroke-width: 1px;
+
+                }
+
+                rect {
+                    fill: var(--color-base);
+                    display: none;
+                }
+
+                display: none;
+
+                &.visible {
+                    display: block;
+                }
+
+
+
+                &.root {
+                    circle {
+                        display: none;
+                    }
+
+                    rect {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        &:not([note-per-string="off"]) {
+            #fingers g:not(.box) {
+                opacity: 0.2;
+
+                circle,
+                rect {
+                    filter: none;
+                }
+
+            }
+        }
+
+        &[notes="intervals"] {
+
+            #labels g .interval {
+                display: block;
+            }
+
+            #labels g .interval-sign {
+                display: block;
+            }
+
+            #labels g .sharp,
+            #labels g .flat {
+                display: none;
+            }
+
+        }
+
+
+        #shading {
+            display: none;
+        }
+    }
+
+
+    &[notes="none"] {
+        #labels {
+            display: none;
+        }
+    }
+
+    #labels {
+        g {
+            fill: rgba(0, 0, 0, 0.7);
+            font-family: "Ubuntu", sans-serif;
+            font-size: 7px;
+            display: none;
+
+            .index,
+            .interval-sign {
+                font-size: 4px;
+                transform: translate(4px, -3px);
+            }
+
+            &.visible {
+                display: block;
+            }
+
+            text {
+                display: none;
+            }
+
+            text.visible {
+                display: block;
+            }
+
+            &.root {
+                fill: white;
+            }
+
+        }
+
+        &.names {
+            .interval {
+                display: none;
+            }
+
+            .interval-sign {
+                display: none;
+            }
+        }
+
+        &.intervals {
+            text {
+                display: none;
+
+                &.interval,
+                &.interval-sign {
+                    display: block;
+                }
+
+            }
+        }
+
+        &.none {
+            display: none;
+
+            .interval {
+                display: none;
+            }
+
+            .interval-sign {
+                display: none;
+            }
+        }
+
+
+        tspan {
+            font-size: 5px;
+        }
+    }
+
+}

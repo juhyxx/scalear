@@ -18,7 +18,9 @@ export default class Element extends Svg {
             this.render();
         }
         Object.keys(this.params?.attribute || {}).forEach((key) => {
-            this.el.setAttribute(key, this.params.attribute[key]);
+            if (key !== 'attribute') {
+                this.el.setAttribute(key, this.params.attribute[key]);
+            }
         });
     }
 
@@ -37,16 +39,21 @@ export default class Element extends Svg {
     }
 
     remove() {
-        this.el.parentNode.removeChild(this.el);
+        try {
+            this.el.parentNode.removeChild(this.el);
+        } catch (e) {
+            console.warn('Element has no parent');
+        }
     }
 
     show() {
-        this.#el.style.display = 'block';
+        //this.#el.style.display = 'block';
+        this.addClass('show');
         return this;
     }
 
     hide() {
-        this.#el.style.display = 'none';
+        this.removeClass('show');
         return this;
     }
 
@@ -82,11 +89,14 @@ export default class Element extends Svg {
                     this.el[key] = this[key];
                     break;
                 case 'children':
+                    //console.log(this.children);
                     this.children.forEach((child) => new child.class(this.el, child));
                     break;
                 default:
                     if (this[key] !== undefined) {
-                        this.el.setAttribute(key, this[key]);
+                        if (key !== 'attribute') {
+                            this.el.setAttribute(key, this[key]);
+                        }
                     }
             }
         });

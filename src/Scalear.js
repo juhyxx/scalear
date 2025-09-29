@@ -1,17 +1,10 @@
 import { APP } from './enums/app.js';
-import { scalesGrouped, SCALES } from './enums/scales.js';
+import { scalesGrouped } from './enums/scales.js';
 import { INSTRUMENT_GROUPS, INSTRUMENTS } from './enums/instruments.js';
-import { NOTES_SHARP, NOTES_BS } from './enums/notes.js';
-import Svg from './svg/Svg.js';
-import Neck from './view/Neck.js';
-import Select from './view/Select.js';
-import SelectTwoLevel from './view/SelectTwoLevel.js';
+
 import Model from './Model.js';
 
 export default class Scalear {
-    #scaleSelect;
-    #rootSelect;
-    #instrumentSelect;
     #model;
 
     get model() {
@@ -20,7 +13,7 @@ export default class Scalear {
 
     set model(model) {
         this.#model = model;
-        this.#model.addUpdateHandler(this.modelUpdate, this);
+        //  this.#model.addUpdateHandler(this.modelUpdate, this);
     }
 
     get route() {
@@ -67,84 +60,50 @@ export default class Scalear {
     setDefaults() {
         document.querySelector('#name').innerHTML = this.model.scaleName;
         document.querySelector('#root').innerHTML = this.model.rootNoteName;
-        document.querySelector('#frets-count').value = this.model.fretCount;
         document.querySelector('nav').className = '';
-        document.querySelector('svg').setAttribute('class', '');
         document.title = `${this.model.rootNoteName} ${this.model.scaleName} (${this.name})`;
     }
 
     init() {
-        const rootSelect = new Select({
-            selector: '#root-selector',
-            model: this.model,
-            data: NOTES_BS,
-            watchOption: 'rootNote'
-        });
-        const scaleSelect = new SelectTwoLevel({
-            selector: '#scale-selector',
-            propertyName: 'name',
-            model: this.model,
-            data: scalesGrouped,
-            watchOption: 'scale'
-        });
-        const instrumentSelect = new SelectTwoLevel({
-            selector: '#instrument-selector',
-            propertyName: 'name',
-            model: this.model,
-            data: INSTRUMENT_GROUPS,
-            watchOption: 'instrument'
-        });
-
+        const instrumentCombo = document.querySelector('two-level-combo#instrument-selector');
+        const scaleCombo = document.querySelector('two-level-combo#scale-selector');
         const notes = document.querySelector('#notes');
         const fretBoardSelect = document.querySelector('#fretboard');
-        const neckView = new Neck(Svg.get('svg#board'), this.model);
         const notesPerString = document.querySelector('#notes-per-string');
+        const fretsCount = document.querySelector('#frets-count');
+        const rootSelector = document.querySelector('#root-select');
+        const neckView = document.querySelector('neck-view');
 
-        notes.addEventListener('change', (e) => {
-            this.model.names = e.detail.value;
-        });
-        fretBoardSelect.addEventListener('change', (e) => {
-            this.model.neckType = e.detail.value;
-        });
+        instrumentCombo.addData(INSTRUMENT_GROUPS, 'name');
+        scaleCombo.addData(scalesGrouped, 'name');
 
-        scaleSelect.on('change', (e) => (this.model.scale = e.target.value));
-        rootSelect.on('change', (e) => (this.model.rootNote = e.target.value));
-        instrumentSelect.on('change', (e) => (this.model.instrument = e.target.value));
-        notesPerString.addEventListener('change', (e) => {
-            this.model.notePerString = e.detail.value;
-        });
-
-        document
-            .querySelector('#frets-count')
-            .addEventListener('input', (e) => (this.model.fretCount = e.target.value));
         document.querySelector('#print').addEventListener('click', (e) => window.print());
 
-        this.#scaleSelect = scaleSelect;
-        this.#rootSelect = rootSelect;
-        this.#instrumentSelect = instrumentSelect;
+        fretBoardSelect.addEventListener('change', (e) => neckView.setAttribute('neck-type', e.detail.value));
+        fretsCount.addEventListener('change', (e) => neckView.setAttribute('fret-count', e.detail.value));
+        notesPerString.addEventListener('change', (e) => neckView.setAttribute('note-per-string', e.detail.value));
+        rootSelector.addEventListener('change', (e) => neckView.setAttribute('root-note', e.detail.value));
+        notes.addEventListener('change', (e) => neckView.setAttribute('notes', e.detail.value));
+        instrumentCombo.addEventListener('select', (e) => neckView.setAttribute('instrument', e.detail.value));
+        scaleCombo.addEventListener('select', (e) => neckView.setAttribute('scale', e.detail.value));
     }
 
-    modelUpdate(model, changeName) {
-        switch (changeName) {
-            case 'rootNote':
-                document.querySelector('#root').innerHTML = model.rootNoteName;
-                document.title = `${model.rootNoteName} ${model.scaleName} (${this.name})`;
-                break;
-            case 'scale':
-                document.querySelector('#name').innerHTML = model.scaleName;
-                document.title = `${model.rootNoteName} ${model.scaleName} (${this.name})`;
-                break;
-            case 'neckType':
-                document.body.classList[model.neckType === 'fender' ? 'add' : 'remove']('dark');
-                break;
-            case 'instrument':
-                document.querySelector('#frets-count').disabled = INSTRUMENTS[model.instrument].group === 'piano';
-        }
-        this.route = Scalear.prepareHashString(
-            ['', INSTRUMENTS[model.instrument].name, model.scaleName, model.rootNoteName, ''].join('/')
-        );
-        localStorage.defaults = model.toJSON();
-    }
+    // modelUpdate(model, changeName) {
+    //     switch (changeName) {
+    //         case 'rootNote':
+    //             document.querySelector('#root').innerHTML = model.rootNoteName;
+    //             document.title = `${model.rootNoteName} ${model.scaleName} (${this.name})`;
+    //             break;
+    //         case 'scale':
+    //             document.querySelector('#name').innerHTML = model.scaleName;
+    //             document.title = `${model.rootNoteName} ${model.scaleName} (${this.name})`;
+    //             break;
+    //     }
+    //     this.route = Scalear.prepareHashString(
+    //         ['', INSTRUMENTS[model.instrument].name, model.scaleName, model.rootNoteName, ''].join('/')
+    //     );
+    //     localStorage.defaults = model.toJSON();
+    // }
 
     onRouteChange(params) {
         let note;

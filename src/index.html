@@ -15,46 +15,41 @@
     <nav class="loading">
 		<div id="logo" title="Scalear 0.8.8"></div>
         <div>
-            <label>
-                <div>Root</div>
-                <single-select id="root-selector1"></single-select>
-                <select tabindex="3" id="root-selector">
-                </select>
-            </label>
+        
+            <label><div>Root</div>
+            <toggle-button id="root-select">
+                <toggle-item value="0">C</toggle-item>
+                <toggle-item value="1">Db</toggle-item>
+                <toggle-item value="2">D</toggle-item>
+                <toggle-item value="3">Eb</toggle-item>
+                <toggle-item value="4">E</toggle-item>
+                <toggle-item value="5">F</toggle-item>
+                <toggle-item value="6">Fb/F#</toggle-item>
+                <toggle-item value="7">G</toggle-item>
+                <toggle-item value="8">Ab</toggle-item>
+                <toggle-item value="9">A</toggle-item>
+                <toggle-item value="10">Ab</toggle-item>
+                <toggle-item value="11">B</toggle-item>
+            </toggle-button></label>
+
+
             <label>
                 <div>Scale</div>
-                <select tabindex="2" id="scale-selector">
-                </select>
+                <two-level-combo id="scale-selector"></two-level-combo>
             </label>
-			<label>
+
+            <label>
                 <div>Instrument & Tunning</div>
-                <select tabindex="1" id="instrument-selector"></select>
+                <two-level-combo id="instrument-selector"></two-level-combo>
             </label>
+            
         </div>
         <div>
+            
             <label>
                 <div>Frets count</div>
-				<input  tabindex="4" type="range" id="frets-count" list="frets" min="10" max="25" value="1">
-				<datalist id="frets" >
-					<option>10</option>
-					<option>11</option>
-					<option>12</option>
-					<option>13</option>
-					<option>14</option>
-					<option>15</option>
-					<option>15</option>
-					<option>16</option>
-					<option>17</option>
-					<option>18</option>
-					<option>19</option>
-					<option>20</option>
-					<option>21</option>
-					<option>22</option>
-					<option>23</option>
-					<option>24</option>
-					<option>25</option>
-				</datalist>
-            </label>
+                <range-selector id="frets-count" tabindex="5" min="10" max="25" value="12"></range-selector>
+            </label>  
     
             <label><div>Notes</div>
             <toggle-button id="notes">
@@ -65,70 +60,28 @@
             
             <label><div>Fretboard</div>
             <toggle-button id="fretboard">
-                <toggle-item value="fender">Light</toggle-item>
-                <toggle-item value="gibson">Dark</toggle-item>
-                <toggle-item value="lines">B&W</toggle-item>
+                <toggle-item value="light">Light</toggle-item>
+                <toggle-item value="dark">Dark</toggle-item>
+                <toggle-item value="bw">B&W</toggle-item>
             </toggle-button></label>
 
-            <label><div>Notes per string</div>
+            <label><div>Show box</div>
             <toggle-button id="notes-per-string">
-                <toggle-item value="off">off</toggle-item>
-                <toggle-item value="2">2</toggle-item>
-                <toggle-item value="3">3</toggle-item>
-                <toggle-item value="4s">4</toggle-item>
+                <toggle-item value="off">Off</toggle-item>
+                <toggle-item value="2">2 notes/string</toggle-item>
+                <toggle-item value="3">3 notes/string</toggle-item>
+                <toggle-item value="4s">4 notes/string</toggle-item>
             </toggle-button></label>
-
-			<label id="print">
-                <span tabindex="7"></span>
-            </label>
         </div>
+        
+        <label id="print">
+            <span tabindex="7"></span>
+        </label>
     </nav>
     <h1 class="title"><span id="root"></span> <span id="name"></span></h1>
-    <svg id="board" version="1.0" encoding="UTF-8" width="100%" preserveAspectRatio="xMinYMin slice" viewBox="0 0 560 160" class="loading">
-        <defs>
-            <filter id="neckshadow" x="-1" y="-1" width="300%" height="300%">
-                <feOffset result="offOut" in="SourceAlpha" dx="0" dy="1" />
-                <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
-                <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-            </filter>
-            <filter id="fret" x="0" y="0" width="200%" height="200%">
-                <feOffset result="offOut" in="SourceAlpha" dx="1" dy="0" />
-                <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
-            </filter>
-            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#3b2b2b" />
-                <stop offset="40%" style="stop-color:#573a34;" />
-                <stop offset="60%" style="stop-color:#573a34;" />
-                <stop offset="100%" style="stop-color:#3b2b2b;" />
-            </linearGradient>
-            <linearGradient id="str" x1="0%" y1="0%" x2="0%" y2="5" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" style="stop-color:#736e27" />
-                <stop offset="100%" style="stop-color:#c6c6c6;" />
-            </linearGradient>
-            <linearGradient id="str2"xlink:href="#str"spreadMethod="repeat" />
-            <linearGradient id="gradientfender" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#e4cda7" />
-                <stop offset="30%" style="stop-color:#d4bb90;" />
-                <stop offset="60%" style="stop-color:#d4bb90;" />
-                <stop offset="100%" style="stop-color:#e4cda7;" />
-            </linearGradient>
-            <linearGradient id="blackkeys" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:black" />
-                <stop offset="92%" style="stop-color:#000000;" />
-                <stop offset="93%" style="stop-color:#343434;" />
-                <stop offset="100%" style="stop-color:#343434;" />
-            </linearGradient>
-            <linearGradient id="shading" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="5%" stop-opacity="0.5" style="stop-color:black" />
-                <stop offset="5%" stop-opacity="0.2" style="stop-color:black" />
-                <stop offset="20%" stop-opacity="0" style="stop-color:black" />
-                <stop offset="80%" stop-opacity="0" style="stop-color:black" />
-                <stop offset="95%" stop-opacity="0.2" style="stop-color:black" />
-                <stop offset="100%" stop-opacity="0.5" style="stop-color:black" />
-            </linearGradient>
-        </defs>
-    </svg>
-    <svg id="box" version="1.0" encoding="UTF-8" width="100%" preserveAspectRatio="xMinYMin slice" viewBox="0 0 560 40"></svg>
+    <neck-view></neck-view>
+    
+   
 </body>
 
 </html>

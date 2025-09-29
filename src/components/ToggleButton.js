@@ -11,7 +11,6 @@ export class ToggleButton extends HTMLElement {
     }
     getNextSelected() {
         this.#selected = (this.#selected + 1) % this.#items.length;
-
         return this.#selected;
     }
     connectedCallback() {

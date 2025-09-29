@@ -2,8 +2,7 @@
 @import url(./css/filter.css);
 @import url(./css/nav.css);
 @import url(./css/label.css);
-@import url(./css/neck.css);
-@import url(./css/piano.css);
+
 @import url(./css/print-button.css);
 @import url(./css/select.css);
 @import url(./css/scale-box.css);
@@ -12,6 +11,9 @@
 @import url(./css/two-values-switch.css);
 
 @import url(./components/ToggleButton.css);
+@import url(./components/RangeSeletor.css);
+@import url(./components/NeckView.css);
+
 
 :root {
     --color-base: #732c2c;

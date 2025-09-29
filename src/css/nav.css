@@ -34,7 +34,6 @@ nav {
         color: rgba(255, 255, 255, 0.3);
         cursor: pointer;
         accent-color: #bfa98e;
-
         margin: 0;
 
         &:disabled {
