@@ -99,7 +99,7 @@ export class NeckView extends HTMLElement {
     }
 
     get scale() {
-        return SCALES[this.#scale] || 0;
+        return SCALES[this.#scale];
     }
     set scale(value) {
         this.#scale = parseInt(value) || 0;
@@ -116,6 +116,9 @@ export class NeckView extends HTMLElement {
     set notePerString(value) {
         this.#notePerString = parseInt(value);
         this.display();
+    }
+    get y() {
+        return 10;
     }
 
     get data() {
@@ -154,6 +157,11 @@ export class NeckView extends HTMLElement {
     connectedCallback() {
         this.innerHTML = `<svg id="board" version="1.0" encoding="UTF-8" width="100%" preserveAspectRatio="xMinYMin slice" viewBox="0 0 560 160">
         <defs>
+            <filter id="main-neck-shadow" x="-1" y="-1" width="300%" height="300%">
+                <feOffset result="offOut" in="SourceAlpha" dx="0" dy="0" />
+                <feGaussianBlur result="blurOut" in="offOut" stdDeviation="2" />
+                <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+            </filter>
             <filter id="neck-shadow" x="-1" y="-1" width="300%" height="300%">
                 <feOffset result="offOut" in="SourceAlpha" dx="0" dy="1" />
                 <feGaussianBlur result="blurOut" in="offOut" stdDeviation="1" />
@@ -195,7 +203,7 @@ export class NeckView extends HTMLElement {
         this.#elBg = new SvgRectangle(this.#elMainGroup.el, {
             id: 'fret-board-bg',
             x: this.fretWidth,
-            y: 0,
+            y: this.y,
             width: this.fretCount * this.fretWidth,
             height: this.neckWidth
         });
@@ -272,7 +280,7 @@ export class NeckView extends HTMLElement {
         for (let i = 0; i < this.fretCount; i++) {
             new SvgRectangle(el, {
                 x: i * this.fretWidth + this.fretWidth,
-                y: 0,
+                y: this.y,
                 width: this.fretWidth,
                 height: this.neckWidth
             });
@@ -289,13 +297,13 @@ export class NeckView extends HTMLElement {
                         {
                             class: SvgCircle,
                             x: (i - 1) * this.fretWidth + 1.5 * this.fretWidth,
-                            y: this.stringDistance + this.neckWidth / 2,
+                            y: this.y + this.stringDistance + this.neckWidth / 2,
                             radius: this.fretWidth / 6
                         },
                         {
                             class: SvgCircle,
                             x: (i - 1) * this.fretWidth + 1.5 * this.fretWidth,
-                            y: -this.stringDistance + this.neckWidth / 2,
+                            y: this.y + -this.stringDistance + this.neckWidth / 2,
                             radius: this.fretWidth / 6
                         }
                     );
@@ -303,13 +311,13 @@ export class NeckView extends HTMLElement {
                         {
                             class: SvgCircle,
                             x: (i - 1) * this.fretWidth + 1.5 * this.fretWidth - 3,
-                            y: this.neckWidth + 8,
+                            y: this.y + this.neckWidth + 8,
                             radius: 2
                         },
                         {
                             class: SvgCircle,
                             x: (i - 1) * this.fretWidth + 1.5 * this.fretWidth + 3,
-                            y: this.neckWidth + 8,
+                            y: this.y + this.neckWidth + 8,
                             radius: 2
                         }
                     );
@@ -317,7 +325,7 @@ export class NeckView extends HTMLElement {
                     rectangles.push({
                         class: SvgRectangle,
                         x: (i - 1) * this.fretWidth + 5 + this.fretWidth,
-                        y: 4 * 5,
+                        y: this.y + 4 * 5,
                         height: this.neckWidth - 8 * 5,
                         width: this.fretWidth - 2 * 5
                     });
@@ -326,14 +334,14 @@ export class NeckView extends HTMLElement {
                         {
                             class: SvgRectangle,
                             x: (i - 1) * this.fretWidth + 5 + this.fretWidth,
-                            y: 5 + this.neckWidth / 2,
+                            y: this.y + 5 + this.neckWidth / 2,
                             height: (this.neckWidth - 10 * 5) / 2,
                             width: this.fretWidth - 2 * 5
                         },
                         {
                             class: SvgRectangle,
                             x: (i - 1) * this.fretWidth + 5 + this.fretWidth,
-                            y: 4 * 5,
+                            y: this.y + 4 * 5,
                             height: (this.neckWidth - 10 * 5) / 2,
                             width: this.fretWidth - 2 * 5
                         }
@@ -341,13 +349,13 @@ export class NeckView extends HTMLElement {
                     circles.push({
                         class: SvgCircle,
                         x: (i - 1) * this.fretWidth + 1.5 * this.fretWidth,
-                        y: this.neckWidth / 2,
+                        y: this.y + this.neckWidth / 2,
                         radius: this.fretWidth / 6
                     });
                     fretLabels.push({
                         class: SvgCircle,
                         x: (i - 1) * this.fretWidth + 1.5 * this.fretWidth,
-                        y: this.neckWidth + 8,
+                        y: this.neckWidth + 8 + this.y,
                         radius: 2
                     });
                 }
@@ -364,12 +372,12 @@ export class NeckView extends HTMLElement {
             new SvgLine(el, {
                 x1: i * this.fretWidth + this.fretWidth + 1,
                 x2: i * this.fretWidth + this.fretWidth + 1,
-                y1: 0,
-                y2: this.neckWidth
+                y1: this.y,
+                y2: this.neckWidth + this.y
             });
             new SvgText(el, {
                 x: i * this.fretWidth - this.fretWidth + 2 * this.fretWidth - 2,
-                y: this.neckWidth + 10,
+                y: this.neckWidth + 10 + this.y,
                 textContent: i
             });
         }
@@ -377,21 +385,21 @@ export class NeckView extends HTMLElement {
             className: 'zero',
             x1: this.fretWidth - 2,
             x2: this.fretWidth - 2,
-            y1: -0.5,
-            y2: this.neckWidth
+            y1: this.y,
+            y2: this.neckWidth + this.y
         });
     }
 
     renderStrings(el) {
-        this.tunning.map(
-            (item, i) =>
-                new SvgLine(el, {
-                    x1: 0,
-                    x2: this.fretWidth + this.fretCount * this.fretWidth,
-                    y1: i * this.stringDistance + this.stringDistance / 2,
-                    y2: i * this.stringDistance + this.stringDistance / 2
-                })
-        );
+        this.tunning.map((item, i) => {
+            const y = i * this.stringDistance + this.stringDistance / 2;
+            new SvgLine(el, {
+                x1: 0,
+                x2: this.fretWidth + this.fretCount * this.fretWidth,
+                y1: y + this.y,
+                y2: y + this.y
+            });
+        });
     }
 
     renderFingers(parentEl) {
@@ -411,13 +419,13 @@ export class NeckView extends HTMLElement {
                         {
                             class: SvgCircle,
                             x: i * this.fretWidth + this.fretWidth / 2,
-                            y: this.stringDistance * string + this.stringDistance / 2,
+                            y: +this.y + this.stringDistance * string + this.stringDistance / 2,
                             radius: radius
                         },
                         {
                             class: SvgRectangle,
                             x: i * this.fretWidth + this.fretWidth / 2 - radius,
-                            y: this.stringDistance * string + this.stringDistance / 2 - radius,
+                            y: +this.y + this.stringDistance * string + this.stringDistance / 2 - radius,
                             width: radius * 2,
                             height: radius * 2
                         }
@@ -449,7 +457,7 @@ export class NeckView extends HTMLElement {
                         {
                             class: SvgText,
                             x: i * this.fretWidth + this.fretWidth / 2 - 2 - correction,
-                            y: this.stringDistance * string + this.stringDistance / 2 + 3,
+                            y: this.y + this.stringDistance * string + this.stringDistance / 2 + 3,
                             textContent: content.sharp.charAt(0),
                             className: 'sharp'
                         },
@@ -457,13 +465,13 @@ export class NeckView extends HTMLElement {
                             class: SvgText,
                             className: 'index sharp',
                             x: i * this.fretWidth + this.fretWidth / 2 - 2 - correction,
-                            y: this.stringDistance * string + this.stringDistance / 2 + 3,
+                            y: this.y + this.stringDistance * string + this.stringDistance / 2 + 3,
                             textContent: content.sharp.charAt(1)
                         },
                         {
                             class: SvgText,
                             x: i * this.fretWidth + this.fretWidth / 2 - 2 - correction,
-                            y: this.stringDistance * string + this.stringDistance / 2 + 3,
+                            y: this.y + this.stringDistance * string + this.stringDistance / 2 + 3,
                             textContent: content.flat.charAt(0),
                             className: 'flat'
                         },
@@ -471,21 +479,21 @@ export class NeckView extends HTMLElement {
                             class: SvgText,
                             className: 'index flat',
                             x: i * this.fretWidth + this.fretWidth / 2 - 2 - correction,
-                            y: this.stringDistance * string + this.stringDistance / 2 + 3,
+                            y: this.y + this.stringDistance * string + this.stringDistance / 2 + 3,
                             textContent: content.flat.charAt(1)
                         },
                         {
                             class: SvgText,
                             className: 'interval',
                             x: i * this.fretWidth + this.fretWidth / 2 - 2 - correction,
-                            y: this.stringDistance * string + this.stringDistance / 2 + 3,
+                            y: this.y + this.stringDistance * string + this.stringDistance / 2 + 3,
                             textContent: ''
                         },
                         {
                             class: SvgText,
                             className: 'interval-sign',
                             x: i * this.fretWidth + this.fretWidth / 2 - 2 - correction,
-                            y: this.stringDistance * string + this.stringDistance / 2 + 3,
+                            y: this.y + this.stringDistance * string + this.stringDistance / 2 + 3,
                             textContent: ''
                         }
                     ]

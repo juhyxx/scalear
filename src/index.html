@@ -3,19 +3,18 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <script src="./app.js?0.8.8"" type="module" defer></script>
-    <title>Scalear 0.8.8</title>
+    <script src="./Scalear.js?0.9.0"" type="module" defer></script>
+    <title>Scalear 0.9.0</title>
     <meta name="description" content="Tool for displaing notes on string instruments and easy printing.">
     <meta name="keyword" content="guitar, 7-string guitar, ukulele, tunning, scales, fretless bass">
-    <link rel="stylesheet" href="style.css?0.8.8"">
+    <link rel="stylesheet" href="style.css?0.9.0"">
 </head>
 
 <body>
     
-    <nav class="loading">
-		<div id="logo" title="Scalear 0.8.8"></div>
+    <nav>
+		<div id="logo" title="Scalear 0.9.0"></div>
         <div>
-        
             <label><div>Root</div>
             <toggle-button id="root-select">
                 <toggle-item value="0">C</toggle-item>
@@ -31,26 +30,32 @@
                 <toggle-item value="10">Ab</toggle-item>
                 <toggle-item value="11">B</toggle-item>
             </toggle-button></label>
-
-
             <label>
                 <div>Scale</div>
                 <two-level-combo id="scale-selector"></two-level-combo>
             </label>
-
+        </div>
+    
+        
+        <label id="print">
+            <span tabindex="7"></span>
+        </label>
+    </nav>
+    <h1 class="title"><span id="root"></span> <span id="name"></span></h1>
+    <neck-view></neck-view>
+        
+    <footer>
+        <div>
             <label>
                 <div>Instrument & Tunning</div>
                 <two-level-combo id="instrument-selector"></two-level-combo>
             </label>
-            
-        </div>
-        <div>
-            
             <label>
                 <div>Frets count</div>
                 <range-selector id="frets-count" tabindex="5" min="10" max="25" value="12"></range-selector>
             </label>  
-    
+        </div>
+        <div>
             <label><div>Notes</div>
             <toggle-button id="notes">
                 <toggle-item value="names">Names</toggle-item>
@@ -72,16 +77,8 @@
                 <toggle-item value="3">3 notes/string</toggle-item>
                 <toggle-item value="4s">4 notes/string</toggle-item>
             </toggle-button></label>
-        </div>
-        
-        <label id="print">
-            <span tabindex="7"></span>
-        </label>
-    </nav>
-    <h1 class="title"><span id="root"></span> <span id="name"></span></h1>
-    <neck-view></neck-view>
-    
-   
+            </div>
+    </footer>
 </body>
 
 </html>
