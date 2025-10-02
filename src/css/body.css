@@ -6,11 +6,11 @@ body {
     padding: 0;
     height: 100vh;
     font-family: "Ubuntu", sans-serif;
+    width: 100dvw;
     background-color: var(--color-secondary);
     display: grid;
     gap: 2rem;
-    grid-template-areas:
-        "header"
+    grid-template-areas: "header"
         "main"
         "footer";
     grid-template-rows: fit-content(20%) auto fit-content(10%);

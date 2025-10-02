@@ -80,10 +80,13 @@ export class RangeSelector extends HTMLElement {
             this.value = e.target.value;
             e.stopPropagation();
         });
-        this.range.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            this.value = parseInt(this.value) + (e.deltaY < 0 ? 1 : -1);
-        });
+        this.range.addEventListener(
+            'wheel',
+            (e) => {
+                this.value = parseInt(this.value) + (e.deltaY < 0 ? -1 : 1);
+            },
+            { passive: true }
+        );
         this.number.addEventListener('change', (e) => {
             this.value = e.target.value;
             e.stopPropagation();

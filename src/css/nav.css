@@ -1,11 +1,9 @@
 nav {
     grid-area: header;
-    width: 100vw;
     user-select: none;
     background: linear-gradient(var(--color-base, 3%) 0%, var(--color-base) 15%, var(--color-base) 75%, var(--color-base, 3%) 100%);
     color: white;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+
     align-items: center;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.2);
     display: flex;
@@ -14,6 +12,7 @@ nav {
     align-content: flex-start;
     top: 0;
     border-bottom: 2px solid white;
+    padding: 1rem 2rem;
 
     #logo {
         margin-left: 1rem;

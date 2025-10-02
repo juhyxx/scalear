@@ -13,8 +13,7 @@ footer {
     flex-flow: row nowrap;
     justify-content: space-between;
     align-content: flex-start;
-
-    padding: 1rem 3rem;
+    padding: 1rem 2rem;
     border-top: 2px solid white;
 
 

@@ -1,0 +1,29 @@
+{
+    "name": "Scalear",
+    "short_name": "Scalear",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#732C2C",
+    "description": "Guitar learning app.",
+    "icons": [
+        {
+            "src": "images/logo-144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "images/sshot.png",
+            "type": "image/png",
+            "sizes": "540x720",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "images/sshot.png",
+            "type": "image/png",
+            "sizes": "540x720",
+            "form_factor": "wide"
+        }
+    ]
+}

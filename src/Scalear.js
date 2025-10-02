@@ -47,13 +47,20 @@ export default class Scalear {
         const rootSelector = document.querySelector('#root-select');
         const neckView = document.querySelector('neck-view');
 
-        document.querySelector('#print').addEventListener('click', (e) => window.print());
+        //document.querySelector('#print').addEventListener('click', (e) => window.print());
 
         instrumentCombo.addData(INSTRUMENT_GROUPS, 'name');
         scaleCombo.addData(scalesGrouped, 'name');
 
-        fretBoardSelect.addEventListener('change', (e) => neckView.setAttribute('neck-type', e.detail.value));
-        fretsCount.addEventListener('change', (e) => neckView.setAttribute('fret-count', e.detail.value));
+        fretBoardSelect.addEventListener('change', (e) => {
+            neckView.setAttribute('neck-type', e.detail.value);
+            document.body.classList.toggle('bw', e.detail.value === 'bw');
+        });
+        fretsCount.addEventListener('change', (e) => {
+            if (e.detail) {
+                neckView.setAttribute('fret-count', e.detail.value);
+            }
+        });
         notesPerString.addEventListener('change', (e) => neckView.setAttribute('note-per-string', e.detail.value));
         rootSelector.addEventListener('change', (e) => {
             this.rootNote = e.detail.value;

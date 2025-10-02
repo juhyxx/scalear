@@ -345,7 +345,7 @@ neck-view {
 
     &[neck-type="bw"] {
         #fret-board-bg {
-            fill: white;
+            fill: transparent;
         }
 
         #marks {

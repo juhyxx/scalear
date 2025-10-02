@@ -242,33 +242,38 @@ export class NeckView extends HTMLElement {
         this.data.forEach((strings, string) => {
             strings.forEach((note, fret) => {
                 if (note) {
-                    const finger = this.#elFingers.el.querySelector(`g[data-string="${string}"][data-fret="${fret}"]`);
+                    const finger = this.#elFingers?.el?.querySelector(
+                        `g[data-string="${string}"][data-fret="${fret}"]`
+                    );
 
-                    finger.classList.add('visible');
-                    finger.classList.toggle('root', note.isRoot);
-                    finger.classList.toggle('box', note.box);
+                    finger?.classList.add('visible');
+                    finger?.classList.toggle('root', note.isRoot);
+                    finger?.classList.toggle('box', note.box);
 
-                    const label = this.#elLabels.el.querySelector(`g[data-string="${string}"][data-fret="${fret}"]`);
+                    const label = this.#elLabels?.el?.querySelector(`g[data-string="${string}"][data-fret="${fret}"]`);
 
-                    label.classList.add('visible');
-                    label.classList.toggle('root', note.isRoot);
+                    label?.classList.add('visible');
+                    label?.classList.toggle('root', note.isRoot);
                     label
-                        .querySelectorAll(this.hasSharps ? '.flat' : '.sharp')
+                        ?.querySelectorAll(this.hasSharps ? '.flat' : '.sharp')
                         .forEach((item) => item.classList.remove('visible'));
                     label
-                        .querySelectorAll(!this.hasSharps ? '.flat' : '.sharp')
+                        ?.querySelectorAll(!this.hasSharps ? '.flat' : '.sharp')
                         .forEach((item) => item.classList.add('visible'));
-
-                    label.querySelector('.interval').textContent = note.interval ? note.interval.substring(0, 1) : '';
-                    label.querySelector('.interval-sign').textContent = note.interval
-                        ? note.interval.substring(2, 1)
-                        : '';
-                    label.querySelector('.interval').classList.toggle('root', note.isRoot);
+                    if (label) {
+                        label.querySelector('.interval').textContent = note.interval
+                            ? note.interval.substring(0, 1)
+                            : '';
+                        label.querySelector('.interval-sign').textContent = note.interval
+                            ? note.interval.substring(2, 1)
+                            : '';
+                    }
+                    label?.querySelector('.interval').classList.toggle('root', note.isRoot);
                 } else {
-                    this.#elFingers.el
+                    this.#elFingers?.el
                         .querySelector(`g[data-string="${string}"][data-fret="${fret}"]`)
                         .classList.remove('visible');
-                    this.#elLabels.el
+                    this.#elLabels?.el
                         .querySelector(`g[data-string="${string}"][data-fret="${fret}"]`)
                         .classList.remove('visible');
                 }
@@ -503,7 +508,6 @@ export class NeckView extends HTMLElement {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        console.log(name, oldValue, newValue);
         switch (name) {
             case 'neck-type':
                 this.neckType = newValue;
