@@ -13,6 +13,14 @@ nav {
     top: 0;
     border-bottom: 2px solid white;
     padding: 1rem 2rem;
+    position: relative;
+    top: 0;
+    transition: top 0.8s ease-in-out;
+
+    &.hidden {
+        top: -100px;
+
+    }
 
     #logo {
         margin-left: 1rem;

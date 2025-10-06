@@ -47,8 +47,6 @@ export default class Scalear {
         const rootSelector = document.querySelector('#root-select');
         const neckView = document.querySelector('neck-view');
 
-        //document.querySelector('#print').addEventListener('click', (e) => window.print());
-
         instrumentCombo.addData(INSTRUMENT_GROUPS, 'name');
         scaleCombo.addData(scalesGrouped, 'name');
 
@@ -74,6 +72,21 @@ export default class Scalear {
         });
 
         neckView.setAttribute('scale', 13);
+
+        document.body.addEventListener('dblclick', (e) => {
+            document.body.querySelector('nav').classList.add('hidden');
+            document.body.querySelector('footer').classList.add('hidden');
+            e.stopPropagation();
+        });
+        document.body.addEventListener('click', (e) => {
+            document.body.querySelector('nav').classList.remove('hidden');
+            document.body.querySelector('footer').classList.remove('hidden');
+            e.stopPropagation();
+        });
+        setTimeout(() => {
+            document.body.querySelector('nav').classList.remove('hidden');
+            document.body.querySelector('footer').classList.remove('hidden');
+        }, 1000);
     }
 }
 

@@ -1,12 +1,13 @@
 @import url(//fonts.googleapis.com/css?family=Ubuntu:500);
 
 
+
 body {
     margin: 0;
     padding: 0;
     height: 100vh;
     font-family: "Ubuntu", sans-serif;
-    width: 100dvw;
+    width: 100vw;
     background-color: var(--color-secondary);
     display: grid;
     gap: 2rem;
@@ -15,6 +16,7 @@ body {
         "footer";
     grid-template-rows: fit-content(20%) auto fit-content(10%);
     scroll-behavior: auto;
+    overflow: hidden;
 
     /* media queries must be outside the body selector in CSS */
 
@@ -69,3 +71,5 @@ body {
     svg#box {
         grid-area: footer;
     }
+
+}

@@ -3,6 +3,7 @@
     "short_name": "Scalear",
     "start_url": ".",
     "display": "standalone",
+    "orientation": "landscape",
     "background_color": "#732C2C",
     "description": "Guitar learning app.",
     "icons": [

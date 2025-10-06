@@ -15,7 +15,14 @@ footer {
     align-content: flex-start;
     padding: 1rem 2rem;
     border-top: 2px solid white;
+    position: relative;
+    top: 0px;
+    transition: top 0.8s ease-in-out;
 
+    &.hidden {
+        top: 100px;
+
+    }
 
     input[type="range"] {
         outline: 0;
