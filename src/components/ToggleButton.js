@@ -27,6 +27,15 @@ export class ToggleButton extends HTMLElement {
         this.addEventListener('click', () => {
             this.selectItem(this.getNextSelected());
         });
+        this.addEventListener('wheel', (e) => {
+            e.preventDefault();
+
+            this.selected =
+                e.deltaY > 0
+                    ? (this.#selected + 1) % this.#items.length
+                    : (this.#selected - 1 + this.#items.length) % this.#items.length;
+            this.selectItem(this.#selected);
+        });
     }
 
     selectItem(index) {

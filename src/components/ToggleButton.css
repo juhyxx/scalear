@@ -16,7 +16,7 @@ toggle-button::part(container) {
     flex-basis: 2rem;
     width: 6rem;
     position: relative;
-    transition: left 1s ease-in-out;
+    transition: left 0.5s ease-in-out;
 }
 
 toggle-button::part(label) {
@@ -26,11 +26,11 @@ toggle-button::part(label) {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    transition: box-shadow 0.4s ease-in-out;
     box-shadow: inset 0.25rem 0.25rem 0.25rem rgba(255, 255, 255, 0.2),
         0 0 0.25rem black,
         0 0 8px rgba(255, 255, 255, 0.3),
-        0 0 40px rgba(255, 165, 0, 0.5);
-
+        0 0 20px rgba(255, 165, 0, 0.3);
 }
 
 toggle-item {
@@ -42,4 +42,11 @@ toggle-item {
     height: 2rem;
     justify-content: center;
     align-items: center;
+}
+
+toggle-button:hover::part(label) {
+    box-shadow: inset 0.25rem 0.25rem 0.25rem rgba(255, 255, 255, 0.2),
+        0 0 0.25rem black,
+        0 0 8px rgba(255, 255, 255, 0.3),
+        0 0 40px rgba(255, 165, 0, 0.7);
 }
