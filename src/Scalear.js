@@ -38,6 +38,17 @@ export default class Scalear {
     }
 
     constructor() {
+        const selectNext = (combo, direction) => {
+            const currentIndex = combo.selectedIndex;
+            let newIndex = currentIndex + direction;
+            if (newIndex < 0) {
+                newIndex = combo.options.length - 1;
+            } else if (newIndex >= combo.options.length) {
+                newIndex = 0;
+            }
+            combo.selectedIndex = newIndex;
+            combo.dispatchEvent(new Event('change', { bubbles: true }));
+        };
         const instrumentCombo = document.querySelector('two-level-combo#instrument-selector');
         const scaleCombo = document.querySelector('two-level-combo#scale-selector');
         const notes = document.querySelector('#notes');
@@ -66,9 +77,18 @@ export default class Scalear {
         });
         notes.addEventListener('change', (e) => neckView.setAttribute('notes', e.detail.value));
         instrumentCombo.addEventListener('select', (e) => neckView.setAttribute('instrument', e.detail.value));
+
+        instrumentCombo.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            selectNext(e.target, e.deltaY > 0 ? 1 : -1);
+        });
         scaleCombo.addEventListener('select', (e) => {
             this.scale = e.detail.value;
             neckView.setAttribute('scale', this.scale);
+        });
+        scaleCombo.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            selectNext(e.target, e.deltaY > 0 ? 1 : -1);
         });
 
         neckView.setAttribute('scale', 13);
