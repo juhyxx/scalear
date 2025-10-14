@@ -9,6 +9,10 @@ export class ToggleButton extends HTMLElement {
     set selected(value) {
         this.#selected = value;
     }
+
+    get value() {
+        return this.#items[this.#selected].getAttribute('value');
+    }
     getNextSelected() {
         this.#selected = (this.#selected + 1) % this.#items.length;
         return this.#selected;
@@ -24,8 +28,15 @@ export class ToggleButton extends HTMLElement {
         this.#items = [...this.querySelectorAll('toggle-item')];
 
         this.selectItem(this.#selected);
-        this.addEventListener('click', () => {
+        this.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            e.stopPropagation();
             this.selectItem(this.getNextSelected());
+        });
+        this.addEventListener('dblclick', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
         });
         this.addEventListener('wheel', (e) => {
             e.preventDefault();
@@ -50,7 +61,7 @@ export class ToggleButton extends HTMLElement {
                     composed: true
                 })
             );
-        }, 800);
+        }, 500);
     }
 }
 

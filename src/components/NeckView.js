@@ -7,6 +7,7 @@ import SvgLine from '../svg/element/Line.js';
 import SvgText from '../svg/element/Text.js';
 import { INTERVALS } from '../enums/intervals.js';
 import { SCALES } from '../enums/scales.js';
+import { MODE_NAMES } from '../enums/scales.js';
 
 export class NeckView extends HTMLElement {
     #elMain;
@@ -26,6 +27,10 @@ export class NeckView extends HTMLElement {
     #notes = 'names';
     #rootNote = 0;
     #scale = 0;
+    #mode = 0;
+    #elTitle;
+    #isRendered = false;
+    #baseRendered = false;
 
     static observedAttributes = [
         'neck-type',
@@ -36,7 +41,8 @@ export class NeckView extends HTMLElement {
         'notes',
         'scale',
         'root-note',
-        'instrument'
+        'instrument',
+        'mode'
     ];
 
     get stringDistance() {
@@ -121,26 +127,34 @@ export class NeckView extends HTMLElement {
         return 10;
     }
 
+    get mode() {
+        return this.#mode || 0;
+    }
+    set mode(value) {
+        this.#mode = parseInt(value) || 0;
+        this.display();
+    }
+
     get data() {
         const selectedScale = this.scale.notes.map((note) => (note + this.rootNote) % 12);
         const data = Array.from({ length: this.stringsCount }, (_, index) => {
             return Array.from({ length: this.fretCount + 1 }, (_, fretIndex) => {
+                const root = selectedScale[this.mode] || this.rootNote || 0;
                 const note = (this.tunning[index] + fretIndex) % 12;
                 if (selectedScale.indexOf(note) >= 0) {
                     return {
                         id: note,
                         name: NOTES_SHARP[note],
-                        isRoot: note === this.rootNote,
+                        isRoot: note === root,
                         box: false,
-                        interval:
-                            INTERVALS[note - this.rootNote >= 0 ? note - this.rootNote : 12 + (note - this.rootNote)]
+                        interval: INTERVALS[note - root >= 0 ? note - root : 12 + (note - root)]
                     };
                 }
                 return null;
             });
         });
 
-        let scaleIndex = 0;
+        let scaleIndex = this.mode || 0;
         for (let string = this.stringsCount - 1; string >= 0; string--) {
             const subNotes = Array.from(
                 { length: this.notePerString },
@@ -199,6 +213,12 @@ export class NeckView extends HTMLElement {
         </defs>
     </svg>`;
         this.#elMain = this.querySelector('svg#board');
+        this.#elTitle = new SvgText(this.#elMain, {
+            className: 'title',
+            x: this.fretWidth,
+            y: 8,
+            textContent: `${this.scale.name} - ${NOTES_BS[this.rootNote]} - ${this.mode + 1}`
+        });
         this.#elMainGroup = new SvgGroup(this.#elMain, { id: 'neck' });
         this.#elBg = new SvgRectangle(this.#elMainGroup.el, {
             id: 'fret-board-bg',
@@ -213,11 +233,14 @@ export class NeckView extends HTMLElement {
         this.#strings = new SvgGroup(this.#elMain, { id: 'strings' });
         this.#elFingers = new SvgGroup(this.#elMain, { id: 'fingers' });
         this.#elLabels = new SvgGroup(this.#elMain, { id: 'labels' });
-
+        this.#baseRendered = true;
         this.render();
     }
 
     render() {
+        if (!this.#baseRendered) {
+            return;
+        }
         this.#elFrets.el.innerHTML = '';
         this.#elShading.el.innerHTML = '';
         this.#elMarks.el.innerHTML = '';
@@ -234,11 +257,18 @@ export class NeckView extends HTMLElement {
         this.renderStrings(this.#strings.el);
         this.renderFingers(this.#elFingers.el);
         this.renderLabels(this.#elLabels.el);
-
+        this.#isRendered = true;
         this.display();
     }
 
     display() {
+        if (!this.#isRendered) {
+            return;
+        }
+        this.#elTitle.el.setAttribute('x', this.fretWidth);
+        const modeName =
+            this.#scale === 13 ? `Mode ${this.mode + 1} (${MODE_NAMES[this.mode]})` : `Mode ${this.mode + 1}`;
+        this.#elTitle.el.textContent = `${NOTES_BS[this.rootNote]} ${this.scale.name}  -  ${modeName}`;
         this.data.forEach((strings, string) => {
             strings.forEach((note, fret) => {
                 if (note) {
@@ -291,6 +321,7 @@ export class NeckView extends HTMLElement {
             });
         }
     }
+
     renderMarks(el) {
         const circles = [];
         const rectangles = [];
@@ -535,6 +566,9 @@ export class NeckView extends HTMLElement {
                 break;
             case 'instrument':
                 this.instrument = newValue;
+                break;
+            case 'mode':
+                this.mode = newValue;
                 break;
         }
     }

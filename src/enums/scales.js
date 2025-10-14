@@ -67,40 +67,40 @@ const SCALES = [
         group: 'intervals'
     },
     {
-        name: 'Ionian (I)',
+        name: 'Diatonic',
         notes: [C, D, E, F, G, A, B],
         group: 'dia-scales'
     },
-    {
-        name: 'Dorian (II)',
-        notes: [C, D, Dis, F, G, A, Ais],
-        group: 'dia-scales'
-    },
-    {
-        name: 'Phrygian (III)',
-        notes: [C, Cis, Dis, F, G, Gis, Ais],
-        group: 'dia-scales'
-    },
-    {
-        name: 'Lydian (IV)',
-        notes: [C, D, E, Fis, G, A, B],
-        group: 'dia-scales'
-    },
-    {
-        name: 'Myxolidian (V)',
-        notes: [C, D, E, F, G, A, Ais],
-        group: 'dia-scales'
-    },
-    {
-        name: 'Aeolian (VI)',
-        notes: [C, D, Dis, F, G, Gis, Ais],
-        group: 'dia-scales'
-    },
-    {
-        name: 'Locrian (VII)',
-        notes: [C, Cis, Dis, F, Fis, Gis, Ais],
-        group: 'dia-scales'
-    },
+    // {
+    //     name: 'Dorian (II)',
+    //     notes: [C, D, Dis, F, G, A, Ais],
+    //     group: 'dia-scales'
+    // },
+    // {
+    //     name: 'Phrygian (III)',
+    //     notes: [C, Cis, Dis, F, G, Gis, Ais],
+    //     group: 'dia-scales'
+    // },
+    // {
+    //     name: 'Lydian (IV)',
+    //     notes: [C, D, E, Fis, G, A, B],
+    //     group: 'dia-scales'
+    // },
+    // {
+    //     name: 'Myxolidian (V)',
+    //     notes: [C, D, E, F, G, A, Ais],
+    //     group: 'dia-scales'
+    // },
+    // {
+    //     name: 'Aeolian (VI)',
+    //     notes: [C, D, Dis, F, G, Gis, Ais],
+    //     group: 'dia-scales'
+    // },
+    // {
+    //     name: 'Locrian (VII)',
+    //     notes: [C, Cis, Dis, F, Fis, Gis, Ais],
+    //     group: 'dia-scales'
+    // },
     {
         name: 'Melodic minor',
         notes: [C, D, Dis, F, G, A, B],
@@ -112,15 +112,15 @@ const SCALES = [
         group: 'scales'
     },
     {
-        name: 'Pentatonic major (ionian)',
+        name: 'Pentatonic',
         notes: [C, D, E, G, A],
         group: 'pentatonic'
     },
-    {
-        name: 'Pentatonic minor (aeolian)',
-        notes: [C, Dis, F, G, Ais],
-        group: 'pentatonic'
-    },
+    // {
+    //     name: 'Pentatonic minor (aeolian)',
+    //     notes: [C, Dis, F, G, Ais],
+    //     group: 'pentatonic'
+    // },
     {
         name: 'Major chord',
         notes: [C, E, G],
@@ -337,4 +337,5 @@ const SCALE_GROUPS = [
     }
 ];
 
-export { SCALES, SCALE_GROUPS as scalesGrouped };
+const MODE_NAMES = ['Ionian', 'Dorian', 'Phrygian', 'Lydian', 'Mixolydian', 'Aeolian', 'Locrian'];
+export { SCALES, SCALE_GROUPS as scalesGrouped, MODE_NAMES };

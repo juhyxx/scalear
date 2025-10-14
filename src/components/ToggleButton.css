@@ -1,5 +1,4 @@
 toggle-button::part(wrapper) {
-
     flex-basis: 2rem;
     cursor: pointer;
     color: var(--color-base);
@@ -20,6 +19,7 @@ toggle-button::part(container) {
 }
 
 toggle-button::part(label) {
+    user-select: none;
     color: var(--color-secondary);
     font-size: 0.75rem;
     margin-bottom: 2px;

@@ -1,11 +1,21 @@
 neck-view {
     align-self: center;
 
+
+    .title {
+        font-family: "Ubuntu", sans-serif;
+        font-size: 8px;
+        fill: #732c2c;
+        font-weight: bold;
+        text-shadow: 0px -1px 0 rgba(255, 255, 255, 0.4);
+    }
+
     &[neck-type="light"] {
         #fret-board-bg {
             filter: url(#main-neck-shadow);
             fill: url(#gradient-light);
         }
+
 
         #shading {
             opacity: 0.5;

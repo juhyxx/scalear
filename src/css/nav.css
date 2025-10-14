@@ -69,4 +69,27 @@ nav {
         display: none;
         visibility: hidden;
     }
+
+    .mode-container {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+
+        input[type="checkbox"] {
+            opacity: 0.6;
+            accent-color: #bfa98e;
+            cursor: pointer;
+
+            &:checked {
+                opacity: 1;
+            }
+
+            width: 2em;
+            height: 2rem;
+        }
+    }
+
+
 }

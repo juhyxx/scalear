@@ -1,4 +1,8 @@
 export class TwoLevelCombo extends HTMLElement {
+    get value() {
+        const select = this.querySelector('select');
+        return parseInt(select.value);
+    }
     connectedCallback() {
         this.innerHTML = `<select></select>`;
         const select = this.querySelector('select');

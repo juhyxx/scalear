@@ -10,7 +10,7 @@ body {
     width: 100vw;
     background-color: var(--color-secondary);
     display: grid;
-    gap: 2rem;
+
     grid-template-areas: "header"
         "main"
         "footer";
@@ -63,13 +63,42 @@ body {
 
     svg#board {
         grid-area: main;
-        margin-left: 1rem;
         align-self: center;
         justify-self: center;
     }
 
     svg#box {
         grid-area: footer;
+    }
+
+    #main-container {
+        grid-area: main;
+        padding-left: 1rem;
+        padding-top: 1rem;
+        overflow: auto;
+
+        h2 {
+            color: var(--color-base);
+            padding: 0;
+            margin: 0;
+            text-shadow: 0px -1px 0 rgba(255, 255, 255, 0.4), 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+    }
+
+    #mode-all-container {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+
+        margin-top: 1rem;
+
+        #mode-all {
+            height: 1rem;
+            width: 1rem;
+            accent-color: var(--color-base);
+        }
     }
 
 }
