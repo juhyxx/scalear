@@ -111,6 +111,7 @@ export default class Scalear {
         });
 
         modeSelector.addEventListener('wheel', (e) => {
+            if (modeSelector.disabled) return;
             e.preventDefault();
             selectNext(e.target, e.deltaY > 0 ? 1 : -1);
         });
@@ -148,6 +149,16 @@ export default class Scalear {
         scaleCombo.addEventListener('select', (e) => {
             this.scale = e.detail.value;
             document.querySelectorAll('neck-view').forEach((view) => view.setAttribute('scale', this.scale));
+            if (['scales', 'pentatonic', 'hexatonic', 'dia-scales'].includes(SCALES[this.scale].group)) {
+                modeSelector.disabled = false;
+                showAll.disabled = false;
+            } else {
+                if (showAll.checked) {
+                    showAll.click();
+                }
+                modeSelector.disabled = true;
+                showAll.disabled = true;
+            }
 
             this.fillModes(modeSelector, this.scale);
         });

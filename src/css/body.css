@@ -14,11 +14,15 @@ body {
     grid-template-areas: "header"
         "main"
         "footer";
-    grid-template-rows: fit-content(20%) auto fit-content(10%);
+    grid-template-rows: fit-content(10%) auto fit-content(10%);
     scroll-behavior: auto;
     overflow: hidden;
+    transition: grid-template-rows 1.5s ease-in-out;
 
-    /* media queries must be outside the body selector in CSS */
+
+    &.ui-hidden {
+        grid-template-rows: 0 auto 0;
+    }
 
     @media print {
         body {
@@ -101,4 +105,16 @@ body {
         }
     }
 
+}
+
+label:has(input:disabled) {
+    &:hover {
+        box-shadow: none;
+    }
+
+    &>div {
+        color: var(--color-secondary);
+    }
+
+    opacity: 0.2;
 }

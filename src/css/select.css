@@ -22,6 +22,11 @@ select {
         text-shadow: none;
     }
 
+    &:disabled {
+
+        cursor: not-allowed;
+    }
+
     &:hover:not(:disabled) {
         box-shadow: inset 0.25rem 0.25rem 0.25rem rgba(255, 255, 255, 0.2),
             0 0 0.25rem black,
@@ -32,4 +37,16 @@ select {
     &:focus {
         box-shadow: inset 3px 3px 3px rgba(255, 255, 255, 0.3), 0 0 3px black, 0 0 8px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 165, 0, 0.5);
     }
+}
+
+label:has(select:disabled) {
+    &:hover {
+        box-shadow: none;
+    }
+
+    &>div {
+        color: var(--color-secondary);
+    }
+
+    opacity: 0.2;
 }
