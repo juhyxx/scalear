@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Scalear</title>
+  <meta name="description" content="Scales, positions, chords and intervals on the fretboard and staff, for guitar, bass, ukulele, mandolin, banjo and bowed strings. Works offline.">
+  <meta name="theme-color" content="#1c1c1c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Scalear">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="preload" href="fonts/Silkscreen-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    // .booting hides the page until src/main.js has put the text into the right language.
+    document.documentElement.classList.add('booting');
+  </script>
+  <link rel="stylesheet" href="src/styles.css">
+  <script type="module" src="src/main.js"></script>
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="#/explore" data-nav="explore" data-i18n-label="top.home">
+      <img class="brand-logo" src="logo.svg" alt="Scalear" width="172" height="54">
+    </a>
+    <nav class="nav" aria-label="Main" data-i18n-label="nav.main">
+      <a class="btn" href="#/explore" data-nav="explore" data-i18n="nav.explore">Explore</a>
+      <a class="btn" href="#/catalog" data-nav="catalog" data-i18n="nav.catalog">Catalog</a>
+      <a class="btn" href="#/instruments" data-nav="instruments" data-i18n="nav.instruments">Instruments</a>
+    </nav>
+    <div class="top-actions">
+      <button type="button" id="installBtn" class="btn" hidden data-i18n="top.install">Install</button>
+      <button type="button" id="settingsBtn" class="btn icon" aria-label="Settings" data-i18n-label="top.settings">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="16" cy="7" r="2.2" stroke="currentColor" stroke-width="2" fill="none"/><circle cx="10" cy="17" r="2.2" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      </button>
+    </div>
+  </header>
+  <main>
+    <section id="explore" class="view explore"></section>
+    <section id="catalog" class="view catalog" hidden></section>
+    <section id="instruments" class="view catalog" hidden></section>
+  </main>
+  <dialog id="settings" aria-label="Settings"></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript><p class="noscript">Scalear needs JavaScript to draw the fretboard.</p></noscript>
+</body>
+</html>

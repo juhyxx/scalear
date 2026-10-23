@@ -1,0 +1,84 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # The whole history with tags, so git describe can find the release below.
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # No build step: publish only the files the app needs.
+      - name: Collect site files
+        run: |
+          mkdir -p _site/fonts
+          cp -r index.html sw.js manifest.webmanifest logo.svg src icons _site/
+          cp fonts/*.woff2 fonts/*.ttf _site/fonts/
+
+      # The service worker caches the files it lists, for offline use. A file it misses
+      # won't work offline; a listed file that doesn't exist stops it from installing at all.
+      - name: Check the service worker's file list
+        working-directory: _site
+        run: |
+          ok=1
+          for f in $(find . -type f ! -name sw.js | sed 's#^\./##' | sort); do
+            grep -q "'$f'" sw.js || { echo "::error::sw.js doesn't list $f"; ok=0; }
+          done
+          for f in $(grep -oE "^  '[^']+'" sw.js | tr -d " '"); do
+            [ "$f" = ./ ] || [ -f "$f" ] || { echo "::error::sw.js lists $f, which doesn't exist"; ok=0; }
+          done
+          [ $ok = 1 ]
+
+      # Two versions. The release is the latest v* tag as git describe gives it: 2.0.0 on the
+      # tagged commit, 2.0.0-3-gdc8ed7e three commits later. Settings shows it.
+      # Cache busting uses the commit hash: it goes on the src/ URLs (in index.html, sw.js and
+      # the modules' imports of each other) as ?v=<hash> and names the service worker's cache,
+      # so browsers fetch the new files instead of mixing a new page with old scripts.
+      - name: Stamp the version
+        working-directory: _site
+        run: |
+          v="${GITHUB_SHA::7}"
+          release=$(git describe --tags --match 'v[0-9]*' --abbrev=7 --always)
+          release="${release#v}"
+          echo "Release $release, cache version $v"
+          sed -i -E "s#([\"'])(src/[A-Za-z0-9._/-]+\.(js|css))([\"'])#\1\2?v=$v\4#g" index.html sw.js
+          sed -i -E "s#((from|import) '\.\.?/[A-Za-z0-9._/-]+\.js)'#\1?v=$v'#g" src/*.js src/lang/*.js
+          sed -i "s|^const VERSION = 'dev';|const VERSION = '$v';|" sw.js
+          sed -i "s|^export const VERSION = 'dev';|export const VERSION = '$release';|" src/version.js
+          grep -qxF "const VERSION = '$v';" sw.js
+          grep -qxF "export const VERSION = '$release';" src/version.js
+          grep -qF "src/main.js?v=$v\"" index.html
+          if grep -nE "'src/[^'?]+'" sw.js; then
+            echo "::error::these sw.js entries weren't stamped with ?v=$v"; exit 1
+          fi
+          if grep -nE "(from|import) ['\"][^'\"?]+\.js['\"]" src/*.js src/lang/*.js; then
+            echo "::error::these imports weren't stamped with ?v=$v"; exit 1
+          fi
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5

@@ -1,0 +1,19 @@
+{
+  "name": "Scalear — scales, chords & intervals",
+  "short_name": "Scalear",
+  "description": "Scales, positions, chords and intervals on the fretboard and staff for guitar, bass, ukulele, mandolin, banjo and bowed strings. Works offline.",
+  "id": "/scalear/",
+  "start_url": "./#/explore",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#1c1c1c",
+  "theme_color": "#1c1c1c",
+  "categories": ["music", "education"],
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
