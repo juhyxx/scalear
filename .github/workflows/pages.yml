@@ -30,16 +30,17 @@ jobs:
       - name: Collect site files
         run: |
           mkdir -p _site/fonts
-          cp -r index.html sw.js manifest.webmanifest logo.svg src icons _site/
+          cp -r index.html sw.js manifest.webmanifest logo.svg src icons screenshots _site/
           cp fonts/*.woff2 fonts/*.ttf _site/fonts/
 
       # The service worker caches the files it lists, for offline use. A file it misses
       # won't work offline; a listed file that doesn't exist stops it from installing at all.
+      # Screenshots are only for the install dialog, so they aren't cached.
       - name: Check the service worker's file list
         working-directory: _site
         run: |
           ok=1
-          for f in $(find . -type f ! -name sw.js | sed 's#^\./##' | sort); do
+          for f in $(find . -type f ! -name sw.js ! -path './screenshots/*' | sed 's#^\./##' | sort); do
             grep -q "'$f'" sw.js || { echo "::error::sw.js doesn't list $f"; ok=0; }
           done
           for f in $(grep -oE "^  '[^']+'" sw.js | tr -d " '"); do

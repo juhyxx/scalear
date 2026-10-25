@@ -85,6 +85,7 @@ When adding a file, list it in `FILES` in [sw.js](sw.js); the deploy fails other
 | [sw.js](sw.js) | Service worker: offline cache, one per deploy |
 | [src/version.js](src/version.js) | Release shown in Settings (`dev` locally, stamped on deploy) |
 | [logo.svg](logo.svg), `icons/` | Logo and app icons (the icons use the logo's fish) |
+| `screenshots/` | Shown in the install dialog (wide 1280×800, narrow 390×844 at 2×); published but not cached offline |
 | [src/i18n.js](src/i18n.js), `src/lang/` | Translations (same mechanism as dots); English UI strings in `en.js`, other languages also translate catalogue names by id |
 | `fonts/` | [Silkscreen](https://github.com/googlefonts/silkscreen), self-hosted for offline use, plus `ScalearPixelCE.ttf` with the Czech letters and arrows Silkscreen lacks (both SIL OFL, see `fonts/OFL.txt`) |
 | [tools/pixel-ce-font.py](tools/pixel-ce-font.py) | Rebuilds `ScalearPixelCE.ttf` (Python, no dependencies) |

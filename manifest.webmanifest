@@ -14,5 +14,13 @@
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
     { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "screenshots": [
+    { "src": "screenshots/explore-scale-wide.jpg", "sizes": "1280x800", "type": "image/jpeg", "form_factor": "wide", "label": "A Dorian in CAGED position 1 on the guitar neck, roots drawn as squares" },
+    { "src": "screenshots/explore-chord-wide.jpg", "sizes": "1280x800", "type": "image/jpeg", "form_factor": "wide", "label": "Amin7: playable voicings as chord diagrams and on the neck" },
+    { "src": "screenshots/catalog-wide.jpg", "sizes": "1280x800", "type": "image/jpeg", "form_factor": "wide", "label": "The catalog: 76 scales, 35 chords and 22 intervals, spelled from the current root" },
+    { "src": "screenshots/explore-scale-narrow.jpg", "sizes": "780x1688", "type": "image/jpeg", "form_factor": "narrow", "label": "A Dorian in CAGED position 1 on the guitar neck, roots drawn as squares" },
+    { "src": "screenshots/explore-chord-narrow.jpg", "sizes": "780x1688", "type": "image/jpeg", "form_factor": "narrow", "label": "Amin7: playable voicings as chord diagrams and on the neck" },
+    { "src": "screenshots/catalog-narrow.jpg", "sizes": "780x1688", "type": "image/jpeg", "form_factor": "narrow", "label": "The catalog: 76 scales, 35 chords and 22 intervals, spelled from the current root" }
   ]
 }
