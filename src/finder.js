@@ -4,11 +4,12 @@
 import { state, set, spellingFor } from './store.js';
 import { SCALES, CHORDS, INTERVALS, chordSymbolHtml, nameOf } from './catalog.js';
 import { makeNeck, pitchAt, instrumentName, tuningName } from './instruments.js';
-import { buildItem, relativeSet, mod, sharpNote, flatNote, noteName } from './theory.js';
+import { buildItem, relativeSet, mod, sharpNote, flatNote, noteName, parseInterval, transpose } from './theory.js';
 import { renderFretboard } from './fretboard.js';
 import { esc } from './dom.js';
 import { t } from './i18n.js';
 import * as audio from './audio.js';
+import { chordEgg } from './easter.js';
 
 let root = null;
 let vertical = false;
@@ -35,6 +36,14 @@ const slot = name => root.querySelector(`[data-slot="${name}"]`);
 const sets = list => new Map(list.map(d => [d.id, relativeSet(buildItem(d, 0, 'auto'))]));
 const scaleSets = sets(SCALES);
 const chordSets = sets(CHORDS);
+
+// Whether a chord tone can stand in the bass of an inversion: its root, 3rd, 5th or 7th (the 2nd
+// or 4th of a sus chord). Keyed by chord id, as pitch classes relative to the root.
+const bassTones = new Map(CHORDS.map(d => {
+  const tones = buildItem(d, 0, 'auto').tones;
+  const sus = !tones.some(x => x.iv.degree === 3);
+  return [d.id, new Set(tones.filter(x => [1, 3, 5, 7].includes(x.iv.degree) || (sus && [2, 4].includes(x.iv.degree))).map(x => mod(x.iv.semis, 12)))];
+}));
 
 // Tones a voicing may leave out, as Explore's voicings do: the listed ones, and the 5th in a chord
 // of four or more notes. Keyed by chord id, as pitch classes relative to the root, with their labels.
@@ -95,8 +104,24 @@ function analyse(notes) {
       if (d.id !== 'chromatic' && rel.every(x => scaleSets.get(d.id).includes(x))) res.scales.push({ def: d, root: r });
     }
   }
-  // complete chords before ones with tones left out; within each, the bass as root comes first
-  res.matches.push(...loose);
+  // A chord over a bass that isn't part of it ("D9/G", "F/G"): the notes above the bass make a
+  // complete catalogue chord.
+  const over = [];
+  const upper = pcs.filter(pc => pc !== bass);
+  if (upper.length >= 3) {
+    for (const r of upper) {
+      const rel = upper.map(pc => mod(pc - r, 12)).sort((a, b) => a - b);
+      for (const d of CHORDS) {
+        const set = chordSets.get(d.id);
+        if (set.length === rel.length && set.every((x, i) => x === rel[i])) over.push({ def: d, root: r, omit: [] });
+      }
+    }
+  }
+  // Order: complete chords over one of their own root, 3rd, 5th or 7th; then a chord over a
+  // foreign bass; then complete chords standing on a 9th, 11th or 13th (F G A C reads F/G, not
+  // Fadd9/G); then chords with tones left out. Within each, the bass as root comes first.
+  const real = x => bassTones.get(x.def.id).has(mod(bass - x.root, 12));
+  res.matches = [...res.matches.filter(real), ...over, ...res.matches.filter(x => !real(x)), ...loose];
   // fewest extra notes first; the bass as root wins ties, as the roots were walked in that order
   const extra = (map, x) => map.get(x.def.id).length;
   res.chords.sort((a, b) => extra(chordSets, a) - extra(chordSets, b));
@@ -113,9 +138,18 @@ function spelled(kind, def, pc) {
 }
 
 // A chord as found: "C⁷", over another bass "C/E", with tones left out "C⁷ no 5".
+// A note outside a chord, named by its interval from the chord's root (G under D9 is its 4th).
+const OUTSIDE = ['1', 'b2', '2', 'b3', '3', '4', '#4', '5', 'b6', '6', 'b7', '7'];
+function toneIn(item, pc) {
+  const tone = item.byPc.get(pc);
+  if (tone) return { name: tone.name, label: tone.iv.label };
+  const iv = parseInterval(OUTSIDE[mod(pc - item.rootPc, 12)]);
+  return { name: noteName(transpose(item.root, iv)), label: iv.label };
+}
+
 function chordLabel(x, bass) {
   const { item } = spelled('chord', x.def, x.root);
-  const slash = x.root !== bass && item.byPc.has(bass) ? `/${item.byPc.get(bass).name}` : '';
+  const slash = x.root !== bass ? `/${toneIn(item, bass).name}` : '';
   const omit = x.omit?.length ? ` <small class="omit">${esc(t('fd.omit', { tones: x.omit.join(', ') }))}</small>` : '';
   return item.name + chordSymbolHtml(x.def, state.chordStyle) + slash + omit;
 }
@@ -130,13 +164,39 @@ function chip(kind, def, pc, label = null) {
 
 const group = (title, chips) => (chips.length ? `<h4>${esc(title)}</h4><div class="links">${chips.join('')}</div>` : '');
 
-// Names for the selected notes: spelled as in the best chord or scale found, else by the setting.
-function namer(res) {
-  const best = res.matches[0] || res.scales[0];
-  const fallback = pc => noteName((state.spelling === 'flat' ? flatNote : sharpNote)(pc));
-  if (!best) return fallback;
-  const { item } = spelled(res.matches[0] ? 'chord' : 'scale', best.def, best.root);
-  return pc => item.byPc.get(pc)?.name || fallback(pc);
+// Interval ids from the bass for notes no catalogue chord explains, named the way players read
+// chords: with a 3rd and a 7th the other notes are tensions (♭9 9 ♯9 11 ♯11 ♭13 13), otherwise
+// steps (♭2 2 4 ♯4 ♭6 6); a ♭3 beside a major 3rd is a ♯9, a tritone or minor 6th beside a perfect
+// 5th is a ♯4 or ♭6, and without the 5th a ♭5 or ♯5.
+function unnamedIds(rel) {
+  const has = x => rel.includes(x);
+  const chordal = (has(3) || has(4)) && (has(10) || has(11));
+  const ids = {
+    0: '1', 1: chordal ? 'b9' : 'b2', 2: chordal ? '9' : '2', 3: has(4) ? '#9' : 'b3', 4: '3',
+    5: chordal ? '11' : '4', 6: has(7) ? (chordal ? '#11' : '#4') : 'b5', 7: '5',
+    8: has(7) ? (chordal ? 'b13' : 'b6') : '#5', 9: chordal ? '13' : '6', 10: 'b7', 11: '7',
+  };
+  return rel.map(x => ids[x]);
+}
+
+// How to read the selection: each pitch class's note name and degree. From the best chord found,
+// measured from its root; else from the bass, with the bass spelled ♯ or ♭, whichever needs fewer
+// accidentals (or as the setting says).
+function reading(res) {
+  const m = res.matches[0];
+  if (m) {
+    const { item } = spelled('chord', m.def, m.root);
+    return { note: pc => toneIn(item, pc).name, degree: pc => toneIn(item, pc).label };
+  }
+  if (res.bass === null) return null;
+  const rel = res.pcs.map(pc => mod(pc - res.bass, 12)).sort((a, b) => a - b);
+  const ids = unnamedIds(rel);
+  const ivs = ids.map(parseInterval);
+  const cost = bass => ivs.reduce((sum, iv) => sum + Math.abs(transpose(bass, iv).acc), 0);
+  const options = { sharp: [sharpNote(res.bass)], flat: [flatNote(res.bass)] }[state.spelling] || [sharpNote(res.bass), flatNote(res.bass)];
+  const bass = options.reduce((a, b) => (cost(b) < cost(a) ? b : a));
+  const byPc = new Map(rel.map((x, i) => [mod(res.bass + x, 12), { name: noteName(transpose(bass, ivs[i])), label: ivs[i].label }]));
+  return { bassName: noteName(bass), ids, labels: ivs.map(iv => iv.label), note: pc => byPc.get(pc).name, degree: pc => byPc.get(pc).label };
 }
 
 export function renderFinder() {
@@ -144,18 +204,25 @@ export function renderFinder() {
   const neck = makeNeck(state.instrument, state.tuning, state.custom[state.instrument]);
   const notes = selection(neck);
   const res = analyse(notes);
-  const name = namer(res);
+  const read = reading(res);
+  const name = pc => read.note(pc);
 
-  // Readout: the best name for what is selected, and the notes low to high.
+  // Readout: the best name for what is selected (the bass and its intervals when the catalogue has
+  // none), then the notes low to high with the degree each one is.
   let title = '—';
   if (res.pcs.length === 2 && res.interval.length) {
-    title = esc(nameOf('interval', res.interval[0]));
+    // a tritone is a ♯4 or a ♭5 as the notes are spelled
+    const iv = res.interval.find(d => read.ids && d.formula.split(' ')[1] === read.ids[1]) || res.interval[0];
+    title = esc(nameOf('interval', iv));
   } else if (res.matches.length) {
     title = chordLabel(res.matches[0], res.bass);
   } else if (notes.length === 1) {
     title = esc(name(res.bass));
+  } else if (notes.length) {
+    title = `${esc(read.bassName)}<span class="ivs">(${esc(read.labels.join(' '))})</span>`;
   }
-  const sub = notes.length ? `${notes.map(n => name(mod(n.midi, 12))).join(' ')} · ${t('ex.notesCount', { n: res.pcs.length })}` : t('fd.empty');
+  const pcsOf = notes.map(n => mod(n.midi, 12));
+  const sub = notes.length ? `${pcsOf.map(name).join(' ')} · ${pcsOf.map(pc => read.degree(pc)).join(' ')}` : t('fd.empty');
   slot('readout').innerHTML = `<h2>${title}</h2><p>${esc(sub)}</p>`;
   root.querySelector('[data-act="clear"]').disabled = !notes.length;
   root.querySelector('[data-act="play"]').disabled = !notes.length;
@@ -178,6 +245,7 @@ export function renderFinder() {
     return;
   }
   slot('results').innerHTML = [
+    chordEgg(res),
     res.interval.length ? group(t('fd.interval'), res.interval.map(d => chip('interval', d, res.bass))) : '',
     res.pcs.length >= 2
       ? (res.matches.length ? group(t('fd.exact'), res.matches.map(x => chip('chord', x.def, x.root, chordLabel(x, res.bass)))) : `<h4>${esc(t('fd.exact'))}</h4><p class="desc">${esc(t('fd.noExact'))}</p>`)

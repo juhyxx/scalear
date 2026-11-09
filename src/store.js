@@ -24,6 +24,7 @@ const DEFAULTS = {
   colorize: false,
   catalogTab: 'scale',
   finder: [], // Finder's tapped notes, as "string:fret"
+  favorites: [], // starred items, as "kind:id" (scale:dorian, chord:m7), in the order they were starred
   query: '',
   // instrument
   instrument: 'guitar',
@@ -57,6 +58,10 @@ function load() {
     Object.assign(saved, { instrument, tuning });
   }
   delete saved.theme;
+  if (saved.chordLayout !== 'voicings') delete saved.chordLayout; // only 'tones' and 'voicings' exist
+  // A Keys view was tried and removed: a browser left on it would start on a view that's gone.
+  if (!['explore', 'catalog', 'finder', 'instruments'].includes(saved.view)) delete saved.view;
+  for (const k of ['keyMode', 'keyChords', 'progression', 'keyArea', 'keyStep']) delete saved[k];
   return { ...DEFAULTS, ...saved };
 }
 
@@ -73,6 +78,13 @@ export function set(patch) {
 }
 
 export const subscribe = fn => listeners.add(fn);
+
+// Favorites are items, not roots: a starred Dorian shows in whatever root is chosen.
+export const isFavorite = (kind, id) => state.favorites.includes(`${kind}:${id}`);
+export function toggleFavorite(kind, id) {
+  const key = `${kind}:${id}`;
+  set({ favorites: isFavorite(kind, id) ? state.favorites.filter(f => f !== key) : [...state.favorites, key] });
+}
 
 // --- URL hash: #/explore?k=scale&id=dorian&r=D&v=boxes&b=2, #/catalog?tab=chord, #/finder?n=4:3,3:2
 // or #/instruments

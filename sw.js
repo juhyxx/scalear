@@ -29,6 +29,7 @@ const FILES = [
   'src/explore.js',
   'src/catalogView.js',
   'src/finder.js',
+  'src/easter.js',
   'src/roots.js',
   'src/instrumentsView.js',
   'src/settings.js',

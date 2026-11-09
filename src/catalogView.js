@@ -1,6 +1,6 @@
 // Catalog view: searchable cards for every scale, chord and interval, shown in the current root.
 // It is also where you choose what Explore shows.
-import { state, set, spellingFor } from './store.js';
+import { state, set, spellingFor, isFavorite, toggleFavorite } from './store.js';
 import {
   KINDS, groupsOf, itemTitleHtml, intervalName, chordSymbol, jazzGlyphs, kindLabel, nameOf, groupName,
   chordForSymbol, parseChord, chordSymbolParts,
@@ -8,7 +8,7 @@ import {
 import { buildItem, relativeSet, stepPattern, notePc, parseInterval } from './theory.js';
 import { renderPcClock } from './diagram.js';
 import { rootPicker } from './roots.js';
-import { esc, seg, icon } from './dom.js';
+import { esc, seg, icon, favButton } from './dom.js';
 import { t } from './i18n.js';
 
 let root = null;
@@ -50,14 +50,15 @@ function card(kind, def, root = null) {
   const rootData = root ? ` data-pc="${root.pc}" data-spelling="${root.spelling}"` : '';
   // A chord is shown by its symbol, as big as the card allows; scales and intervals by their note circle.
   const visual = kind === 'chord' ? symbolScreen(item, title) : renderPcClock(set);
-  return `<button type="button" class="cat-card${kind === 'chord' ? ' chord' : ''}" data-act="open" data-kind="${kind}" data-id="${def.id}"${rootData}>
+  const fav = isFavorite(kind, def.id);
+  return `<div class="cat-item"><button type="button" class="cat-card${kind === 'chord' ? ' chord' : ''}" data-act="open" data-kind="${kind}" data-id="${def.id}"${rootData}>
     ${visual}
     <span class="cat-body">
       ${kind === 'chord' ? '' : `<span class="cat-title">${title}${alias}</span>`}
       <span class="cat-formula">${item.tones.map(tone => `<i>${tone.iv.label}</i>`).join('')}</span>
       <span class="cat-notes">${item.tones.map(tone => tone.name).join(' ')}</span>
       <span class="cat-meta">${jazzGlyphs(esc(meta))}</span>
-    </span></button>`;
+    </span></button>${favButton(fav, kind, def.id, t(fav ? 'fav.remove' : 'fav.add'))}</div>`;
 }
 
 const section = (title, cards, count = '') =>
@@ -84,6 +85,10 @@ function renderResults() {
     html += section(t('cat.symbolHit'), card(kind, hit.def, { pc, spelling: spellingFor(hit.def, pc, Math.sign(hit.root.acc)) }));
   }
   if (!list.length && !hit) html = `<p class="empty">${esc(t('cat.empty', { q: state.query }))}</p>`;
+  // Starred items first, in the order they were starred (they stay in their groups too).
+  const favs = state.favorites.map(f => f.split(':')).filter(([k]) => k === kind)
+    .map(([, id]) => list.find(d => d.id === id)).filter(Boolean);
+  if (favs.length) html += section(t('fav.title'), favs.map(d => card(kind, d)).join(''), favs.length);
   html += [...groupsOf(list)].map(([g, defs]) => section(groupName(g), defs.map(d => card(kind, d)).join(''), defs.length)).join('');
   el.innerHTML = html;
 }
@@ -110,6 +115,7 @@ export function mountCatalog(el) {
     if (!btn) return;
     if (btn.dataset.act === 'tab') set({ catalogTab: btn.dataset.val });
     if (btn.dataset.act === 'root') set({ rootPc: Number(btn.dataset.val) });
+    if (btn.dataset.act === 'fav') toggleFavorite(btn.dataset.kind, btn.dataset.id);
     if (btn.dataset.act === 'spelling') set({ spelling: btn.dataset.val });
     if (btn.dataset.act === 'open') {
       const kind = btn.dataset.kind;

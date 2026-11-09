@@ -226,8 +226,33 @@ main { max-width: 1480px; margin: 0 auto; padding: 4px 20px 24px; padding-bottom
 .finder-actions { display: flex; gap: 10px; margin-left: auto; }
 .finder-inst { margin-left: auto; }
 .btn:disabled { opacity: 0.4; cursor: default; }
+
+/* favorite star: an outline, filled and lit once starred */
+.btn.fav, .btn.fav[aria-pressed="true"] { background: transparent; box-shadow: none; color: var(--faint); }
+.btn.fav:hover { color: var(--text); background: transparent; }
+.btn.fav svg path { fill: none; stroke: currentColor; stroke-width: 1.8; }
+.btn.fav[aria-pressed="true"] { color: var(--led); }
+.btn.fav[aria-pressed="true"] svg { filter: drop-shadow(0 0 4px var(--led-glow)); }
+.btn.fav[aria-pressed="true"] svg path { fill: currentColor; }
+/* on the Explore display, in its top-right corner */
+.item-head > .fav { grid-area: lcd; justify-self: end; align-self: start; margin: 6px; }
+/* a shape with no catalogue name: the bass and its intervals, "C (1 ♭2 4 ♭7)" */
+.ivs { margin-left: 0.4em; color: var(--text); font-size: 0.55em; text-shadow: none; white-space: nowrap; }
 /* tones a found chord leaves out: "C⁷ no 5" */
 .omit { margin-left: 0.4em; color: var(--muted); font-size: 0.5em; text-shadow: none; text-transform: uppercase; }
+
+/* easter egg: a named chord greets whoever finds it (src/easter.js) */
+.egg { display: flex; align-items: center; gap: 18px; padding: 14px 18px; border-radius: 14px; background: var(--screen); box-shadow: var(--screen-shadow); }
+.egg-portrait { flex: none; shape-rendering: crispEdges; filter: drop-shadow(0 0 6px var(--led-glow)); }
+.px-hair { fill: var(--led); opacity: 0.85; }
+.px-band { fill: hsl(48, 100%, 88%); }
+.px-face { fill: hsl(24, 38%, 24%); }
+.beatles .px-face { fill: hsl(28, 45%, 66%); }
+.px-feat { fill: var(--led); }
+.px-dark { fill: #2a1d14; }
+.egg-found { margin-bottom: 4px; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+.egg-title { color: var(--led); font-size: 20px; text-shadow: 0 0 6px var(--led), 0 0 18px var(--led-glow); }
+.egg-text { margin-top: 6px; color: var(--muted); text-transform: none; }
 
 /* display options for the neck, right under it */
 .fb-labels { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
@@ -569,6 +594,11 @@ sup.ext { font-size: 0.62em; line-height: 0; vertical-align: 0.62em; margin-left
   cursor: pointer;
 }
 .cat-card:hover { background-color: rgba(0, 0, 0, 0.5); }
+/* each card carries its star in the top-right corner */
+.cat-item { position: relative; display: grid; }
+.cat-item > .cat-card { padding-right: 34px; }
+.cat-item > .fav { position: absolute; top: 4px; right: 4px; width: 30px; min-height: 30px; }
+.cat-item > .fav svg { width: 16px; height: 16px; }
 /* a chord card leads with its symbol, on a screen as tall as the card */
 .cat-card.chord { align-items: stretch; }
 .cat-symbol {

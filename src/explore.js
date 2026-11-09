@@ -1,6 +1,6 @@
 // Explore view: the selected scale, chord or interval on the fretboard, staff and note wheel.
 // What to show is picked in the Catalog; this view only steps through it and sets the root and labels.
-import { state, set } from './store.js';
+import { state, set, isFavorite, toggleFavorite } from './store.js';
 import {
   KINDS, SCALES, CHORDS, findDef, itemTitleHtml, chordSymbolHtml, jazzGlyphs, intervalName,
   kindOne, nameOf, descOf, qualityName,
@@ -16,7 +16,7 @@ import { renderFretboard } from './fretboard.js';
 import { renderStaff } from './staff.js';
 import { renderChordDiagram, renderNoteWheel } from './diagram.js';
 import { rootPicker } from './roots.js';
-import { esc, seg, icon } from './dom.js';
+import { esc, seg, icon, favButton } from './dom.js';
 import { t } from './i18n.js';
 import * as audio from './audio.js';
 
@@ -60,6 +60,7 @@ const toneLabel = tone => {
 
 const scaleSets = new Map(SCALES.map(d => [d.id, relativeSet(buildItem(d, 0, 'auto'))]));
 const chordSets = new Map(CHORDS.map(d => [d.id, relativeSet(buildItem(d, 0, 'auto'))]));
+
 
 // Written root pitch (MIDI) that centres a figure of `span` semitones on the staff.
 function writtenRoot(rootPc, span, clef) {
@@ -210,28 +211,29 @@ function renderHead(d) {
     </button>
     <div class="tone-chips">${chips}</div>
     <div class="head-side"><div class="head-instrument" data-slot="instrument"></div>${playButton()}</div>
+    ${favButton(isFavorite(kind, def.id), kind, def.id, t(isFavorite(kind, def.id) ? 'fav.remove' : 'fav.add'))}
     <div class="head-root" data-slot="root"></div>`;
+}
+
+// The position system and the numbered positions of a scale's boxes.
+function boxControls(d) {
+  if (!d.boxes?.length) return `<span class="module-label">${t('ex.noPositions')}</span>`;
+  const span = d.band ? `<span class="module-label nowrap">${t(d.neck.fretless ? 'ex.positionsRange' : 'ex.fretsRange', { a: d.band.lo, b: d.band.hi })}</span>` : '';
+  return seg('method', d.methods.map(m => [m, methodLabel(m, d.neck), methodHint(m)]), d.method, 'small') + `
+    <div class="stepper">
+      <div class="box-chips" role="group" aria-label="${esc(t('ex.positions'))}">
+        <button type="button" class="btn icon" data-act="box-step" data-val="-1" aria-label="${esc(t('ex.prevPosition'))}">${icon.prev}</button>
+        ${d.boxes.map((_, i) => `<button type="button" class="btn" data-act="box" data-val="${i}" aria-pressed="${i === d.boxIndex}" aria-label="${esc(t('ex.position', { n: i + 1 }))}">${i + 1}</button>`).join('')}
+        <button type="button" class="btn icon" data-act="box-step" data-val="1" aria-label="${esc(t('ex.nextPosition'))}">${icon.next}</button>
+      </div>
+      ${span}</div>`;
 }
 
 function renderToolbar(d) {
   const el = slot('toolbar');
   if (d.kind === 'scale') {
     let html = seg('layout', [['neck', t('ex.wholeNeck')], ['boxes', t('ex.positions')]], state.layout);
-    if (state.layout === 'boxes') {
-      if (!d.methods.length) {
-        html += `<span class="module-label">${t('ex.noPositions')}</span>`;
-      } else {
-        html += seg('method', d.methods.map(m => [m, methodLabel(m, d.neck), methodHint(m)]), d.method, 'small');
-        const span = d.band ? `<span class="module-label nowrap">${t(d.neck.fretless ? 'ex.positionsRange' : 'ex.fretsRange', { a: d.band.lo, b: d.band.hi })}</span>` : '';
-        html += `<div class="stepper">
-          <div class="box-chips" role="group" aria-label="${esc(t('ex.positions'))}">
-            <button type="button" class="btn icon" data-act="box-step" data-val="-1" aria-label="${esc(t('ex.prevPosition'))}">${icon.prev}</button>
-            ${d.boxes.map((_, i) => `<button type="button" class="btn" data-act="box" data-val="${i}" aria-pressed="${i === d.boxIndex}" aria-label="${esc(t('ex.position', { n: i + 1 }))}">${i + 1}</button>`).join('')}
-            <button type="button" class="btn icon" data-act="box-step" data-val="1" aria-label="${esc(t('ex.nextPosition'))}">${icon.next}</button>
-          </div>
-          ${span}</div>`;
-      }
-    }
+    if (state.layout === 'boxes') html += boxControls(d);
     el.innerHTML = html;
   } else if (d.kind === 'chord') {
     let html = seg('chordLayout', [['tones', t('ex.allTones')], ['voicings', t('ex.voicings')]], state.chordLayout);
@@ -463,6 +465,7 @@ function onClick(e) {
       return audio.playNote(r + tone.iv.semis);
     }
     case 'play': return togglePlay();
+    case 'fav': return toggleFavorite(el.dataset.kind, el.dataset.id);
     case 'instruments': stopPlayback(); set({ view: 'instruments' }); return window.scrollTo({ top: 0 });
     case 'browse': stopPlayback(); set({ view: 'catalog', catalogTab: state.kind }); return window.scrollTo({ top: 0 });
     case 'wheel': return set({ wheel: v });

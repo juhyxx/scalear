@@ -20,7 +20,7 @@ const $ = sel => document.querySelector(sel);
 
 const VIEWS = ['explore', 'catalog', 'finder', 'instruments'];
 const VIEW_KEYS = ['view'];
-const CATALOG_KEYS = ['catalogTab', 'rootPc', 'spelling', 'chordStyle'];
+const CATALOG_KEYS = ['catalogTab', 'rootPc', 'spelling', 'chordStyle', 'favorites'];
 const INSTRUMENT_KEYS = ['instrument', 'tuning', 'custom', 'lefty'];
 const TEXT_KEYS = ['lang', 'naming']; // relabel everything
 
