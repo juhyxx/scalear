@@ -24,6 +24,8 @@ export function setNaming(style, syllables) {
   if (syllables?.length === 7) solfege = syllables;
 }
 
+export const noteNaming = () => ({ style: naming, solfege });
+
 export function noteName(note) {
   if (naming === 'S') return solfege[note.letter] + accText(note.acc);
   if (naming === 'H' && note.letter === 6) return note.acc < 0 ? 'B' + accText(note.acc + 1) : 'H' + accText(note.acc);

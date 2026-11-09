@@ -7,7 +7,7 @@ import {
 } from './catalog.js';
 import { makeNeck, pitchAt, instrumentName, tuningName } from './instruments.js';
 import {
-  buildItem, relativeSet, stepPattern, spellMidi, spellRoot, parseInterval, sharpNote, flatNote,
+  buildItem, relativeSet, stepPattern, spellMidi, parseInterval, sharpNote, flatNote,
   noteName, mod, sameSet, accText, ROMAN,
 } from './theory.js';
 import { methodLabel, methodHint, methodsFor, positions, fretSpan } from './boxes.js';
@@ -15,6 +15,7 @@ import { findVoicings } from './voicings.js';
 import { renderFretboard } from './fretboard.js';
 import { renderStaff } from './staff.js';
 import { renderChordDiagram, renderNoteWheel } from './diagram.js';
+import { rootPicker } from './roots.js';
 import { esc, seg, icon } from './dom.js';
 import { t } from './i18n.js';
 import * as audio from './audio.js';
@@ -22,14 +23,10 @@ import * as audio from './audio.js';
 const SKELETON = `
   <div class="stage">
     <header class="item-head" data-slot="head"></header>
-    <div class="controls">
-      <div class="module"><span class="module-label" data-i18n="ex.root"></span><div class="module-row wrap" data-slot="root"></div></div>
-      <div class="module"><span class="module-label" data-i18n="ex.labels"></span><div class="module-row wrap" data-slot="labels"></div></div>
-      <div class="module"><span class="module-label" data-i18n="ex.instrument"></span><div data-slot="instrument"></div></div>
-    </div>
     <section class="block">
       <div class="fb-toolbar" data-slot="toolbar"></div>
       <div class="screen fb-screen"><div class="fb-scroll" data-slot="fretboard"></div></div>
+      <div class="fb-labels"><span class="module-label" data-i18n="ex.labels"></span><div class="module-row wrap" data-slot="labels"></div></div>
     </section>
     <div class="pair">
       <section class="block" data-slot="staffCard">
@@ -175,17 +172,10 @@ const toggle = (act, on, label) =>
   `<label class="btn toggle"><input type="checkbox" data-act="${act}"${on ? ' checked' : ''}>${label}</label>`;
 
 function renderControls(d) {
-  const intervals = d.def.formula.split(' ').map(parseInterval);
-  const chips = [];
-  for (let pc = 0; pc < 12; pc++) {
-    const n = spellRoot(pc, state.spelling, intervals);
-    chips.push(`<button type="button" class="btn root-chip${n.acc ? ' black' : ''}" data-act="root" data-val="${pc}" aria-pressed="${pc === state.rootPc}">${noteName(n)}</button>`);
-  }
-  slot('root').innerHTML = `<div class="roots">${chips.join('')}</div>` +
-    seg('spelling', [['auto', t('ex.spellAuto'), t('ex.spellAutoHint')], ['sharp', '♯'], ['flat', '♭']], state.spelling, 'small');
+  slot('root').innerHTML = rootPicker(d.def.formula.split(' ').map(parseInterval));
 
   const ghostLabel = d.box ? t('ex.outside') : d.voicing ? t('ex.otherTones') : '';
-  slot('labels').innerHTML = seg('labels', [['note', t('ex.labelNotes')], ['interval', t('ex.labelIntervals')], ['none', t('ex.labelNone')]], state.labels) +
+  slot('labels').innerHTML = seg('labels', [['note', t('ex.labelNotes')], ['interval', t('ex.labelIntervals')], ['none', t('ex.labelNone')]], state.labels, 'keys') +
     toggle('colorize', state.colorize, t('ex.colorize')) + (ghostLabel ? toggle('ghosts', state.ghosts, ghostLabel) : '');
 
   // Instrument and tuning rarely change, so Explore only shows what's in use; the Instruments view sets it.
@@ -211,17 +201,16 @@ function renderHead(d) {
     `<button type="button" class="tone-chip ${toneClass(tone)}" data-act="tone" data-val="${tone.index}" title="${esc(t('ex.playNote', { note: tone.name }))}">
       <span class="tc-iv">${isRoot(tone) ? 'R' : tone.iv.label}</span><span class="tc-name">${tone.name}</span></button>`).join('');
 
+  // The display, with the root and accidentals beside it on top, and the notes, instrument and Play under those.
+  // (The [ and ] keys step through the catalogue.)
   slot('head').innerHTML = `
-    <div class="title-row">
-      <button type="button" class="btn icon" data-act="item-step" data-val="-1" aria-label="${esc(t('ex.prev'))}">${icon.prev}</button>
-      <button type="button" class="lcd" data-act="browse" title="${esc(t('ex.browse'))}">
-        <h2>${itemTitleHtml(kind, item, state.chordStyle)}</h2>
-        <p>${jazzGlyphs(esc(sub))}</p>
-      </button>
-      <button type="button" class="btn icon" data-act="item-step" data-val="1" aria-label="${esc(t('ex.next'))}">${icon.next}</button>
-      ${playButton()}
-    </div>
-    <div class="tone-chips">${chips}</div>`;
+    <button type="button" class="lcd" data-act="browse" title="${esc(t('ex.browse'))}">
+      <h2>${itemTitleHtml(kind, item, state.chordStyle)}</h2>
+      <p>${jazzGlyphs(esc(sub))}</p>
+    </button>
+    <div class="tone-chips">${chips}</div>
+    <div class="head-side"><div class="head-instrument" data-slot="instrument"></div>${playButton()}</div>
+    <div class="head-root" data-slot="root"></div>`;
 }
 
 function renderToolbar(d) {
@@ -235,9 +224,11 @@ function renderToolbar(d) {
         html += seg('method', d.methods.map(m => [m, methodLabel(m, d.neck), methodHint(m)]), d.method, 'small');
         const span = d.band ? `<span class="module-label nowrap">${t(d.neck.fretless ? 'ex.positionsRange' : 'ex.fretsRange', { a: d.band.lo, b: d.band.hi })}</span>` : '';
         html += `<div class="stepper">
-          <button type="button" class="btn icon" data-act="box-step" data-val="-1" aria-label="${esc(t('ex.prevPosition'))}">${icon.prev}</button>
-          <div class="box-chips">${d.boxes.map((_, i) => `<button type="button" class="btn" data-act="box" data-val="${i}" aria-pressed="${i === d.boxIndex}" aria-label="${esc(t('ex.position', { n: i + 1 }))}">${i + 1}</button>`).join('')}</div>
-          <button type="button" class="btn icon" data-act="box-step" data-val="1" aria-label="${esc(t('ex.nextPosition'))}">${icon.next}</button>
+          <div class="box-chips" role="group" aria-label="${esc(t('ex.positions'))}">
+            <button type="button" class="btn icon" data-act="box-step" data-val="-1" aria-label="${esc(t('ex.prevPosition'))}">${icon.prev}</button>
+            ${d.boxes.map((_, i) => `<button type="button" class="btn" data-act="box" data-val="${i}" aria-pressed="${i === d.boxIndex}" aria-label="${esc(t('ex.position', { n: i + 1 }))}">${i + 1}</button>`).join('')}
+            <button type="button" class="btn icon" data-act="box-step" data-val="1" aria-label="${esc(t('ex.nextPosition'))}">${icon.next}</button>
+          </div>
           ${span}</div>`;
       }
     }
@@ -245,14 +236,12 @@ function renderToolbar(d) {
   } else if (d.kind === 'chord') {
     let html = seg('chordLayout', [['tones', t('ex.allTones')], ['voicings', t('ex.voicings')]], state.chordLayout);
     if (state.chordLayout === 'voicings') {
-      // Tab-style labels: a short string's open note reads 0, like any other open string.
+      // Tab for screen readers: a short string's open note reads 0, like any other open string.
       const tab = v => v.frets.map((f, s) => (f < 0 ? '×' : f === d.neck.strings[s].from ? 0 : f));
-      const ordered = v => (state.lefty ? [...tab(v)].reverse() : tab(v)).join(' ');
       html += d.voicings.length
         ? `<div class="voicings">${d.voicings.map((v, i) => `
             <button type="button" class="voicing" data-act="voicing" data-val="${i}" aria-pressed="${i === d.voicingIndex}" aria-label="${esc(t('ex.voicing', { frets: tab(v).join(' ') }))}">
-              ${renderChordDiagram(v.frets, d.neck.strings, d.item.rootPc, state.lefty)}
-              <span>${ordered(v)}</span></button>`).join('')}</div>`
+              ${renderChordDiagram(v.frets, d.neck.strings, d.item.rootPc, state.lefty)}</button>`).join('')}</div>`
         : `<span class="module-label">${t('ex.noVoicing')}</span>`;
     }
     el.innerHTML = html;

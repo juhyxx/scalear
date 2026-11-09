@@ -1,20 +1,21 @@
 // Catalog data. Formulas are interval ids relative to the root (see theory.parseInterval).
 // Names and descriptions are English; translations override them by id (see the helpers at the end).
 import { t, tr } from './i18n.js';
+import { noteNaming } from './theory.js';
 
 export const SCALES = [
   // Diatonic modes
-  { id: 'major', name: 'Major', aliases: ['Ionian', 'Diatonic'], group: 'Diatonic modes', formula: '1 2 3 4 5 6 7',
+  { id: 'major', name: 'Major', aliases: ['Ionian', 'Diatonic', 'Bilawal'], group: 'Diatonic modes', formula: '1 2 3 4 5 6 7',
     desc: 'The reference scale of Western harmony. Bright and resolved; every other formula is described relative to it.' },
-  { id: 'dorian', name: 'Dorian', group: 'Diatonic modes', formula: '1 2 b3 4 5 6 b7',
+  { id: 'dorian', name: 'Dorian', aliases: ['Kafi'], group: 'Diatonic modes', formula: '1 2 b3 4 5 6 b7',
     desc: 'Minor with a natural 6th. The sound of minor funk, soul and modal jazz: minor, but with a lift.' },
-  { id: 'phrygian', name: 'Phrygian', group: 'Diatonic modes', formula: '1 b2 b3 4 5 b6 b7',
+  { id: 'phrygian', name: 'Phrygian', aliases: ['Bhairavi'], group: 'Diatonic modes', formula: '1 b2 b3 4 5 b6 b7',
     desc: 'Minor with a flat 2nd right above the root. Dark and tense; common in metal and Spanish-flavoured music.' },
-  { id: 'lydian', name: 'Lydian', group: 'Diatonic modes', formula: '1 2 3 #4 5 6 7',
+  { id: 'lydian', name: 'Lydian', aliases: ['Kalyan'], group: 'Diatonic modes', formula: '1 2 3 #4 5 6 7',
     desc: 'Major with a raised 4th. Floating and dreamy; a favourite of film composers. Fits maj7♯11 chords.' },
-  { id: 'mixolydian', name: 'Mixolydian', group: 'Diatonic modes', formula: '1 2 3 4 5 6 b7',
+  { id: 'mixolydian', name: 'Mixolydian', aliases: ['Khamaj'], group: 'Diatonic modes', formula: '1 2 3 4 5 6 b7',
     desc: 'Major with a flat 7th. The dominant-7th sound of blues-rock, country and folk.' },
-  { id: 'aeolian', name: 'Natural minor', aliases: ['Aeolian'], group: 'Diatonic modes', formula: '1 2 b3 4 5 b6 b7',
+  { id: 'aeolian', name: 'Natural minor', aliases: ['Aeolian', 'Asavari'], group: 'Diatonic modes', formula: '1 2 b3 4 5 b6 b7',
     desc: 'The relative minor of the major scale. The default minor sound in rock and pop.' },
   { id: 'locrian', name: 'Locrian', group: 'Diatonic modes', formula: '1 b2 b3 4 b5 b6 b7',
     desc: 'The only diatonic mode with a diminished 5th, so its tonic chord is unstable. Mostly used over m7♭5 chords.' },
@@ -34,14 +35,20 @@ export const SCALES = [
     desc: 'Outlines a dominant 9 chord. A compact way to play Mixolydian over 7th chords.' },
   { id: 'hirajoshi', name: 'Hirajoshi', group: 'Pentatonic & blues', formula: '1 2 b3 5 b6',
     desc: 'Japanese pentatonic with a dark, koto-like colour.' },
-  { id: 'in-sen', name: 'In Sen', group: 'Pentatonic & blues', formula: '1 b2 4 5 b7',
+  { id: 'in-sen', name: 'In Sen', aliases: ['Kokin-joshi'], group: 'Pentatonic & blues', formula: '1 b2 4 5 b7',
     desc: 'Japanese pentatonic associated with the shakuhachi. Sparse and haunting.' },
   { id: 'iwato', name: 'Iwato', group: 'Pentatonic & blues', formula: '1 b2 4 b5 b7',
     desc: 'Japanese pentatonic with both a ♭2 and a ♭5. Very dark.' },
-  { id: 'kumoi', name: 'Kumoi', group: 'Pentatonic & blues', formula: '1 2 b3 5 6',
+  { id: 'kumoi', name: 'Kumoi', aliases: ['Akebono'], group: 'Pentatonic & blues', formula: '1 2 b3 5 6',
     desc: 'Melodic minor without its 4th and 7th.' },
   { id: 'minor-6-pentatonic', name: 'Minor 6th pentatonic', group: 'Pentatonic & blues', formula: '1 b3 4 5 6',
     desc: 'Minor pentatonic with a natural 6th instead of the ♭7: the Dorian sound in five notes.' },
+  { id: 'minor-b5-pentatonic', name: 'Minor ♭5 pentatonic', aliases: ['Locrian pentatonic'], group: 'Pentatonic & blues', formula: '1 b3 4 b5 b7',
+    desc: 'Minor pentatonic with a ♭5 instead of the 5th: the blues scale without its 5th. Fits m7♭5 chords.' },
+  { id: 'major-b6-pentatonic', name: 'Major ♭6 pentatonic', group: 'Pentatonic & blues', formula: '1 2 3 5 b6',
+    desc: 'Major pentatonic with a ♭6 instead of the 6th: Mixolydian ♭6 in five notes. Fits 7♭13 chords.' },
+  { id: 'man-gong', name: 'Man gong', aliases: ['Blues minor pentatonic'], group: 'Pentatonic & blues', formula: '1 b3 4 b6 b7',
+    desc: 'The major pentatonic started from its 3rd: Aeolian in five notes, with no 2nd and no 5th.' },
   { id: 'yo', name: 'Yo', group: 'Pentatonic & blues', formula: '1 2 4 5 6',
     desc: 'Japanese pentatonic used in folk songs; bright, with no 3rd.' },
   { id: 'ryukyu', name: 'Ryukyu', aliases: ['Okinawan'], group: 'Pentatonic & blues', formula: '1 3 4 5 7',
@@ -54,17 +61,19 @@ export const SCALES = [
     desc: 'The major scale without its 7th: major pentatonic plus the 4th. Common in folk and rock melodies.' },
   { id: 'minor-hexatonic', name: 'Minor hexatonic', group: 'Pentatonic & blues', formula: '1 2 b3 4 5 b7',
     desc: 'Natural minor without its 6th: minor pentatonic plus the 2nd. Fits both Dorian and Aeolian.' },
+  { id: 'composite-blues', name: 'Composite blues', aliases: ['Nine-note blues'], group: 'Pentatonic & blues', formula: '1 2 b3 3 4 b5 5 6 b7',
+    desc: 'The major and minor blues scales together. Over a dominant 7th it gives both 3rds, the blue ♭5 and the 6th.' },
 
   // Melodic minor modes
   { id: 'melodic-minor', name: 'Melodic minor', aliases: ['Jazz minor'], group: 'Melodic minor modes', formula: '1 2 b3 4 5 6 7',
     desc: 'Minor with a natural 6th and 7th (the ascending form, used both ways in jazz). Fits m(maj7) and m6 chords.' },
-  { id: 'dorian-b2', name: 'Dorian ♭2', aliases: ['Phrygian ♮6'], group: 'Melodic minor modes', formula: '1 b2 b3 4 5 6 b7',
+  { id: 'dorian-b2', name: 'Dorian ♭2', aliases: ['Phrygian ♮6', 'Javanese'], group: 'Melodic minor modes', formula: '1 b2 b3 4 5 6 b7',
     desc: 'Mode 2 of melodic minor. Used over sus4♭9 chords.' },
   { id: 'lydian-augmented', name: 'Lydian augmented', group: 'Melodic minor modes', formula: '1 2 3 #4 #5 6 7',
     desc: 'Mode 3 of melodic minor. Fits maj7♯5 chords.' },
   { id: 'lydian-dominant', name: 'Lydian dominant', aliases: ['Overtone', 'Acoustic'], group: 'Melodic minor modes', formula: '1 2 3 #4 5 6 b7',
     desc: 'Mode 4 of melodic minor: Mixolydian with a ♯4. The standard choice over 7♯11 chords.' },
-  { id: 'mixolydian-b6', name: 'Mixolydian ♭6', aliases: ['Aeolian dominant'], group: 'Melodic minor modes', formula: '1 2 3 4 5 b6 b7',
+  { id: 'mixolydian-b6', name: 'Mixolydian ♭6', aliases: ['Aeolian dominant', 'Hindu', 'Charukeshi'], group: 'Melodic minor modes', formula: '1 2 3 4 5 b6 b7',
     desc: 'Mode 5 of melodic minor: a major 3rd with a minor-key upper half.' },
   { id: 'locrian-n2', name: 'Locrian ♮2', aliases: ['Half-diminished'], group: 'Melodic minor modes', formula: '1 2 b3 4 b5 b6 b7',
     desc: 'Mode 6 of melodic minor. A smoother alternative to Locrian over m7♭5 chords.' },
@@ -72,13 +81,13 @@ export const SCALES = [
     desc: 'Mode 7 of melodic minor. Contains every altered tension for a dominant chord: ♭9, ♯9, ♭5 and ♯5. Spelled here as chord tones.' },
 
   // Harmonic minor modes
-  { id: 'harmonic-minor', name: 'Harmonic minor', group: 'Harmonic minor modes', formula: '1 2 b3 4 5 b6 7',
+  { id: 'harmonic-minor', name: 'Harmonic minor', aliases: ['Kirwani'], group: 'Harmonic minor modes', formula: '1 2 b3 4 5 b6 7',
     desc: 'Natural minor with a raised 7th, giving a leading tone and the characteristic augmented 2nd between ♭6 and 7.' },
   { id: 'locrian-n6', name: 'Locrian ♮6', group: 'Harmonic minor modes', formula: '1 b2 b3 4 b5 6 b7',
     desc: 'Mode 2 of harmonic minor.' },
   { id: 'ionian-sharp5', name: 'Ionian ♯5', aliases: ['Ionian augmented'], group: 'Harmonic minor modes', formula: '1 2 3 4 #5 6 7',
     desc: 'Mode 3 of harmonic minor: major with an augmented 5th.' },
-  { id: 'dorian-sharp4', name: 'Dorian ♯4', aliases: ['Ukrainian Dorian', 'Romanian minor', 'Nikriz'], group: 'Harmonic minor modes', formula: '1 2 b3 #4 5 6 b7',
+  { id: 'dorian-sharp4', name: 'Dorian ♯4', aliases: ['Ukrainian Dorian', 'Romanian minor', 'Nikriz', 'Misheberach'], group: 'Harmonic minor modes', formula: '1 2 b3 #4 5 6 b7',
     desc: 'Mode 4 of harmonic minor. Common in Eastern European folk music and klezmer.' },
   { id: 'phrygian-dominant', name: 'Phrygian dominant', aliases: ['Spanish Phrygian', 'Spanish gypsy', 'Freygish', 'Hijaz', 'Ahava Raba'], group: 'Harmonic minor modes', formula: '1 b2 3 4 5 b6 b7',
     desc: 'Mode 5 of harmonic minor. Heard in flamenco, klezmer and Middle Eastern music; also fits V7♭9 in minor keys.' },
@@ -104,7 +113,7 @@ export const SCALES = [
     desc: 'Mode 7 of harmonic major. Fits diminished 7th chords.' },
 
   // Double harmonic modes
-  { id: 'double-harmonic', name: 'Double harmonic major', aliases: ['Byzantine', 'Arabic', 'Gypsy major'], group: 'Double harmonic modes', formula: '1 b2 3 4 5 b6 7',
+  { id: 'double-harmonic', name: 'Double harmonic major', aliases: ['Byzantine', 'Arabic', 'Gypsy major', 'Bhairav'], group: 'Double harmonic modes', formula: '1 b2 3 4 5 b6 7',
     desc: 'Two augmented 2nds give it a strongly Middle Eastern sound.' },
   { id: 'lydian-s2-s6', name: 'Lydian ♯2 ♯6', group: 'Double harmonic modes', formula: '1 #2 3 #4 5 #6 7',
     desc: 'Mode 2 of double harmonic major.' },
@@ -130,7 +139,7 @@ export const SCALES = [
     desc: 'Double harmonic major with a lowered 5th.' },
   { id: 'enigmatic', name: 'Enigmatic', group: 'Other scales', formula: '1 b2 3 #4 #5 #6 7',
     desc: 'Verdi’s “scala enigmatica”. Unusual and unstable.' },
-  { id: 'major-locrian', name: 'Major Locrian', group: 'Other scales', formula: '1 2 3 4 b5 b6 b7',
+  { id: 'major-locrian', name: 'Major Locrian', aliases: ['Arabian'], group: 'Other scales', formula: '1 2 3 4 b5 b6 b7',
     desc: 'Major lower half with a Locrian upper half. Fits 7♭5 and 7♯5 chords.' },
   { id: 'leading-whole-tone', name: 'Leading whole tone', group: 'Other scales', formula: '1 2 3 #4 #5 #6 7',
     desc: 'The whole-tone scale plus a leading tone below the octave.' },
@@ -140,11 +149,23 @@ export const SCALES = [
     desc: 'Hungarian minor with a ♭7 instead of the major 7th. Heard in Roma and Central European folk music.' },
   { id: 'spanish-8', name: 'Spanish 8-tone', group: 'Other scales', formula: '1 b2 #2 3 4 b5 b6 b7',
     desc: 'Phrygian with both a minor and a major 3rd. Used in flamenco.' },
+  { id: 'lydian-minor', name: 'Lydian minor', group: 'Other scales', formula: '1 2 3 #4 5 b6 b7',
+    desc: 'Lydian lower half with a minor upper half: a dominant scale with a ♯4 and a ♭6.' },
+
+  // Indian
+  { id: 'purvi', name: 'Purvi', group: 'Indian', formula: '1 b2 3 #4 5 b6 7',
+    desc: 'One of the ten thaats (parent scales) of North Indian music: ♭2, ♯4 and ♭6 around a major 3rd and 7th. Serious, evening ragas.' },
+  { id: 'marwa', name: 'Marwa', group: 'Indian', formula: '1 b2 3 #4 5 6 7',
+    desc: 'A thaat: Lydian with a ♭2. Restless; sung at sunset.' },
+  { id: 'todi', name: 'Todi', group: 'Indian', formula: '1 b2 b3 #4 5 b6 7',
+    desc: 'A thaat: ♭2, ♭3 and ♭6 against a ♯4 and a major 7th. One of the most intense scales in Indian music.' },
+  { id: 'hamsadhwani', name: 'Hamsadhwani', group: 'Indian', formula: '1 2 3 5 7',
+    desc: 'A bright South Indian raga: major pentatonic with a major 7th instead of the 6th. Outlines a maj9 chord.' },
 
   // Symmetric
   { id: 'whole-tone', name: 'Whole tone', group: 'Symmetric', formula: '1 2 3 #4 #5 b7',
     desc: 'Six notes, each a whole step apart. Ambiguous and dreamlike; fits 7♯5 and 9♯5 chords.' },
-  { id: 'diminished-wh', name: 'Diminished (whole–half)', group: 'Symmetric', formula: '1 2 b3 4 b5 b6 6 7',
+  { id: 'diminished-wh', name: 'Diminished (whole–half)', aliases: ['Octatonic'], group: 'Symmetric', formula: '1 2 b3 4 b5 b6 6 7',
     desc: 'Alternating whole and half steps. Fits diminished 7th chords.' },
   { id: 'diminished-hw', name: 'Diminished (half–whole)', aliases: ['Dominant diminished'], group: 'Symmetric', formula: '1 b2 #2 3 #4 5 6 b7',
     desc: 'Alternating half and whole steps. Fits 13♭9 and 7♭9 dominant chords.' },
@@ -201,6 +222,12 @@ export const CHORDS = [
     desc: 'Major triad plus a 9th, without a 7th.' },
   { id: 'madd9', symbol: 'm(add9)', name: 'Minor added 9th', group: 'Sixths & added', formula: '1 b3 5 9',
     desc: 'Minor triad plus a 9th, without a 7th.' },
+  { id: 'm69', symbol: 'm6/9', name: 'Minor six-nine', group: 'Sixths & added', formula: '1 b3 5 6 9',
+    desc: 'Minor 6th plus a 9th. A Dorian tonic that stays open.' },
+  { id: 'add11', symbol: 'add11', name: 'Added 11th', group: 'Sixths & added', formula: '1 3 5 11',
+    desc: 'Major triad plus an 11th, without a 7th. The 11th rubs against the 3rd, so it sounds best voiced high above it.' },
+  { id: 'madd11', symbol: 'm(add11)', name: 'Minor added 11th', group: 'Sixths & added', formula: '1 b3 5 11',
+    desc: 'Minor triad plus an 11th. No clash with the minor 3rd, so it rings open; common in rock and folk.' },
 
   { id: 'maj7', symbol: 'maj7', name: 'Major 7th', group: 'Sevenths', formula: '1 3 5 7',
     desc: 'Major triad plus a major 7th. Smooth and lush; the I and IV chords in jazz.' },
@@ -210,6 +237,8 @@ export const CHORDS = [
     desc: 'Minor triad plus a minor 7th. The ii chord in a ii–V–I.' },
   { id: 'mmaj7', symbol: 'm(maj7)', name: 'Minor-major 7th', group: 'Sevenths', formula: '1 b3 5 7',
     desc: 'Minor triad plus a major 7th. A dark, cinematic tonic.' },
+  { id: 'dimmaj7', symbol: '°(maj7)', name: 'Diminished major 7th', group: 'Sevenths', formula: '1 b3 b5 7',
+    desc: 'Diminished triad plus a major 7th. Dark and tense; pairs with the whole–half diminished scale.' },
   { id: 'm7b5', symbol: 'm7♭5', name: 'Half-diminished', aliases: ['ø7'], group: 'Sevenths', formula: '1 b3 b5 b7',
     desc: 'Diminished triad plus a minor 7th. The ii chord in a minor ii–V–i.' },
   { id: 'dim7', symbol: '°7', name: 'Diminished 7th', group: 'Sevenths', formula: '1 b3 b5 bb7',
@@ -218,10 +247,12 @@ export const CHORDS = [
     desc: 'Dominant 7th with the 3rd replaced by a 4th.' },
   { id: 'maj7s5', symbol: 'maj7♯5', name: 'Augmented major 7th', group: 'Sevenths', formula: '1 3 #5 7',
     desc: 'Augmented triad plus a major 7th. Pairs with Lydian augmented.' },
-  { id: '7s5', symbol: '7♯5', name: 'Augmented 7th', aliases: ['aug7', '+7'], group: 'Sevenths', formula: '1 3 #5 b7',
+  { id: '7s5', symbol: '7♯5', name: 'Augmented 7th', aliases: ['aug7'], group: 'Sevenths', formula: '1 3 #5 b7',
     desc: 'Dominant 7th with a raised 5th. Pairs with the whole-tone scale.' },
   { id: '7b5', symbol: '7♭5', name: 'Dominant 7th flat 5', group: 'Sevenths', formula: '1 3 b5 b7',
     desc: 'Dominant 7th with a lowered 5th. Symmetric under a tritone.' },
+  { id: 'maj7b5', symbol: 'maj7♭5', name: 'Major 7th flat 5', group: 'Sevenths', formula: '1 3 b5 7',
+    desc: 'Major 7th with a lowered 5th, heard as a ♯11. A Lydian colour.' },
 
   { id: 'maj9', symbol: 'maj9', name: 'Major 9th', group: 'Extended', formula: '1 3 5 7 9',
     desc: 'Major 7th plus a 9th.' },
@@ -229,8 +260,14 @@ export const CHORDS = [
     desc: 'Dominant 7th plus a 9th. A funk and soul staple.' },
   { id: 'm9', symbol: 'm9', name: 'Minor 9th', group: 'Extended', formula: '1 b3 5 b7 9',
     desc: 'Minor 7th plus a 9th.' },
+  { id: 'mmaj9', symbol: 'm(maj9)', name: 'Minor-major 9th', group: 'Extended', formula: '1 b3 5 7 9',
+    desc: 'Minor-major 7th plus a 9th. The tonic chord of melodic minor.' },
+  { id: 'm9b5', symbol: 'm9♭5', name: 'Half-diminished 9th', aliases: ['ø9'], group: 'Extended', formula: '1 b3 b5 b7 9',
+    desc: 'Half-diminished 7th plus a natural 9th. Pairs with Locrian ♮2.' },
   { id: '9sus4', symbol: '9sus4', name: 'Dominant 9th sus4', group: 'Extended', formula: '1 4 5 b7 9',
     desc: 'Dominant 9th with a 4th instead of a 3rd.' },
+  { id: '13sus4', symbol: '13sus4', name: 'Dominant 13th sus4', group: 'Extended', formula: '1 4 5 b7 9 13', optional: ['5', '9'],
+    desc: 'Dominant 13th with a 4th instead of a 3rd. A modern, open V chord.' },
   { id: '11', symbol: '11', name: 'Dominant 11th', group: 'Extended', formula: '1 5 b7 9 11', optional: ['5', '9'],
     desc: 'Usually voiced without the 3rd, which clashes with the 11th; close to a 9sus4.' },
   { id: 'm11', symbol: 'm11', name: 'Minor 11th', group: 'Extended', formula: '1 b3 5 b7 9 11', optional: ['5', '9'],
@@ -250,6 +287,24 @@ export const CHORDS = [
     desc: 'Dominant 7th with a ♯9 (heard as a minor 3rd over a major 3rd). A bluesy, aggressive sound.' },
   { id: '7s11', symbol: '7♯11', name: 'Dominant 7th sharp 11', group: 'Altered', formula: '1 3 5 b7 #11',
     desc: 'Dominant 7th with a ♯11. Pairs with Lydian dominant.' },
+  { id: '9s11', symbol: '9♯11', name: 'Dominant 9th sharp 11', group: 'Altered', formula: '1 3 5 b7 9 #11',
+    desc: 'Dominant 9th with a ♯11: the full Lydian dominant sound.' },
+  { id: 'maj7s11', symbol: 'maj7♯11', name: 'Major 7th sharp 11', group: 'Altered', formula: '1 3 5 7 #11',
+    desc: 'Major 7th with a ♯11 instead of the clashing natural 11th. The Lydian chord.' },
+  { id: '7b13', symbol: '7♭13', name: 'Dominant 7th flat 13', group: 'Altered', formula: '1 3 5 b7 b13',
+    desc: 'Dominant 7th with a ♭13. A dark dominant, common before a minor chord. Pairs with Mixolydian ♭6.' },
+  { id: '13b9', symbol: '13♭9', name: 'Dominant 13th flat 9', group: 'Altered', formula: '1 3 5 b7 b9 13',
+    desc: 'Dominant 7th with a ♭9 and a natural 13th. Pairs with the half–whole diminished scale.' },
+  { id: '7sus4b9', symbol: '7sus4♭9', name: 'Dominant 7th sus4 flat 9', aliases: ['Phrygian chord'], group: 'Altered', formula: '1 4 5 b7 b9',
+    desc: 'A sus4 dominant with a ♭9. Pairs with Dorian ♭2 and Phrygian.' },
+  { id: '9s5', symbol: '9♯5', name: 'Augmented 9th', aliases: ['aug9'], group: 'Altered', formula: '1 3 #5 b7 9',
+    desc: 'Augmented 7th plus a 9th. Every tone is in the whole-tone scale.' },
+  { id: '7s5b9', symbol: '7♯5♭9', name: 'Dominant 7th sharp 5 flat 9', group: 'Altered', formula: '1 3 #5 b7 b9',
+    desc: 'Augmented 7th with a ♭9. A dark dominant leading to minor.' },
+  { id: '7s5s9', symbol: '7♯5♯9', name: 'Dominant 7th sharp 5 sharp 9', group: 'Altered', formula: '1 3 #5 b7 #9',
+    desc: 'Augmented 7th with a ♯9. The most common altered voicing: 3rd, 7th and two altered tensions.' },
+  { id: '7alt', symbol: '7alt', name: 'Altered dominant', group: 'Altered', formula: '1 3 b5 #5 b7 b9 #9', optional: ['b5', '#5', 'b9'],
+    desc: 'A dominant 7th with altered 5ths and 9ths instead of natural ones; players pick which. Built from the altered scale.' },
 ];
 
 export const INTERVALS = [
@@ -329,25 +384,109 @@ export function groupsOf(list) {
 // Chord symbol for display, in one of two styles:
 //  standard – the pixel font has no lowercase, so a bare "m" would read as major: minor is "min"
 //             (Amin7) while "maj" stays, and its ° looks like an asterisk, so "dim" too;
-//  jazz     – C−7, CΔ7, Cø7, C°7, C−Δ7.
+//  jazz     – C−7, CΔ7, Cø7, C°7, C−Δ7, C°Δ7, C+7.
+const JAZZ = [
+  [/^m(\d+)♭5$/, 'ø$1'], // m7♭5 → ø7, m9♭5 → ø9
+  [/^m\(maj(\d+)\)$/, '−Δ$1'], // m(maj7) → −Δ7
+  [/^°\(maj(\d+)\)$/, '°Δ$1'], // °(maj7) → °Δ7
+  [/^(\d+)♯5/, '+$1'], // 7♯5 → +7, 9♯5 → +9, 7♯5♭9 → +7♭9
+  [/^maj/, 'Δ'],
+  [/^m/, '−'],
+];
+
 export function chordSymbol(def, style = 'standard') {
-  if (style === 'jazz') {
-    return def.symbol
-      .replace(/^m7♭5/, 'ø7')
-      .replace(/^m\(maj7\)/, '−Δ7')
-      .replace(/^maj/, 'Δ')
-      .replace(/^m/, '−');
-  }
+  if (style === 'jazz') return JAZZ.reduce((sym, [re, to]) => sym.replace(re, to), def.symbol);
   return def.symbol.replace(/^m(?!aj)/, 'min').replace(/^°/, 'dim');
 }
 
 // Jazz glyphs the pixel font lacks, wrapped so they can be drawn in another face.
 export const jazzGlyphs = html => html.replace(/[−Δø°]+/g, g => `<span class="jz">${g}</span>`);
 
+// A chord symbol split into its quality, written full size, and its extensions, written as an index:
+// "min7♭5" → ["min", "7♭5"], "7" → ["", "7"], "−Δ7" → ["−Δ", "7"].
+export const chordSymbolParts = (def, style = 'standard') =>
+  /^(min|dim|maj|sus|add|\+|[−°]Δ|[−Δø°])?(.*)$/.exec(chordSymbol(def, style)).slice(1).map(x => x || '');
+
 // Chord symbol as HTML with the extensions as an index (superscript): "min<sup>7♭5</sup>", "<sup>7</sup>".
+// The quality gets its own colour, so in the capitals-only font "Aadd11" doesn't read as "AADD11".
 export function chordSymbolHtml(def, style = 'standard') {
-  const [, quality = '', ext] = /^(min|dim|maj|sus|add|\+|−Δ|[−Δø°])?(.*)$/.exec(chordSymbol(def, style));
-  return jazzGlyphs(quality) + (ext ? `<sup class="ext">${ext}</sup>` : '');
+  const [quality, ext] = chordSymbolParts(def, style);
+  return (quality ? `<span class="q">${jazzGlyphs(quality)}</span>` : '') + (ext ? `<sup class="ext">${jazzGlyphs(ext)}</sup>` : '');
+}
+
+// ---------- typed chord symbols
+
+// Reduces a chord symbol, however it is written, to one key: "m7", "min7", "mi7", "-7" and "−7" all give "m7";
+// "maj7", "M7", "ma7", "^7", "Δ" and "Δ7" give "^7"; "m7♭5", "m7-5", "ø", "ø7" and "h7" give "m7b5";
+// "7♯5", "7#5", "7+", "+7" and "aug7" give "7#5". ASCII stand-ins: ^ for Δ, h for ø, o for °.
+export function symbolKey(text) {
+  let s = text
+    .replace(/♭/g, 'b').replace(/♯/g, '#').replace(/[−–]/g, '-').replace(/[Δ△∆]/g, '^')
+    .replace(/[°º˚]/g, 'o').replace(/[øØ]/g, 'h').replace(/[\s()]/g, '');
+  s = s
+    .replace(/^(-?)\^$/, '$1^7') // a bare Δ is a major 7th
+    .replace(/^(m|min|mi|-)(maj|ma|M|\^)/, 'm^') // minor-major
+    .replace(/^(dim|o)(maj|ma|M|\^)/, 'o^') // diminished-major
+    .replace(/^(aug|\+)(maj|ma|M|\^)/, '+^') // augmented-major
+    .replace(/^(min|mi|-)/, 'm')
+    .replace(/^(maj|ma(?!d)|M|\^)/, '^')
+    .replace(/^dim/, 'o')
+    .replace(/^aug/, '+')
+    .replace(/^h(\d*)/, (_, n) => `m${n || 7}b5`) // ø, ø7, ø9
+    .replace(/^\+\^(\d+)/, '^$1#5') // +Δ7 → Δ7♯5
+    .replace(/^\+(\d+)/, '$1#5') // +7 → 7♯5
+    .replace(/^(\d+)\+$/, '$1#5') // 7+ → 7♯5
+    .replace(/(.)\+(\d)/g, '$1#$2') // 7+9 → 7♯9
+    .replace(/(.)-(\d)/g, '$1b$2') // 7-9 → 7♭9
+    .replace(/sus(?!\d)/, 'sus4')
+    .replace(/^(m?)69$/, '$16/9')
+    .replace(/^alt$/, '7alt');
+  return s === '^' ? '' : s; // "maj" or "M" alone is the major triad
+}
+
+// Every way a chord can be written: its symbol in both styles and its symbol-like aliases.
+const chordKeys = new Map(CHORDS.map(d => [d.id, new Set(
+  [d.symbol, chordSymbol(d), chordSymbol(d, 'jazz'), ...(d.aliases || [])].map(symbolKey),
+)]));
+
+export const chordForSymbol = text => {
+  const key = symbolKey(text);
+  return CHORDS.find(d => chordKeys.get(d.id).has(key)) || null;
+};
+
+const LETTER_OF = { c: 0, d: 1, e: 2, f: 3, g: 4, a: 5, b: 6 };
+const ACCIDENTALS = [['##', 2], ['bb', -2], ['♯♯', 2], ['♭♭', -2], ['𝄪', 2], ['𝄫', -2], ['#', 1], ['b', -1], ['♯', 1], ['♭', -1]];
+// German and Czech note names: Cis, Des, Es, As; H is B natural and B is B♭.
+const GERMAN = [['isis', 2], ['eses', -2], ['is', 1], ['es', -1], ['s', -1]];
+
+// The ways the start of `text` can be read as a note, in the current note-name style.
+function rootReadings(text) {
+  const { style, solfege } = noteNaming();
+  const lower = text.toLowerCase();
+  const heads = [];
+  if (style === 'S') solfege.forEach((syl, letter) => lower.startsWith(syl.toLowerCase()) && heads.push({ letter, acc: 0, len: syl.length }));
+  const c = lower[0];
+  if (style === 'H' && c === 'h') heads.push({ letter: 6, acc: 0, len: 1 });
+  else if (style === 'H' && c === 'b') heads.push({ letter: 6, acc: -1, len: 1, german: true });
+  else if (c in LETTER_OF) heads.push({ letter: LETTER_OF[c], acc: 0, len: 1 });
+  const accidentals = style === 'H' ? [...ACCIDENTALS, ...GERMAN] : ACCIDENTALS;
+  return heads.flatMap(h => [
+    // a German B already is B♭, so "Bb" means B♭ too
+    ...accidentals.filter(([a]) => lower.startsWith(a, h.len)).map(([a, n]) =>
+      ({ letter: h.letter, acc: h.acc + n + (h.german && n < 0 ? 1 : 0), rest: text.slice(h.len + a.length) })),
+    { letter: h.letter, acc: h.acc, rest: text.slice(h.len) },
+  ]);
+}
+
+// A typed chord such as "Am7", "C-7", "F#^7", "Bbø7", "Eb7#9" or "Fis-7" (with German names), or null.
+export function parseChord(text) {
+  const str = text.trim();
+  if (!str) return null;
+  for (const r of rootReadings(str)) {
+    const def = chordForSymbol(r.rest);
+    if (def) return { def, root: { letter: r.letter, acc: r.acc } };
+  }
+  return null;
 }
 
 // Full name for an interval's short name, e.g. "M6" → "Major sixth".

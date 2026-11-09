@@ -29,7 +29,7 @@ export function renderChordDiagram(frets, strings, rootPc, lefty = false) {
     const x = xOf(s);
     const str = strings[s];
     const root = f >= str.from && pitchAt(str, f) % 12 === rootPc;
-    if (f < 0) out.push(`<text class="cd-mute" x="${x}" y="${top - 6}">×</text>`);
+    if (f < 0) out.push(`<path class="cd-mute" d="M${x - 3.4} ${top - 10.4}l6.8 6.8m0 -6.8l-6.8 6.8"/>`);
     else if (f === str.from) {
       out.push(root
         ? `<rect class="cd-open root" x="${x - 3}" y="${top - 10}" width="6" height="6"/>`

@@ -23,6 +23,7 @@ const DEFAULTS = {
   naming: null, // 'B' | 'H' | 'S'; null follows the language
   colorize: false,
   catalogTab: 'scale',
+  finder: [], // Finder's tapped notes, as "string:fret"
   query: '',
   // instrument
   instrument: 'guitar',
@@ -73,7 +74,8 @@ export function set(patch) {
 
 export const subscribe = fn => listeners.add(fn);
 
-// --- URL hash: #/explore?k=scale&id=dorian&r=D&v=boxes&b=2, #/catalog?tab=chord or #/instruments
+// --- URL hash: #/explore?k=scale&id=dorian&r=D&v=boxes&b=2, #/catalog?tab=chord, #/finder?n=4:3,3:2
+// or #/instruments
 
 // The root as currently spelled, e.g. "Db" for D♭ major with automatic spelling (always English letters).
 const rootLabel = s => asciiName(buildItem(findDef(s.kind, s[s.kind]), s.rootPc, s.spelling).root);
@@ -81,6 +83,7 @@ const rootLabel = s => asciiName(buildItem(findDef(s.kind, s[s.kind]), s.rootPc,
 export function hashFor(s = state) {
   if (s.view === 'catalog') return `#/catalog?tab=${s.catalogTab}`;
   if (s.view === 'instruments') return '#/instruments';
+  if (s.view === 'finder') return s.finder.length ? `#/finder?n=${s.finder.join(',')}` : '#/finder';
   const p = new URLSearchParams({ k: s.kind, id: s[s.kind], r: rootLabel(s) });
   if (s.kind === 'scale' && s.layout === 'boxes') {
     p.set('v', 'boxes');
@@ -110,12 +113,25 @@ function parseRoot(str) {
   return { rootPc: (base + acc + 12) % 12, acc };
 }
 
+// The spelling setting that shows a root the way it was written (acc: −1 for D♭, +1 for C♯, 0 for a natural):
+// automatic spelling stays when it already gives that root; otherwise ♯ or ♭ is pinned.
+export function spellingFor(def, rootPc, acc) {
+  if (acc === 0) return state.spelling;
+  const auto = spellRoot(rootPc, 'auto', def.formula.split(' ').map(parseInterval));
+  const want = acc > 0 ? 'sharp' : 'flat';
+  return state.spelling === 'auto' ? (Math.sign(auto.acc) === Math.sign(acc) ? 'auto' : want) : want;
+}
+
 // Returns a state patch for the current hash (empty when the hash is absent or unrecognised).
 export function readHash() {
-  const m = /^#\/(explore|catalog|instruments)(?:\?(.*))?$/.exec(location.hash);
+  const m = /^#\/(explore|catalog|instruments|finder)(?:\?(.*))?$/.exec(location.hash);
   if (!m) return {};
   if (m[1] === 'instruments') return { view: 'instruments' };
   const q = new URLSearchParams(m[2] || '');
+  if (m[1] === 'finder') {
+    const notes = (q.get('n') || '').split(',').filter(p => /^\d+:\d+$/.test(p));
+    return { view: 'finder', ...(q.has('n') ? { finder: [...new Set(notes)] } : {}) };
+  }
   if (m[1] === 'catalog') {
     const tab = q.get('tab');
     return { view: 'catalog', ...(['scale', 'chord', 'interval'].includes(tab) ? { catalogTab: tab } : {}) };
@@ -129,14 +145,9 @@ export function readHash() {
   const root = parseRoot(q.get('r'));
   if (root) {
     patch.rootPc = root.rootPc;
-    // Keep automatic spelling when it already yields the linked root; otherwise pin it.
-    if (root.acc !== 0) {
-      const kind = patch.kind || state.kind;
-      const def = findDef(kind, patch[kind] || state[kind]);
-      const auto = spellRoot(root.rootPc, 'auto', def.formula.split(' ').map(parseInterval));
-      const want = root.acc > 0 ? 'sharp' : 'flat';
-      if (state.spelling === 'auto' ? auto.acc !== root.acc : state.spelling !== want) patch.spelling = want;
-    }
+    const kind = patch.kind || state.kind;
+    const spelling = spellingFor(findDef(kind, patch[kind] || state[kind]), root.rootPc, root.acc);
+    if (spelling !== state.spelling) patch.spelling = spelling;
   }
   const b = Math.max(0, (Number(q.get('b')) || 1) - 1);
   if (k === 'scale') {

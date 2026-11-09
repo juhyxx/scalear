@@ -30,7 +30,7 @@ jobs:
       - name: Collect site files
         run: |
           mkdir -p _site/fonts
-          cp -r index.html sw.js manifest.webmanifest logo.svg src icons screenshots _site/
+          cp -r index.html sw.js manifest.webmanifest logo.svg src icons screenshots audio _site/
           cp fonts/*.woff2 fonts/*.ttf _site/fonts/
 
       # The service worker caches the files it lists, for offline use. A file it misses

@@ -11,13 +11,14 @@ import { state, set, subscribe, readHash, hashFor } from './store.js';
 import { mountExplore, renderExplore } from './explore.js';
 import { mountCatalog, renderCatalog } from './catalogView.js';
 import { mountInstruments, renderInstruments } from './instrumentsView.js';
+import { mountFinder, renderFinder } from './finder.js';
 import { mountSettings } from './settings.js';
 import { use, apply, t, naming } from './i18n.js';
 import { setNaming } from './theory.js';
 
 const $ = sel => document.querySelector(sel);
 
-const VIEWS = ['explore', 'catalog', 'instruments'];
+const VIEWS = ['explore', 'catalog', 'finder', 'instruments'];
 const VIEW_KEYS = ['view'];
 const CATALOG_KEYS = ['catalogTab', 'rootPc', 'spelling', 'chordStyle'];
 const INSTRUMENT_KEYS = ['instrument', 'tuning', 'custom', 'lefty'];
@@ -47,6 +48,7 @@ function render(patch = null) {
   if (state.view === 'explore') renderExplore();
   if (state.view === 'catalog' && (touches(CATALOG_KEYS) || touches(VIEW_KEYS) || touches(TEXT_KEYS))) renderCatalog();
   if (state.view === 'instruments' && (touches(INSTRUMENT_KEYS) || touches(VIEW_KEYS) || touches(TEXT_KEYS))) renderInstruments();
+  if (state.view === 'finder') renderFinder();
 }
 
 function start() {
@@ -54,6 +56,7 @@ function start() {
   const decideOrientation = mountExplore($('#explore'));
   mountCatalog($('#catalog'));
   mountInstruments($('#instruments'));
+  mountFinder($('#finder'));
   mountSettings($('#settings'), $('#settingsBtn'));
   applyLanguage();
 

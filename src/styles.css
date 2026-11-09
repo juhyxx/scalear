@@ -19,6 +19,9 @@
   --led-soft: hsla(39, 100%, 55%, 0.06);
   --led-line: hsla(39, 100%, 55%, 0.5);
   --led-off: rgba(255, 255, 255, 0.07);
+  --natural: rgba(255, 255, 255, 0.95); /* natural notes in the root picker */
+  --mute: hsl(4, 90%, 62%); /* strings not to play */
+  --mute-glow: hsla(4, 90%, 62%, 0.55);
 
   --panel: hsl(170, 0%, 15%);
   --screen: #0e0f0d;
@@ -216,9 +219,19 @@ input[type="range"]::-moz-range-thumb {
 main { max-width: 1480px; margin: 0 auto; padding: 4px 20px 24px; padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
 .stage { display: grid; gap: 18px; min-width: 0; align-content: start; }
 
-/* root, labels and instrument sit in one row above the neck, which gets the full width */
-.controls { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 28px; }
-.controls .module { min-width: 0; }
+/* Finder: a readout with Clear and Play, then the neck to tap */
+.finder-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.finder-head .lcd { flex: 0 1 var(--lcd-w, 340px); min-height: 76px; cursor: default; }
+.finder-head .lcd:hover { box-shadow: var(--screen-shadow); }
+.finder-actions { display: flex; gap: 10px; margin-left: auto; }
+.finder-inst { margin-left: auto; }
+.btn:disabled { opacity: 0.4; cursor: default; }
+/* tones a found chord leaves out: "C⁷ no 5" */
+.omit { margin-left: 0.4em; color: var(--muted); font-size: 0.5em; text-shadow: none; text-transform: uppercase; }
+
+/* display options for the neck, right under it */
+.fb-labels { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+
 
 /* recessed screens, with faint scanlines */
 .screen {
@@ -238,9 +251,28 @@ main { max-width: 1480px; margin: 0 auto; padding: 4px 20px 24px; padding-bottom
 .block { display: grid; gap: 10px; min-width: 0; }
 .block-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
 
-/* root picker: one row of twelve, two rows of six on a phone */
-.roots { display: grid; grid-template-columns: repeat(12, minmax(36px, 1fr)); gap: 5px; }
-.roots .btn { padding: 0 4px; min-height: 34px; font-variant-numeric: tabular-nums; }
+/* Grouped keys: one recessed strip holding flat keys, the chosen one raised and lit. Used for the
+   root picker, the accidentals, the scale's notes, the labels and the position selector. */
+.roots, .seg.keys, .tone-chips, .box-chips {
+  gap: 2px;
+  padding: 3px;
+  background: var(--screen);
+  box-shadow: var(--sunken);
+}
+.roots > button, .seg.keys > button, .tone-chips > button, .box-chips > button { background: transparent; box-shadow: none; }
+.roots > button:hover, .seg.keys > button:hover, .tone-chips > button:hover, .box-chips > button:hover { background: rgba(255, 255, 255, 0.06); }
+.roots > button[aria-pressed="true"], .seg.keys > button[aria-pressed="true"], .box-chips > button[aria-pressed="true"] {
+  background: var(--bg-button);
+  box-shadow: var(--raised);
+  color: var(--led);
+  text-shadow: 0 0 6px var(--led);
+}
+.seg.keys { border-radius: 2rem; flex-wrap: nowrap; }
+
+/* root picker: twelve keys (two rows of six on a phone); natural notes white, sharps and flats grey */
+.roots { display: grid; grid-template-columns: repeat(12, minmax(32px, 1fr)); border-radius: 2rem; }
+.roots .btn { min-height: 30px; padding: 0 4px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.roots .btn.natural { color: var(--natural); }
 
 /* custom tuning: one stepper per string */
 .tuner { display: flex; gap: 6px; }
@@ -259,12 +291,26 @@ main { max-width: 1480px; margin: 0 auto; padding: 4px 20px 24px; padding-bottom
 
 /* ------------------------------------------------------------- item header */
 
-.item-head { display: grid; gap: 12px; }
-.title-row { display: flex; align-items: center; gap: 10px; }
-.title-row .start { margin-left: 6px; }
+/* The display, then the root and accidentals on top, with the notes, instrument and Play under them.
+   The display has a fixed width so nothing moves while stepping through the catalogue. */
+.item-head {
+  --lcd-w: 340px;
+  display: grid;
+  grid-template-columns: var(--lcd-w) minmax(0, 1fr) auto;
+  grid-template-areas: "lcd root root" "lcd chips side";
+  gap: 10px;
+  align-items: center;
+}
+.item-head .lcd { grid-area: lcd; align-self: stretch; }
+.item-head .tone-chips { grid-area: chips; margin-left: 8px; }
+.item-head .tone-chip { min-width: 46px; }
+.head-side { grid-area: side; display: flex; align-items: center; gap: 10px; justify-self: end; }
+.head-root { grid-area: root; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-left: 8px; }
+.head-root .module-label, .root-row .module-label { margin-left: 4px; }
+/* the same picker in the Catalog, above the cards */
+.root-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
 /* the readout doubles as the way into the catalogue */
 .lcd {
-  flex: 1;
   min-width: 0;
   padding: 10px 18px 9px;
   border: 0;
@@ -287,7 +333,7 @@ main { max-width: 1480px; margin: 0 auto; padding: 4px 20px 24px; padding-bottom
 }
 .lcd p { margin-top: 2px; color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
 
-.tone-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.tone-chips { display: flex; flex-wrap: wrap; border-radius: 12px; justify-self: start; }
 .tone-chip {
   --c: var(--tone);
   display: grid;
@@ -316,8 +362,8 @@ main { max-width: 1480px; margin: 0 auto; padding: 4px 20px 24px; padding-bottom
 
 .fb-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; min-height: 36px; }
 .stepper { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-.box-chips { display: flex; gap: 6px; flex-wrap: wrap; }
-.box-chips .btn { min-width: 36px; padding: 0; }
+.box-chips { display: flex; flex-wrap: wrap; border-radius: 2rem; }
+.box-chips .btn { min-width: 34px; min-height: 30px; padding: 0; }
 
 /* chord diagrams wrap onto as many rows as they need */
 .voicings { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; min-width: 0; padding: 2px 2px 6px; }
@@ -358,7 +404,8 @@ main { max-width: 1480px; margin: 0 auto; padding: 4px 20px 24px; padding-bottom
 .fb-num { font-size: 8px; fill: var(--faint); }
 .fb-num.strong { fill: var(--muted); }
 .fb-hit { fill: transparent; cursor: pointer; }
-.fb-muted { font-size: 14px; fill: var(--muted); }
+/* a string not to play: a bold red cross */
+.fb-muted { fill: none; stroke: var(--mute); stroke-width: 3.2; stroke-linecap: round; filter: drop-shadow(0 0 3px var(--mute-glow)); pointer-events: none; }
 
 .mk { --c: var(--tone); cursor: pointer; }
 .mk-body { fill: var(--c); transition: transform 0.12s ease; transform-box: fill-box; transform-origin: center; }
@@ -446,7 +493,7 @@ main { max-width: 1480px; margin: 0 auto; padding: 4px 20px 24px; padding-bottom
 .cd-fret.nut { stroke: rgba(255, 255, 255, 0.6); stroke-width: 3; }
 .cd-string { stroke: rgba(255, 255, 255, 0.3); stroke-width: 1; }
 .cd-pos { font-size: 8px; fill: var(--muted); text-anchor: end; dominant-baseline: central; }
-.cd-mute { font-size: 9px; fill: var(--muted); text-anchor: middle; }
+.cd-mute { fill: none; stroke: var(--mute); stroke-width: 1.8; stroke-linecap: round; }
 .cd-open { fill: none; stroke: var(--text); stroke-width: 1.2; }
 .cd-open.root { stroke: var(--led); }
 .cd-dot { fill: var(--tone); }
@@ -471,6 +518,11 @@ main { max-width: 1480px; margin: 0 auto; padding: 4px 20px 24px; padding-bottom
 .link-chip.static { cursor: default; color: var(--faint); box-shadow: var(--sunken); background: transparent; }
 /* jazz chord glyphs (− Δ ø °) the pixel font lacks */
 .jz { font-family: Georgia, "Times New Roman", serif; font-weight: 700; font-size: 1.15em; line-height: 0; }
+
+/* a chord's quality (min, maj, dim, sus, add, −, Δ, ø, °) in a colour of its own, apart from the root:
+   white on the orange displays, orange on the white buttons */
+.q { color: var(--text); text-shadow: 0 0 6px rgba(255, 255, 255, 0.25); }
+.link-chip .q { color: var(--led); text-shadow: 0 0 4px var(--led-glow); }
 
 /* chord extensions as an index: Amin⁷, Cmaj⁷♯⁵ */
 sup.ext { font-size: 0.62em; line-height: 0; vertical-align: 0.62em; margin-left: 0.08em; }
@@ -517,9 +569,27 @@ sup.ext { font-size: 0.62em; line-height: 0; vertical-align: 0.62em; margin-left
   cursor: pointer;
 }
 .cat-card:hover { background-color: rgba(0, 0, 0, 0.5); }
+/* a chord card leads with its symbol, on a screen as tall as the card */
+.cat-card.chord { align-items: stretch; }
+.cat-symbol {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 124px;
+  min-height: 72px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: var(--screen);
+  box-shadow: var(--sunken);
+  color: var(--led);
+  text-shadow: 0 0 6px var(--led), 0 0 18px var(--led-glow);
+  line-height: 1;
+  white-space: nowrap;
+}
+.cat-card.chord .cat-body { align-content: center; }
 .cat-body { display: grid; gap: 5px; min-width: 0; }
-.cat-title { color: var(--text); font-size: 13px; }
-.cat-alias { color: var(--faint); }
+.cat-title { color: var(--text); font-size: 18px; line-height: 1.25; overflow-wrap: anywhere; }
+.cat-alias { color: var(--faint); font-size: 11px; }
 .cat-formula { display: flex; flex-wrap: wrap; gap: 3px; }
 .cat-formula i {
   font-style: normal;
@@ -537,7 +607,7 @@ sup.ext { font-size: 0.62em; line-height: 0; vertical-align: 0.62em; margin-left
 
 /* ------------------------------------------------------------- instruments */
 
-.inst-summary { flex-direction: column; align-items: flex-start; gap: 2px; min-height: 48px; padding: 6px 18px; border-radius: 14px; white-space: normal; text-align: left; }
+.inst-summary { flex-direction: column; align-items: flex-start; gap: 2px; min-height: 36px; padding: 4px 16px; border-radius: 12px; white-space: normal; text-align: left; }
 .inst-notes { color: var(--muted); font-size: 10px; }
 .inst-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 10px; align-items: start; }
 .inst-card {
@@ -610,14 +680,28 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
 
 /* ------------------------------------------------------------- small screens */
 
+/* narrower: the display with the instrument and Play, then the root, then the notes */
+@media (max-width: 1180px) {
+  .item-head {
+    grid-template-columns: var(--lcd-w) minmax(0, 1fr);
+    grid-template-areas: "lcd side" "root root" "chips chips";
+  }
+  .item-head .tone-chips, .head-root { margin-left: 0; }
+}
+
 @media (max-width: 640px) {
   .top { flex-wrap: wrap; gap: 10px; padding: 12px 12px 6px; }
   .brand-logo { height: 28px; }
-  .roots { grid-template-columns: repeat(6, minmax(0, 1fr)); width: 100%; }
-  .controls .module, .controls .module-row { width: 100%; }
-  .title-row { flex-wrap: wrap; }
-  .lcd { order: -1; flex-basis: 100%; }
-  .title-row .start { margin-left: auto; }
+  .roots { grid-template-columns: repeat(6, minmax(0, 1fr)); width: 100%; border-radius: 18px; }
+  .item-head {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "lcd" "root" "chips" "side";
+  }
+  .head-root .roots, .root-row .roots { width: 100%; }
+  .head-side { justify-self: stretch; }
+  .head-instrument { flex: 1; min-width: 0; }
+  .head-side .inst-summary { width: 100%; padding: 4px 12px; }
+  .finder-head .lcd { flex-basis: 100%; min-height: 0; }
   .nav { order: 3; width: 100%; gap: 6px; }
   .nav .btn { flex: 1; padding: 0 8px; }
   main { padding: 4px 12px 16px; }

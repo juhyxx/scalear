@@ -113,11 +113,16 @@ export function renderFretboard(o) {
     for (let f = st.from; f <= o.frets; f++) {
       const u1 = f === 0 ? -g.open : fretPos[f - 1];
       const u2 = f === 0 ? -2 : fretPos[f];
-      out.push(rect(u1, u2, s * g.sp - g.sp / 2, s * g.sp + g.sp / 2, `class="fb-hit" data-midi="${st.open + f - st.from}"`));
+      out.push(rect(u1, u2, s * g.sp - g.sp / 2, s * g.sp + g.sp / 2, `class="fb-hit" data-midi="${st.open + f - st.from}" data-pos="${s}:${f}"`));
     }
   });
 
-  for (const s of o.muted || []) out.push(text(along(o.strings[s].from), s * g.sp, '×', 'fb-muted'));
+  // Strings not to play: a bold cross where the open note would be.
+  for (const s of o.muted || []) {
+    const [x, y] = pt(along(o.strings[s].from), s * g.sp);
+    const d = g.r * 0.62;
+    out.push(`<path class="fb-muted" d="M${n(x - d)} ${n(y - d)}L${n(x + d)} ${n(y + d)}M${n(x - d)} ${n(y + d)}L${n(x + d)} ${n(y - d)}"/>`);
+  }
 
   // Root notes are squares, everything else round.
   const shape = (x, y, r, root, attrs) => (root

@@ -36,37 +36,47 @@ export function methodsFor(semis, neck) {
 
 // Boxes are computed on the full-length strings using their climbing "shape" pitches, so a
 // re-entrant ukulele gets the same shapes as a low-G one; pitches are then mapped back to real ones.
+// Every shape is shown wherever it fits on the neck, in every octave, and the positions are
+// numbered from the nut up, so the whole neck is covered whatever the root.
 export function positions(method, neck, rootPc, semis, maxFret) {
   const idx = neck.strings.map((_, i) => i).filter(i => !neck.strings[i].from);
   const shape = idx.map(i => neck.shape[i]);
   const boxes = method === 'caged'
     ? cagedPositions(shape, rootPc, semis, maxFret)
-    : npsPositions(shape, rootPc, semis, PER_STRING[method], maxFret);
+    : placeAll(npsShapes(shape, rootPc, semis, PER_STRING[method]), maxFret);
   return boxes.map(box => box.map(n => ({ s: idx[n.s], f: n.f, midi: neck.strings[idx[n.s]].open + n.f })));
 }
 
-// Shift a whole pattern by octaves so as many notes as possible land on the neck. Among equally
-// complete placements, prefer the lowest one that does not start below `floor`, so consecutive
-// positions climb the neck before wrapping back down.
-function placeOnNeck(notes, maxFret, floor = 0) {
-  let best = null;
-  for (const shift of [-24, -12, 0, 12, 24]) {
-    const moved = notes
-      .map(n => ({ ...n, f: n.f + shift, midi: n.midi + shift }))
-      .filter(n => n.f >= 0 && n.f <= maxFret);
-    if (!moved.length) continue;
-    const lo = Math.min(...moved.map(n => n.f));
-    const rank = moved.length * 2 + (lo >= floor ? 1 : 0);
-    if (!best || rank > best.rank) best = { rank, moved };
+// Every octave placement of each shape that keeps at least four fifths of it on the neck
+// (so a box cut short by the nut or the last fret still counts), lowest on the neck first.
+// A shape too wide for that anywhere still appears once, where most of it fits.
+function placeAll(shapes, maxFret) {
+  const out = [];
+  for (const notes of shapes) {
+    let best = [];
+    let found = false;
+    for (let shift = -24; shift <= maxFret + 12; shift += 12) {
+      const moved = notes
+        .map(n => ({ ...n, f: n.f + shift, midi: n.midi + shift }))
+        .filter(n => n.f >= 0 && n.f <= maxFret);
+      if (moved.length && moved.length * 5 >= notes.length * 4) {
+        out.push(moved);
+        found = true;
+      }
+      if (moved.length > best.length) best = moved;
+    }
+    if (!found && best.length) out.push(best);
   }
-  return best ? best.moved : [];
+  const lo = box => Math.min(...box.map(n => n.f));
+  const hi = box => Math.max(...box.map(n => n.f));
+  return out.sort((a, b) => lo(a) - lo(b) || hi(a) - hi(b));
 }
 
-// One position per scale degree: start that degree on the lowest string and climb, n notes per string.
-export function npsPositions(tuning, rootPc, semis, n, maxFret) {
+// One shape per scale degree: start that degree on the lowest string and climb, n notes per string.
+// Frets are relative to the lowest placement and may run past the end of the neck; placeAll moves them.
+export function npsShapes(tuning, rootPc, semis, n) {
   const k = semis.length;
   const steps = semis.map((s, i) => (i + 1 < k ? semis[i + 1] : 12) - s);
-  let floor = 0;
   return semis.map((_, start) => {
     let midi = tuning[0] + mod(rootPc + semis[start] - tuning[0], 12);
     let deg = start;
@@ -78,9 +88,7 @@ export function npsPositions(tuning, rootPc, semis, n, maxFret) {
         deg = (deg + 1) % k;
       }
     }
-    const placed = placeOnNeck(notes, maxFret, floor);
-    if (placed.length) floor = Math.min(...placed.map(n => n.f));
-    return placed;
+    return notes;
   });
 }
 
@@ -107,7 +115,7 @@ export function cagedPositions(tuning, rootPc, semis, maxFret) {
   const skeleton = pentatonicSkeleton(semis);
   if (!skeleton) return [];
   const pcs = new Set(semis.map(x => mod(rootPc + x, 12)));
-  return npsPositions(tuning, rootPc, skeleton, 2, maxFret).map(box => fillBox(box, tuning, pcs, maxFret));
+  return placeAll(npsShapes(tuning, rootPc, skeleton, 2), maxFret).map(box => fillBox(box, tuning, pcs, maxFret));
 }
 
 function fillBox(box, tuning, pcs, maxFret) {
