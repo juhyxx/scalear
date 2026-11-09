@@ -13,6 +13,7 @@ import { chordEgg } from './easter.js';
 
 let root = null;
 let vertical = false;
+let printing = false; // a printout always gets the neck lying down, across the page
 
 const SKELETON = `
   <div class="stage">
@@ -294,13 +295,16 @@ export function mountFinder(el) {
   root.innerHTML = SKELETON;
   root.addEventListener('click', onClick);
   const stage = root.querySelector('.stage');
-  // Same rule as Explore: a narrow screen gets the neck upright.
-  new ResizeObserver(() => {
+  // Same rule as Explore: a narrow screen gets the neck upright, a printout never does.
+  const decide = () => {
     if (!stage.clientWidth) return; // hidden view
-    const want = state.orientation === 'auto' ? stage.clientWidth < 620 : state.orientation === 'vertical';
+    const want = !printing && (state.orientation === 'auto' ? stage.clientWidth < 620 : state.orientation === 'vertical');
     if (want !== vertical) {
       vertical = want;
       renderFinder();
     }
-  }).observe(stage);
+  };
+  new ResizeObserver(decide).observe(stage);
+  window.addEventListener('beforeprint', () => { printing = true; decide(); });
+  window.addEventListener('afterprint', () => { printing = false; decide(); });
 }

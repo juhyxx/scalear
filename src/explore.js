@@ -45,6 +45,7 @@ let root = null;
 let current = null; // derived data of the last render
 let playing = false;
 let vertical = false;
+let printing = false; // a printout always gets the neck lying down, across the page
 
 const slot = name => root.querySelector(`[data-slot="${name}"]`);
 
@@ -514,13 +515,15 @@ export function mountExplore(el) {
   const stage = root.querySelector('.stage');
   const decide = () => {
     if (!stage.clientWidth) return; // hidden view
-    const want = state.orientation === 'auto' ? stage.clientWidth < 620 : state.orientation === 'vertical';
+    const want = !printing && (state.orientation === 'auto' ? stage.clientWidth < 620 : state.orientation === 'vertical');
     if (want !== vertical) {
       vertical = want;
       if (current) renderBoard(current);
     }
   };
   new ResizeObserver(decide).observe(stage);
+  window.addEventListener('beforeprint', () => { printing = true; decide(); });
+  window.addEventListener('afterprint', () => { printing = false; decide(); });
   vertical = state.orientation === 'vertical' || (state.orientation === 'auto' && stage.clientWidth > 0 && stage.clientWidth < 620);
   return decide;
 }

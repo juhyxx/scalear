@@ -28,6 +28,7 @@ The name is a pun: *scalare* is the angelfish in the logo, and the app is about 
 - **Catalog**: 85 scales (including the modes of major, melodic minor, harmonic minor, harmonic major and double harmonic, jazz pentatonics and Indian thaats), 52 chords (up to 13ths, altered dominants and 7alt) and 22 intervals, searchable, with notes spelled from the current root. Chord cards lead with the symbol.
 - **Chord search**: type a chord the way it's written on a chart, in either style, and it opens in that root: `Am7`, `C-7`, `F#^7`, `Bbø7` or `Bbh7`, `Eb7#9`, `G7alt`, `Co7`, `C+7`; with German note names `Fis-7` or `B7` (B♭7), with solfège `Re-7`. Keyboard stand-ins: `-` for −, `^` for Δ, `h` for ø, `o` for °.
 - **Cross-links**: a scale lists its diatonic triads and 7ths with roman numerals, plus the modes that share its notes. A chord lists the scales that fit it.
+- **Printing**: the browser's Print gives a clean page in ink on white: the app's controls are left out, the neck always lies across the page at full width (also from a phone), note markers become outlined dots with the root in colour, and boxes aren't split across pages. Works for Explore, the Catalog and the Finder.
 - **Shareable state**: the current view is kept in the URL hash, for example `#/explore?k=scale&id=dorian&r=D&v=boxes&b=2`. Position numbers count from the nut, so links made before positions covered the whole neck may open a different box.
 - **Keyboard**: `←` `→` change position or voicing, `[` `]` change item, `p` plays.
 

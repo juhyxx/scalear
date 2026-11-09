@@ -745,3 +745,98 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* ------------------------------------------------------------- print */
+
+/* Ink on white: the panel, glows and shadows go, the controls (which mean nothing on paper) are
+   hidden, and what is shown (title, notes, neck, diagrams, staff, wheel, info) is redrawn in print
+   colours. Note markers become outlined dots; the root keeps its colour, with a white label. */
+@media print {
+  @page { margin: 12mm; }
+
+  :root {
+    --panel: #fff;
+    --screen: #fff;
+    --text: #111;
+    --muted: #555;
+    --faint: #888;
+    --tone: #111;
+    --on-led: #111;
+    --led: #c56a00;
+    --led-glow: transparent;
+    --led-soft: rgba(197, 106, 0, 0.07);
+    --led-line: #b0b0b0;
+    --natural: #111;
+    --mute: #c62828;
+    --mute-glow: transparent;
+    --bg-button: none;
+    --bg-tile: none;
+    --raised: none;
+    --sunken: none;
+    --screen-shadow: none;
+    color-scheme: light;
+  }
+  html, body { background: #fff; }
+  body { color: #111; text-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body::before, .screen::after { display: none; }
+  * { text-shadow: none !important; }
+  main { max-width: none; padding: 0; }
+
+  /* app chrome and controls */
+  .top, .toast, dialog, .fav, .start, [data-act="clear"],
+  .head-root, .fb-labels, .fb-toolbar > .seg, .stepper, [data-slot="wheelMode"],
+  .catalog-head, .root-row, [data-slot="hint"], .finder-head + .block .fb-toolbar > .module-label { display: none !important; }
+
+  /* surfaces: no panels or buttons, just a hairline where a box helps */
+  .screen, .lcd, .cat-card, .egg, .voicing, .btn, .link-chip, .inst-summary, .cat-symbol, .tone-chips, .seg.keys, .roots {
+    background: none !important;
+    box-shadow: none !important;
+  }
+  .screen, .cat-card, .egg { border: 1px solid #ccc; }
+  .lcd { padding: 0; }
+  .lcd h2, .cat-symbol, .egg-title { color: var(--led); }
+  .tone-chips { border: 1px solid #ccc; }
+  .tone-chip.tone .tc-name, .tc-name { text-shadow: none; }
+  .btn, .link-chip { border: 1px solid #ccc; color: #111; min-height: 0; padding: 2px 10px; }
+  .inst-summary { border: 1px solid #ccc; }
+  .voicing { border: 1px solid #ddd; }
+  .voicing[aria-pressed="true"] { border: 2px solid var(--led); }
+  .cat-formula i { box-shadow: none; border: 1px solid #ddd; background: none; }
+  .q { color: #555; }
+  .link-chip .q { color: var(--led); }
+
+  /* the neck across the page */
+  .fb-scroll, .staff-scroll { overflow: visible; }
+  .fretboard.horizontal { width: 100%; height: auto; }
+  .fb-wood { fill: #fff; }
+  .fb-fret { stroke: #9a9a9a; }
+  .fb-fret.fretless { stroke: #bbb; }
+  .fb-string { stroke: #555; }
+  .fb-nut, .fb-peg { fill: #333; }
+  .fb-inlay { fill: #e2e2e2; }
+  .fb-band { fill: var(--led-soft); stroke: #999; }
+  .mk-body, .wk-body { stroke: #111; stroke-width: 0.9; filter: none !important; }
+  .mk.tone .mk-body, .wk.tone .wk-body { fill: #fff; }
+  .mk.root .mk-label, .wk.root .wk-label { fill: #fff; }
+  .mk.ghost { fill: #d6d6d6; }
+  .mk.ghost.root { fill: rgba(197, 106, 0, 0.45); }
+  .fb-muted, .egg-portrait, .cd-dot.root, .pc-root, .nh { filter: none !important; }
+
+  /* staff, wheel, chord diagrams and the catalogue's note circles */
+  .staff-line, .ledger { stroke: #777; }
+  .barline { stroke: #555; }
+  .clef { fill: #111; }
+  .wh-ring { stroke: #ccc; }
+  .cd-fret { stroke: #999; }
+  .cd-fret.nut { stroke: #111; }
+  .cd-string { stroke: #666; }
+  .pc-clock { box-shadow: none; border: 1px solid #ccc; }
+  .pc-off { fill: #ddd; }
+
+  /* keep things whole across pages; staff and wheel side by side to save paper */
+  .block, .info, .cat-card, .cat-item, .egg, .voicing, .item-head, .finder-head { break-inside: avoid; }
+  .cat-group h3 { break-after: avoid; }
+  .pair { grid-template-columns: minmax(0, 1fr) 200px; align-items: start; }
+  .pair:has([data-slot="staffCard"][hidden]) { grid-template-columns: 200px; }
+  .stage, .explore, .catalog { gap: 12px; }
+}
