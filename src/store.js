@@ -1,5 +1,5 @@
 // App state: one object, persisted to localStorage, with the current selection mirrored in the URL hash.
-import { buildItem, spellRoot, parseInterval, asciiName, LETTERS } from './theory.js';
+import { buildItem, spellRoot, asciiName, LETTERS } from './theory.js';
 import { findDef } from './catalog.js';
 
 const KEY = 'scalear:v1';
@@ -129,7 +129,7 @@ function parseRoot(str) {
 // automatic spelling stays when it already gives that root; otherwise ♯ or ♭ is pinned.
 export function spellingFor(def, rootPc, acc) {
   if (acc === 0) return state.spelling;
-  const auto = spellRoot(rootPc, 'auto', def.formula.split(' ').map(parseInterval));
+  const auto = spellRoot(rootPc, 'auto', def);
   const want = acc > 0 ? 'sharp' : 'flat';
   return state.spelling === 'auto' ? (Math.sign(auto.acc) === Math.sign(acc) ? 'auto' : want) : want;
 }

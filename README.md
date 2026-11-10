@@ -78,7 +78,7 @@ When adding a file, list it in `FILES` in [sw.js](sw.js); the deploy fails other
 
 | File | Purpose |
 | --- | --- |
-| [src/theory.js](src/theory.js) | Spelled notes, intervals, enharmonic root choice |
+| [src/theory.js](src/theory.js) | Spelled notes, intervals, key signatures, enharmonic root choice |
 | [src/catalog.js](src/catalog.js) | Scales, chords, intervals (data only) |
 | [src/instruments.js](src/instruments.js) | Instruments, tunings, and the neck model (short strings, re-entrant shapes) |
 | [src/boxes.js](src/boxes.js) | Position algorithms (N notes per string, CAGED) |

@@ -5,7 +5,7 @@ import {
   KINDS, groupsOf, itemTitleHtml, intervalName, chordSymbol, jazzGlyphs, kindLabel, nameOf, groupName,
   chordForSymbol, parseChord, chordSymbolParts,
 } from './catalog.js';
-import { buildItem, relativeSet, stepPattern, notePc, parseInterval } from './theory.js';
+import { buildItem, relativeSet, stepPattern, notePc } from './theory.js';
 import { renderPcClock } from './diagram.js';
 import { rootPicker } from './roots.js';
 import { esc, seg, icon, favButton } from './dom.js';
@@ -97,7 +97,7 @@ export function renderCatalog() {
   if (!root) return;
   root.querySelector('[data-slot="tabs"]').innerHTML = seg('tab', Object.keys(KINDS).map(k => [k, `${kindLabel(k)} <span class="count">${KINDS[k].list.length}</span>`]), state.catalogTab);
   // keys spelled as the major scale on each root would be
-  root.querySelector('[data-slot="root"]').innerHTML = rootPicker(KINDS.scale.list[0].formula.split(' ').map(parseInterval));
+  root.querySelector('[data-slot="root"]').innerHTML = rootPicker(KINDS.scale.list[0]);
   const rootName = buildItem(KINDS.scale.list[0], state.rootPc, state.spelling).name;
   root.querySelector('[data-slot="hint"]').textContent = t('cat.hint', { root: rootName });
   const input = root.querySelector('input[data-act="query"]');

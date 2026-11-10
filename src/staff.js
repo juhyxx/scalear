@@ -1,6 +1,6 @@
 // SVG staff notation. Staff lines are 10 units apart; a diatonic step is 5 units.
 // Callers pass written pitches (guitar and bass are written an octave above sounding pitch).
-import { staffStep } from './theory.js';
+import { staffStep, keyAcc } from './theory.js';
 
 const GAP = 10;
 const HALF = GAP / 2;
@@ -75,6 +75,13 @@ const ACCIDENTALS = {
 };
 const ACC_WIDTH = { 1: 9, [-1]: 8, 0: 7, 2: 10, [-2]: 14 };
 
+// Key signature: the order sharps and flats are added in, and where each sits on the treble staff
+// (the alto clef has them an octave lower, the bass clef two).
+const SIG_SHARPS = [[3, 5], [0, 5], [4, 5], [1, 5], [5, 4], [2, 5], [6, 4]]; // F C G D A E B
+const SIG_FLATS = [[6, 4], [2, 5], [5, 4], [1, 5], [4, 4], [0, 5], [3, 4]]; // B E A D G C F
+const SIG_OCTAVE = { treble: 0, alto: -1, bass: -2 };
+const SIG_STEP = { 1: 9, [-1]: 8 };
+
 // Whole note: outer ellipse with a tilted inner hole (even-odd fill).
 function noteHead(x, y) {
   const rx = 6.4;
@@ -93,6 +100,7 @@ function noteHead(x, y) {
  * @param {object} o
  * @param {'treble'|'alto'|'bass'} o.clef
  * @param {boolean} [o.octave]  draw the "8" of an octave-transposing clef
+ * @param {number|null} [o.key]  key signature, −7 (seven flats) … 7 (seven sharps); none when absent
  * @param {Array<{notes: Array<{letter:number,acc:number,octave:number,midi:number,sound:number,cls?:string,name?:string,label?:string}>}>} o.columns
  *   Each column is one beat: a single note (melodic) or several (a chord). `midi` is written, `sound` sounding.
  * @param {number[]} [o.bars]  column indexes before which a barline is drawn
@@ -111,8 +119,17 @@ export function renderStaff(o) {
 
   const out = [];
   const cols = [];
-  const seen = new Map(); // letter+octave → last accidental shown, for courtesy naturals
-  let x = 52;
+  const key = o.key || 0;
+  const seen = new Map(); // letter+octave → accidental in force since it was last shown in the bar
+  const sign = Math.sign(key);
+  const sigX = i => 44 + i * SIG_STEP[sign];
+  if (key) {
+    (key > 0 ? SIG_SHARPS : SIG_FLATS).slice(0, Math.abs(key)).forEach(([letter, octave], i) => {
+      const y = yOf((octave + SIG_OCTAVE[o.clef]) * 7 + letter);
+      out.push(`<g class="acc" transform="translate(${sigX(i)},${y})">${ACCIDENTALS[sign]}</g>`);
+    });
+  }
+  let x = key ? sigX(Math.abs(key) - 1) + 12 : 52;
   const bars = new Set(o.bars || []);
   const barXs = [];
 
@@ -129,11 +146,12 @@ export function renderStaff(o) {
     for (let i = 1; i < notes.length; i++) {
       if (staffStep(notes[i]) - staffStep(notes[i - 1]) === 1 && !shifted[i - 1]) shifted[i] = true;
     }
-    // Accidentals: which ones to print, then stack into columns so they don't collide.
+    // Accidentals: a note shows one where it differs from the key signature or from an accidental
+    // earlier in the bar on the same line or space; then they stack into columns so they don't collide.
     const accs = notes.map(nt => {
-      const key = `${nt.letter}:${nt.octave}`;
-      const prev = seen.has(key) ? seen.get(key) : 0;
-      return nt.acc !== 0 || prev !== 0 ? nt.acc : null;
+      const id = `${nt.letter}:${nt.octave}`;
+      const inForce = seen.has(id) ? seen.get(id) : keyAcc(key, nt.letter);
+      return nt.acc !== inForce ? nt.acc : null;
     });
     notes.forEach(nt => seen.set(`${nt.letter}:${nt.octave}`, nt.acc));
     const accCol = notes.map(() => -1);

@@ -6,11 +6,11 @@ import { spellRoot, noteName } from './theory.js';
 import { esc, seg } from './dom.js';
 import { t } from './i18n.js';
 
-// intervals: the shown item's, so automatic spelling names the keys the way that item is spelled.
-export function rootPicker(intervals) {
+// def: the shown item, so automatic spelling names the keys the way that item is spelled.
+export function rootPicker(def) {
   const keys = [];
   for (let pc = 0; pc < 12; pc++) {
-    const n = spellRoot(pc, state.spelling, intervals);
+    const n = spellRoot(pc, state.spelling, def);
     keys.push(`<button type="button" class="btn root-chip${n.acc ? '' : ' natural'}" data-act="root" data-val="${pc}" aria-pressed="${pc === state.rootPc}">${noteName(n)}</button>`);
   }
   const spelling = seg('spelling', [

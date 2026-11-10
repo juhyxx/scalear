@@ -74,13 +74,50 @@ function spellingCost(root, intervals) {
   }, 0);
 }
 
-// pref: 'auto' picks whichever enharmonic root spells the item with fewer accidentals.
-export function spellRoot(pc, pref, intervals) {
+// Key signatures are counted on the line of fifths: 0 is C major, 2 is two sharps (D major),
+// −3 three flats (E♭ major); beyond ±7 the key would need double sharps or flats.
+const FIFTHS = [0, 2, 4, -1, 1, 3, 5]; // C D E F G A B
+const fifths = note => FIFTHS[note.letter] + 7 * note.acc;
+
+// The accidental a key signature gives a letter: a key holds the seven notes from one fifth below
+// its tonic to five above.
+export const keyAcc = (key, letter) => Math.ceil((key - 1 - FIFTHS[letter]) / 7) || 0;
+
+// The key signature a scale is written in. A diatonic mode (its seven notes are neighbours on the
+// line of fifths) takes its parent major key: D Dorian has none. Any other scale takes its tonic's
+// major or minor key, whichever needs fewer accidentals in the scale. A minor key's raised 6th and
+// 7th don't count against it, as they are part of minor (harmonic and melodic minor stay minor);
+// then fewer accidentals in all decide, and then the 3rd.
+export function keySignature(root, intervals) {
+  const notes = intervals.map(iv => transpose(root, iv));
+  const f = [...new Set(notes.map(fifths))];
+  const lo = Math.min(...f);
+  if (f.length === 7 && Math.max(...f) - lo === 6) return lo + 1;
+  const major = fifths(root);
+  const minor = major - 3;
+  if (notes.length === 12) return major; // chromatic
+  const off = key => notes.map((n, i) => n.acc !== keyAcc(key, n.letter) ? intervals[i].id : null).filter(Boolean);
+  const offMajor = off(major);
+  const offMinor = off(minor);
+  const diff = offMajor.length - offMinor.filter(id => id !== '6' && id !== '7').length || offMajor.length - offMinor.length;
+  if (diff) return diff < 0 ? major : minor;
+  return intervals.some(iv => iv.id === '3') || !intervals.some(iv => iv.id === 'b3') ? major : minor;
+}
+
+// pref: 'auto' picks the enharmonic root whose key has fewer sharps or flats (scales: G♯ harmonic
+// minor, not A♭), or else whichever spells the item with fewer accidentals.
+export function spellRoot(pc, pref, def) {
   const sharp = sharpNote(pc);
   const flat = flatNote(pc);
   if (sharp.acc === 0) return sharp;
   if (pref === 'sharp') return sharp;
   if (pref === 'flat') return flat;
+  const intervals = def.formula.split(' ').map(parseInterval);
+  if (def.kind === 'scale') {
+    const s = Math.abs(keySignature(sharp, intervals));
+    const fl = Math.abs(keySignature(flat, intervals));
+    if (s !== fl) return fl < s ? flat : sharp;
+  }
   return spellingCost(flat, intervals) < spellingCost(sharp, intervals) ? flat : sharp;
 }
 
@@ -96,14 +133,16 @@ export const midiFreq = midi => 440 * 2 ** ((midi - 69) / 12);
 
 export function buildItem(def, rootPc, pref) {
   const intervals = def.formula.split(' ').map(parseInterval);
-  const root = spellRoot(rootPc, pref, intervals);
+  const root = spellRoot(rootPc, pref, def);
   const tones = intervals.map((iv, index) => {
     const note = transpose(root, iv);
     return { index, iv, note, pc: notePc(note), name: noteName(note) };
   });
   const byPc = new Map();
   for (const t of tones) if (!byPc.has(t.pc)) byPc.set(t.pc, t);
-  return { def, root, rootPc, tones, byPc, name: noteName(root) };
+  // only scales are written with a key signature; past seven sharps or flats the rest are accidentals
+  const key = def.kind === 'scale' ? Math.max(-7, Math.min(7, keySignature(root, intervals))) : null;
+  return { def, root, rootPc, tones, byPc, key, name: noteName(root) };
 }
 
 // Sorted pitch classes relative to the root, octave-folded and de-duplicated.

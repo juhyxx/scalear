@@ -360,6 +360,8 @@ export const KINDS = {
   chord: { list: CHORDS },
   interval: { list: INTERVALS },
 };
+// Each entry knows its kind, so spelling can treat scales by key (see theory.spellRoot).
+for (const [kind, { list }] of Object.entries(KINDS)) for (const def of list) def.kind = kind;
 
 // ---------- display text, translated where a translation exists
 

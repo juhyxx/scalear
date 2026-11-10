@@ -7,7 +7,7 @@ import {
 } from './catalog.js';
 import { makeNeck, pitchAt, instrumentName, tuningName } from './instruments.js';
 import {
-  buildItem, relativeSet, stepPattern, spellMidi, parseInterval, sharpNote, flatNote,
+  buildItem, relativeSet, stepPattern, spellMidi, sharpNote, flatNote,
   noteName, mod, sameSet, accText, ROMAN,
 } from './theory.js';
 import { methodLabel, methodHint, methodsFor, positions, fretSpan } from './boxes.js';
@@ -179,7 +179,7 @@ const toggle = (act, on, label) =>
   `<label class="btn toggle"><input type="checkbox" data-act="${act}"${on ? ' checked' : ''}>${label}</label>`;
 
 function renderControls(d) {
-  slot('root').innerHTML = rootPicker(d.def.formula.split(' ').map(parseInterval));
+  slot('root').innerHTML = rootPicker(d.def);
 
   const ghostLabel = d.box ? t('ex.outside') : d.voicing ? t('ex.otherTones') : '';
   slot('labels').innerHTML = seg('labels', [['note', t('ex.labelNotes')], ['interval', t('ex.labelIntervals')], ['none', t('ex.labelNone')]], state.labels, 'keys') +
@@ -279,7 +279,7 @@ function renderNotation(d) {
   card.hidden = !state.staff;
   if (!state.staff) return;
   slot('staffNote').textContent = d.staffNote;
-  slot('staff').innerHTML = renderStaff({ clef: d.clef, octave: d.neck.transpose === 12, columns: d.columns, bars: d.bars, label: t('ex.notation') });
+  slot('staff').innerHTML = renderStaff({ clef: d.clef, octave: d.neck.transpose === 12, key: d.item.key, columns: d.columns, bars: d.bars, label: t('ex.notation') });
 }
 
 function renderWheel(d) {
