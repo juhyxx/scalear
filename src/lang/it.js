@@ -121,6 +121,16 @@ add('it', {
   'fd.chords': 'Accordi che contengono queste note',
   'fd.scales': 'Scale che contengono queste note',
 
+  'bd.title': 'Costruisci un accordo',
+  'bd.type': 'Tipo',
+  'bd.ext': 'Estensione',
+  'bd.add': 'Note aggiunte',
+  'bd.alt': 'Alterazioni',
+  'bd.bass': 'Basso',
+  'bd.voicing': 'Diteggiatura {n} di {m}',
+  'bd.noVoicing': 'Nessuna diteggiatura suonabile su questo manico.',
+  'bd.place': 'Metti questa diteggiatura sul manico',
+
   'inst.current': 'Suoni {inst}, {tuning} ({notes}). Scegli un’accordatura per cambiare.',
   'inst.strings': '{n, plural, one {# corda} other {# corde}}',
   'inst.fretless': 'senza tasti',

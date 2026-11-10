@@ -48,7 +48,8 @@ function card(kind, def, root = null) {
   const title = kind === 'scale' ? esc(nameOf(kind, def)) : itemTitleHtml(kind, item, state.chordStyle);
   const alias = kind === 'scale' && def.aliases ? `<span class="cat-alias"> · ${esc(def.aliases.join(', '))}</span>` : '';
   const rootData = root ? ` data-pc="${root.pc}" data-spelling="${root.spelling}"` : '';
-  // A chord is shown by its symbol, as big as the card allows; scales and intervals by their note circle.
+  // A chord is shown by its symbol, as big as the card allows, with its note circle at the end
+  // (under the star); scales and intervals lead with their note circle.
   const visual = kind === 'chord' ? symbolScreen(item, title) : renderPcClock(set);
   const fav = isFavorite(kind, def.id);
   return `<div class="cat-item"><button type="button" class="cat-card${kind === 'chord' ? ' chord' : ''}" data-act="open" data-kind="${kind}" data-id="${def.id}"${rootData}>
@@ -58,7 +59,7 @@ function card(kind, def, root = null) {
       <span class="cat-formula">${item.tones.map(tone => `<i>${tone.iv.label}</i>`).join('')}</span>
       <span class="cat-notes">${item.tones.map(tone => tone.name).join(' ')}</span>
       <span class="cat-meta">${jazzGlyphs(esc(meta))}</span>
-    </span></button>${favButton(fav, kind, def.id, t(fav ? 'fav.remove' : 'fav.add'))}</div>`;
+    </span>${kind === 'chord' ? renderPcClock(set) : ''}</button>${favButton(fav, kind, def.id, t(fav ? 'fav.remove' : 'fav.add'))}</div>`;
 }
 
 const section = (title, cards, count = '') =>

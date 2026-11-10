@@ -122,6 +122,16 @@ add('en', {
   'fd.chords': 'Chords that contain these notes',
   'fd.scales': 'Scales that contain these notes',
 
+  'bd.title': 'Build a chord',
+  'bd.type': 'Type',
+  'bd.ext': 'Extension',
+  'bd.add': 'Addition',
+  'bd.alt': 'Alterations',
+  'bd.bass': 'Bass',
+  'bd.voicing': 'Voicing {n} of {m}',
+  'bd.noVoicing': 'No playable voicing on this neck.',
+  'bd.place': 'Put this voicing on the neck',
+
   'inst.current': 'Playing {inst}, {tuning} ({notes}). Pick a tuning to switch.',
   'inst.strings': '{n, plural, one {# string} other {# strings}}',
   'inst.fretless': 'fretless',

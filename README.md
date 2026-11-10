@@ -83,6 +83,7 @@ When adding a file, list it in `FILES` in [sw.js](sw.js); the deploy fails other
 | [src/instruments.js](src/instruments.js) | Instruments, tunings, and the neck model (short strings, re-entrant shapes) |
 | [src/boxes.js](src/boxes.js) | Position algorithms (N notes per string, CAGED) |
 | [src/voicings.js](src/voicings.js) | Chord voicing search and ranking |
+| [src/builder.js](src/builder.js) | The Finder's chord builder: type, extension, alterations, bass and omissions to a chord |
 | [src/fretboard.js](src/fretboard.js), [src/staff.js](src/staff.js), [src/diagram.js](src/diagram.js) | SVG renderers |
 | [src/audio.js](src/audio.js) | Sampled jazz guitar, with a Karplus–Strong plucked string as the stand-in |
 | [src/store.js](src/store.js) | State, localStorage, URL hash |

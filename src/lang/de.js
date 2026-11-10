@@ -121,6 +121,16 @@ add('de', {
   'fd.chords': 'Akkorde, die diese Töne enthalten',
   'fd.scales': 'Tonleitern, die diese Töne enthalten',
 
+  'bd.title': 'Akkord bauen',
+  'bd.type': 'Typ',
+  'bd.ext': 'Erweiterung',
+  'bd.add': 'Zusatztöne',
+  'bd.alt': 'Alterationen',
+  'bd.bass': 'Bass',
+  'bd.voicing': 'Griff {n} von {m}',
+  'bd.noVoicing': 'Auf diesem Hals nicht spielbar.',
+  'bd.place': 'Diesen Griff auf den Hals legen',
+
   'inst.current': 'Du spielst {inst}, {tuning} ({notes}). Wähle eine Stimmung zum Wechseln.',
   'inst.strings': '{n, plural, one {# Saite} other {# Saiten}}',
   'inst.fretless': 'bundlos',

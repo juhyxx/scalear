@@ -252,6 +252,26 @@ main { max-width: var(--page-w); margin: 0 auto; padding: 4px 20px 24px; padding
 .finder-head .lcd { flex: 0 1 var(--lcd-w, 340px); min-height: 76px; cursor: default; }
 .finder-head .lcd:hover { box-shadow: var(--screen-shadow); }
 .finder-actions { display: flex; gap: 10px; margin-left: auto; }
+
+/* the Finder's chord builder: a label beside each row of keys, the chord it makes at the bottom */
+.builder { gap: 14px; }
+.build-toggle { justify-self: start; }
+.build-toggle::after { /* a triangle that points down when the builder is open */
+  content: "";
+  width: 9px;
+  height: 6px;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transition: transform 0.15s ease;
+}
+.build-toggle[aria-expanded="false"]::after { transform: rotate(-90deg); }
+.build-grid { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 10px 14px; align-items: center; }
+.build-cell { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; min-width: 0; }
+.build-keys { display: flex; flex-wrap: wrap; border-radius: 18px; }
+.build-keys > .btn { min-height: 30px; padding: 0 10px; }
+.build-alts { display: flex; flex-wrap: wrap; gap: 8px; }
+.build-result { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.build-name { min-height: 40px; font-size: 18px; }
 .btn:disabled { opacity: 0.4; cursor: default; }
 
 /* favorite star: an outline, filled and lit once starred */
@@ -305,15 +325,15 @@ main { max-width: var(--page-w); margin: 0 auto; padding: 4px 20px 24px; padding
 
 /* Grouped keys: one recessed strip holding flat keys, the chosen one raised and lit. Used for the
    root picker, the accidentals, the scale's notes, the labels and the position selector. */
-.roots, .seg.keys, .tone-chips, .box-chips {
+.roots, .seg.keys, .tone-chips, .box-chips, .build-keys {
   gap: 2px;
   padding: 3px;
   background: var(--screen);
   box-shadow: var(--sunken);
 }
-.roots > button, .seg.keys > button, .tone-chips > button, .box-chips > button { background: transparent; box-shadow: none; }
-.roots > button:hover, .seg.keys > button:hover, .tone-chips > button:hover, .box-chips > button:hover { background: rgba(255, 255, 255, 0.06); }
-.roots > button[aria-pressed="true"], .seg.keys > button[aria-pressed="true"], .box-chips > button[aria-pressed="true"] {
+.roots > button, .seg.keys > button, .tone-chips > button, .box-chips > button, .build-keys > button { background: transparent; box-shadow: none; }
+.roots > button:hover, .seg.keys > button:hover, .tone-chips > button:hover, .box-chips > button:hover, .build-keys > button:hover { background: rgba(255, 255, 255, 0.06); }
+.roots > button[aria-pressed="true"], .seg.keys > button[aria-pressed="true"], .box-chips > button[aria-pressed="true"], .build-keys > button[aria-pressed="true"] {
   background: var(--bg-button);
   box-shadow: var(--raised);
   color: var(--led);
@@ -475,6 +495,8 @@ main { max-width: var(--page-w); margin: 0 auto; padding: 4px 20px 24px; padding
 .mk.d7 { --c: var(--d7); }
 .mk.ghost { fill: rgba(255, 255, 255, 0.13); }
 .mk.ghost.root { fill: hsla(39, 100%, 55%, 0.45); }
+/* coloured by degree, the tones outside the position or voicing keep their colour, dimmed */
+.mk.ghost:is(.d2, .d3, .d4, .d5, .d6, .d7) { fill: var(--c); fill-opacity: 0.45; }
 .mk.playing .mk-body { transform: scale(1.25); filter: drop-shadow(0 0 8px var(--c)) drop-shadow(0 0 3px var(--c)); }
 .fretboard.vertical .mk-label { font-size: 11px; }
 .fretboard.vertical .mk-label.small { font-size: 9px; }
@@ -640,7 +662,10 @@ sup.ext { font-size: 0.62em; line-height: 0; vertical-align: 0.62em; margin-left
   line-height: 1;
   white-space: nowrap;
 }
-.cat-card.chord .cat-body { align-content: center; }
+.cat-card.chord .cat-body { flex: 1; align-content: center; }
+/* its note circle sits in the star's column, at the bottom */
+.cat-item > .cat-card.chord { padding-right: 12px; }
+.cat-card.chord .pc-clock { align-self: flex-end; }
 .cat-body { display: grid; gap: 5px; min-width: 0; }
 .cat-title { color: var(--text); font-size: 18px; line-height: 1.25; overflow-wrap: anywhere; }
 .cat-alias { color: var(--faint); font-size: 11px; }
@@ -765,6 +790,8 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
   .item-head .tone-chips { margin-left: 0; }
   .head-root .roots, .root-row .roots { width: 100%; }
   .finder-head .lcd { flex-basis: 100%; min-height: 0; }
+  .build-grid { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .build-grid > .build-cell:not(:last-child) { margin-bottom: 6px; }
   .nav { order: 3; width: 100%; gap: 6px; }
   /* Settings stays up by the logo; the instrument and Play get a line of their own under the menu */
   .top:has(.top-view:not([hidden])) .top-actions { margin-left: auto; }
@@ -823,7 +850,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
   /* app chrome and controls; of the top bar only the instrument is kept */
   .brand, .nav, .top-actions, .toast, dialog, .fav, .start, [data-act="clear"],
   .head-root, .fb-labels, .fb-toolbar > .seg, .stepper, [data-slot="wheelMode"],
-  .catalog-head, .root-row, [data-slot="hint"], #finder .fb-toolbar { display: none !important; }
+  .catalog-head, .root-row, [data-slot="hint"], #finder .fb-toolbar, .builder { display: none !important; }
   .top { max-width: none; padding: 0 0 8px; }
   .top-view { margin-left: 0; }
 

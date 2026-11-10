@@ -121,6 +121,16 @@ add('zh', {
   'fd.chords': '包含这些音的和弦',
   'fd.scales': '包含这些音的音阶',
 
+  'bd.title': '构建和弦',
+  'bd.type': '类型',
+  'bd.ext': '扩展音',
+  'bd.add': '附加音',
+  'bd.alt': '变化音',
+  'bd.bass': '低音',
+  'bd.voicing': '指法 {n} / {m}',
+  'bd.noVoicing': '此琴颈上没有可弹的指法。',
+  'bd.place': '把这个指法放到琴颈上',
+
   'inst.current': '当前：{inst}，{tuning}（{notes}）。选择一种定弦即可切换。',
   'inst.strings': '{n} 弦',
   'inst.fretless': '无品',

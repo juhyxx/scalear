@@ -121,6 +121,16 @@ add('pt-BR', {
   'fd.chords': 'Acordes que contêm estas notas',
   'fd.scales': 'Escalas que contêm estas notas',
 
+  'bd.title': 'Montar um acorde',
+  'bd.type': 'Tipo',
+  'bd.ext': 'Extensão',
+  'bd.add': 'Notas adicionadas',
+  'bd.alt': 'Alterações',
+  'bd.bass': 'Baixo',
+  'bd.voicing': 'Voicing {n} de {m}',
+  'bd.noVoicing': 'Nenhum voicing tocável neste braço.',
+  'bd.place': 'Colocar este voicing no braço',
+
   'inst.current': 'Você toca {inst}, {tuning} ({notes}). Escolha uma afinação para trocar.',
   'inst.strings': '{n, plural, one {# corda} other {# cordas}}',
   'inst.fretless': 'sem trastes',

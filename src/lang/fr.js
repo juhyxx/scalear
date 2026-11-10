@@ -121,6 +121,16 @@ add('fr', {
   'fd.chords': 'Accords qui contiennent ces notes',
   'fd.scales': 'Gammes qui contiennent ces notes',
 
+  'bd.title': 'Construire un accord',
+  'bd.type': 'Type',
+  'bd.ext': 'Extension',
+  'bd.add': 'Notes ajoutées',
+  'bd.alt': 'Altérations',
+  'bd.bass': 'Basse',
+  'bd.voicing': 'Doigté {n} sur {m}',
+  'bd.noVoicing': 'Aucun doigté jouable sur ce manche.',
+  'bd.place': 'Mettre ce doigté sur le manche',
+
   'inst.current': 'Vous jouez : {inst}, {tuning} ({notes}). Choisissez un accordage pour changer.',
   'inst.strings': '{n, plural, one {# corde} other {# cordes}}',
   'inst.fretless': 'sans frettes',

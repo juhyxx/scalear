@@ -1,12 +1,17 @@
 // Finder view: tap notes on the neck, one per string, and it names what they make: the interval
 // between two notes, the chords with exactly these notes, the chords and scales that contain them.
+// Or build a chord (type, extension, additions, alterations, bass) and it is put on the neck.
 // Every result opens in Explore.
 import { state, set, spellingFor } from './store.js';
-import { SCALES, CHORDS, INTERVALS, chordSymbolHtml, nameOf } from './catalog.js';
+import { SCALES, CHORDS, INTERVALS, chordSymbol, chordSymbolHtml, jazzGlyphs, nameOf } from './catalog.js';
 import { makeNeck, pitchAt, instrumentName, tuningName } from './instruments.js';
 import { buildItem, relativeSet, mod, sharpNote, flatNote, noteName, parseInterval, transpose } from './theory.js';
 import { renderFretboard } from './fretboard.js';
-import { esc } from './dom.js';
+import { renderChordDiagram } from './diagram.js';
+import { findVoicings } from './voicings.js';
+import { TYPES, EXTENSIONS, ADDITIONS, ALTERABLE, typeOf, extAllowed, extLabel, addAllowed, altAllowed, altDirs, tidy, buildDef } from './builder.js';
+import { rootPicker } from './roots.js';
+import { esc, icon } from './dom.js';
 import { t } from './i18n.js';
 import * as audio from './audio.js';
 import { chordEgg } from './easter.js';
@@ -29,7 +34,9 @@ const SKELETON = `
       <section class="block board">
         <div class="fb-toolbar"><span class="module-label" data-i18n="fd.hint"></span></div>
         <div class="screen fb-screen"><div class="fb-scroll" data-slot="fretboard"></div></div>
+        <div class="fb-labels module-row wrap" data-slot="labels"></div>
       </section>
+      <section class="block builder" data-slot="builder"></section>
     </div>
     <div class="stage-side">
       <section class="block info" data-slot="results"></section>
@@ -148,9 +155,106 @@ function spelled(kind, def, pc) {
 const OUTSIDE = ['1', 'b2', '2', 'b3', '3', '4', '#4', '5', 'b6', '6', 'b7', '7'];
 function toneIn(item, pc) {
   const tone = item.byPc.get(pc);
-  if (tone) return { name: tone.name, label: tone.iv.label };
+  if (tone) return { name: tone.name, label: tone.iv.label, degree: tone.iv.degree };
   const iv = parseInterval(OUTSIDE[mod(pc - item.rootPc, 12)]);
-  return { name: noteName(transpose(item.root, iv)), label: iv.label };
+  return { name: noteName(transpose(item.root, iv)), label: iv.label, degree: iv.degree };
+}
+
+// ---------- chord builder
+
+// A bass note named as the chord spells it, or else sharp or flat the way the chord leans.
+function bassName(item, pc) {
+  const tone = item.byPc.get(pc);
+  if (tone) return tone.name;
+  const flats = item.tones.some(x => x.note.acc < 0);
+  return noteName((flats ? flatNote : sharpNote)(pc));
+}
+
+const positionsOf = v => v.frets.map((f, s) => (f >= 0 ? `${s}:${f}` : null)).filter(Boolean);
+const samePositions = (a, b) => a.length === b.length && a.every(p => b.includes(p));
+
+// The chord the builder describes, in a root, with its voicings on this neck.
+function built(neck, b = state.build, rootPc = state.rootPc, spelling = state.spelling) {
+  const def = buildDef(b);
+  const item = buildItem(def, rootPc, spelling);
+  const bassPc = mod(rootPc + (b.bass || 0), 12);
+  const voicings = findVoicings(neck, state.frets, item, bassPc);
+  const index = Math.min(b.voicing || 0, Math.max(0, voicings.length - 1));
+  const slash = bassPc !== rootPc ? `/${bassName(item, bassPc)}` : '';
+  return { def, item, bassPc, neck, voicings, index, voicing: voicings[index] || null, label: item.name + chordSymbolHtml(def, state.chordStyle) + slash };
+}
+
+// A changed builder puts the chord's first voicing (or the one asked for) on the neck, and plays it.
+function place(patch, extra = {}) {
+  const neck = makeNeck(state.instrument, state.tuning, state.custom[state.instrument]);
+  const build = tidy({ ...state.build, voicing: 0, ...patch });
+  const b = built(neck, build, extra.rootPc ?? state.rootPc, extra.spelling ?? state.spelling);
+  set({ ...extra, build: { ...build, voicing: b.index }, finder: b.voicing ? positionsOf(b.voicing) : [] });
+  if (b.voicing) audio.playSequence([b.voicing.frets.map((f, s) => (f >= 0 ? pitchAt(neck.strings[s], f) : null)).filter(m => m !== null)], state.tempo, () => {});
+}
+
+// Keys in a recessed strip, as for the root: [value, label, pressed, disabled, title]
+const keys = (act, options, cls = 'build-keys') => `<div class="${cls}" role="group">${options.map(([v, label, on, off, title]) =>
+  `<button type="button" class="btn" data-act="${act}" data-val="${esc(v)}" aria-pressed="${Boolean(on)}"${off ? ' disabled' : ''}${title ? ` title="${esc(title)}"` : ''}>${label}</button>`).join('')}</div>`;
+
+// a type's key shows its symbol on one line (an index would be too small to read on a key)
+const typeLabel = type => (type.symbol ? jazzGlyphs(esc(chordSymbol({ symbol: type.symbol.replace('#', '7') }, state.chordStyle))) : 'M');
+
+function renderBuilder(b) {
+  const s = state.build;
+  const toggle = `<button type="button" class="btn build-toggle" data-act="b-open" aria-expanded="${s.open}">${esc(t('bd.title'))}</button>`;
+  if (!s.open) return toggle;
+  const type = typeOf(s.type);
+  const row = (label, html) => `<span class="module-label">${esc(label)}</span><div class="build-cell">${html}</div>`;
+
+  // a ♭9 or ♯9 only once the chord has a 9th, and so on (see builder.altAllowed); pressing a lit
+  // key again switches it off
+  const alts = ALTERABLE.map(d => keys('b-alt', [-1, 1].map(dir =>
+    [`${d}:${dir}`, (dir < 0 ? '♭' : '♯') + d, altAllowed(s, d) && altDirs(s, d).includes(dir), !altAllowed(s, d)]))).join('');
+  // the bass: the root, another chord tone (an inversion) or any other note (a slash chord)
+  const bass = Array.from({ length: 12 }, (_, i) => {
+    const pc = mod(b.item.rootPc + i, 12);
+    const name = bassName(b.item, pc);
+    return `<button type="button" class="btn root-chip${/[♯♭]/.test(name) ? '' : ' natural'}" data-act="b-bass" data-val="${i}" aria-pressed="${i === s.bass}">${name}</button>`;
+  }).join('');
+
+  const count = b.voicings.length;
+  const result = count
+    ? `<div class="stepper">
+        <button type="button" class="btn icon" data-act="b-voicing" data-val="-1" aria-label="${esc(t('ex.prev'))}">${icon.prev}</button>
+        <span class="module-label nowrap">${esc(t('bd.voicing', { n: b.index + 1, m: count }))}</span>
+        <button type="button" class="btn icon" data-act="b-voicing" data-val="1" aria-label="${esc(t('ex.next'))}">${icon.next}</button></div>`
+    : `<p class="module-label">${esc(t('bd.noVoicing'))}</p>`;
+  // The chord's notes with their intervals, as under the root in Explore (coloured by degree when
+  // that's on); tapping one plays it.
+  const seen = new Set();
+  const chips = b.item.tones.filter(x => !seen.has(x.pc) && seen.add(x.pc)).map(x => {
+    const root = x.iv.semis === 0;
+    const cls = root ? 'root' : state.colorize ? `d${x.iv.degree}` : 'tone';
+    return `<button type="button" class="tone-chip ${cls}" data-act="b-tone" data-val="${48 + b.item.rootPc + x.iv.semis}" title="${esc(t('ex.playNote', { note: x.name }))}">
+      <span class="tc-iv">${root ? 'R' : x.iv.label}</span><span class="tc-name">${x.name}</span></button>`;
+  }).join('');
+  // every voicing as a chord diagram, as in Explore; tapping one puts it on the neck
+  const tab = v => v.frets.map((f, s) => (f < 0 ? '×' : f === b.neck.strings[s].from ? 0 : f));
+  const diagrams = count ? `<div class="voicings">${b.voicings.map((v, i) => `
+    <button type="button" class="voicing" data-act="b-pick" data-val="${i}" aria-pressed="${i === b.index}" aria-label="${esc(t('ex.voicing', { frets: tab(v).join(' ') }))}">
+      ${renderChordDiagram(v.frets, b.neck.strings, b.item.rootPc, state.lefty)}</button>`).join('')}</div>` : '';
+
+  return `${toggle}
+    <div class="build-grid">
+      ${row(t('ex.root'), `<div class="root-row">${rootPicker(b.def)}</div>`)}
+      <span></span><div class="build-cell"><div class="tone-chips">${chips}</div></div>
+      ${row(t('bd.type'), keys('b-type', TYPES.map(x => [x.id, typeLabel(x), x.id === s.type])))}
+      ${row(t('bd.ext'), keys('b-ext', EXTENSIONS.map(x => [x, extLabel(x), x === s.ext, !extAllowed(type, x)])))}
+      ${row(t('bd.add'), keys('b-add', ADDITIONS.map(n => [n, `add${n}`, addAllowed(s, n) && s.add.includes(n), !addAllowed(s, n)])))}
+      ${row(t('bd.alt'), `<div class="build-alts">${alts}</div>`)}
+      ${row(t('bd.bass'), `<div class="roots" role="group">${bass}</div>`)}
+    </div>
+    <div class="build-result">
+      <button type="button" class="btn link-chip build-name" data-act="b-place" title="${esc(t('bd.place'))}"><span>${b.label}</span></button>
+      ${result}
+    </div>
+    ${diagrams}`;
 }
 
 function chordLabel(x, bass) {
@@ -192,7 +296,7 @@ function reading(res) {
   const m = res.matches[0];
   if (m) {
     const { item } = spelled('chord', m.def, m.root);
-    return { note: pc => toneIn(item, pc).name, degree: pc => toneIn(item, pc).label };
+    return { item, note: pc => toneIn(item, pc).name, degree: pc => toneIn(item, pc).label, step: pc => toneIn(item, pc).degree };
   }
   if (res.bass === null) return null;
   const rel = res.pcs.map(pc => mod(pc - res.bass, 12)).sort((a, b) => a - b);
@@ -201,8 +305,11 @@ function reading(res) {
   const cost = bass => ivs.reduce((sum, iv) => sum + Math.abs(transpose(bass, iv).acc), 0);
   const options = { sharp: [sharpNote(res.bass)], flat: [flatNote(res.bass)] }[state.spelling] || [sharpNote(res.bass), flatNote(res.bass)];
   const bass = options.reduce((a, b) => (cost(b) < cost(a) ? b : a));
-  const byPc = new Map(rel.map((x, i) => [mod(res.bass + x, 12), { name: noteName(transpose(bass, ivs[i])), label: ivs[i].label }]));
-  return { bassName: noteName(bass), ids, labels: ivs.map(iv => iv.label), note: pc => byPc.get(pc).name, degree: pc => byPc.get(pc).label };
+  const byPc = new Map(rel.map((x, i) => [mod(res.bass + x, 12), { name: noteName(transpose(bass, ivs[i])), label: ivs[i].label, degree: ivs[i].degree }]));
+  return {
+    bassName: noteName(bass), ids, labels: ivs.map(iv => iv.label),
+    note: pc => byPc.get(pc).name, degree: pc => byPc.get(pc).label, step: pc => byPc.get(pc).degree,
+  };
 }
 
 export function renderFinder() {
@@ -210,13 +317,26 @@ export function renderFinder() {
   const neck = makeNeck(state.instrument, state.tuning, state.custom[state.instrument]);
   const notes = selection(neck);
   const res = analyse(notes);
-  const read = reading(res);
+  // While the neck holds the builder's voicing, the chord is named and spelled as built.
+  const b = built(neck);
+  const shown = b.voicing && samePositions(positionsOf(b.voicing), state.finder);
+  const read = shown
+    ? {
+      item: b.item,
+      note: pc => (pc === b.bassPc ? bassName(b.item, pc) : toneIn(b.item, pc).name),
+      degree: pc => toneIn(b.item, pc).label,
+      step: pc => toneIn(b.item, pc).degree,
+    }
+    : reading(res);
   const name = pc => read.note(pc);
+  slot('builder').innerHTML = renderBuilder(b);
 
   // Readout: the best name for what is selected (the bass and its intervals when the catalogue has
   // none), then the notes low to high with the degree each one is.
   let title = '—';
-  if (res.pcs.length === 2 && res.interval.length) {
+  if (shown) {
+    title = b.label;
+  } else if (res.pcs.length === 2 && res.interval.length) {
     // a tritone is a ♯4 or a ♭5 as the notes are spelled
     const iv = res.interval.find(d => read.ids && d.formula.split(' ')[1] === read.ids[1]) || res.interval[0];
     title = esc(nameOf('interval', iv));
@@ -237,9 +357,26 @@ export function renderFinder() {
   top.querySelector('[data-slot="instrument"]').innerHTML = `<button type="button" class="btn inst-summary" data-act="instruments" title="${esc(t('ex.changeInstrument'))}">
     <span class="inst-name">${esc(parts.join(' · '))}</span><span class="inst-notes">${neck.strings.map(st => st.name).join(' ')}</span></button>`;
 
-  // The lowest note is drawn as the root square; once a shape is started, unplayed strings get a ×.
-  const markers = notes.map((n, i) => ({ s: n.s, f: n.f, midi: n.midi, label: name(mod(n.midi, 12)), cls: i === 0 ? 'root' : 'tone' }));
+  // The chord's root is drawn as the square (the bass when no chord is named), the other notes by
+  // degree when colouring is on; once a shape is started, unplayed strings get a ×.
+  const cls = pc => (read.step(pc) === 1 ? 'root' : state.colorize ? `d${read.step(pc)}` : 'tone');
+  const markers = notes.map(n => ({ s: n.s, f: n.f, midi: n.midi, label: name(mod(n.midi, 12)), cls: cls(mod(n.midi, 12)) }));
   const muted = notes.length ? neck.strings.map((_, s) => s).filter(s => !notes.some(n => n.s === s)) : [];
+  // The chord's other tones elsewhere on the neck, as in Explore (tapping one moves that string's
+  // note there); a muted string's open note stays a ×.
+  if (notes.length && state.ghosts) {
+    const pcs = new Set(read.item ? read.item.tones.map(x => x.pc) : res.pcs);
+    const taken = new Set(notes.map(n => `${n.s}:${n.f}`));
+    neck.strings.forEach((str, s) => {
+      for (let f = str.from; f <= state.frets; f++) {
+        const midi = pitchAt(str, f);
+        if (midi === null || !pcs.has(mod(midi, 12)) || taken.has(`${s}:${f}`) || (f === str.from && muted.includes(s))) continue;
+        markers.push({ s, f, midi, label: '', cls: cls(mod(midi, 12)), ghost: true });
+      }
+    });
+  }
+  const toggle = (act, on, label) => `<label class="btn toggle"><input type="checkbox" data-act="${act}"${on ? ' checked' : ''}>${esc(label)}</label>`;
+  slot('labels').innerHTML = toggle('colorize', state.colorize, t('ex.colorize')) + toggle('ghosts', state.ghosts, t('ex.otherTones'));
   slot('fretboard').innerHTML = renderFretboard({
     strings: neck.strings, fretless: neck.fretless, frets: state.frets, vertical, lefty: state.lefty,
     markers, muted, label: t('ex.fretboard'),
@@ -280,6 +417,35 @@ function onClick(e) {
         return audio.playSequence([...midis.map(m => [m]), midis], state.tempo, () => {});
       }
       case 'instruments': set({ view: 'instruments' }); return window.scrollTo({ top: 0 });
+      // the chord builder
+      case 'b-open': return set({ build: { ...state.build, open: !state.build.open } });
+      case 'b-place': return place({ voicing: state.build.voicing });
+      case 'b-pick': return place({ voicing: Number(act.dataset.val) });
+      case 'b-tone': return audio.playNote(Number(act.dataset.val));
+      case 'root': return place({}, { rootPc: Number(act.dataset.val) });
+      case 'spelling': return place({}, { spelling: act.dataset.val });
+      // (place() drops an extension or alteration that no longer fits)
+      case 'b-type': return place({ type: typeOf(act.dataset.val).id });
+      // pressing the lit extension again switches it off, as for additions and alterations
+      case 'b-ext': return place({ ext: act.dataset.val === state.build.ext ? '' : act.dataset.val });
+      case 'b-add': {
+        const n = Number(act.dataset.val);
+        return place({ add: state.build.add.includes(n) ? state.build.add.filter(x => x !== n) : [...state.build.add, n] });
+      }
+      case 'b-alt': {
+        // each key on its own: ♭9 and ♯9 can both be on (7♭9♯9, 7alt)
+        const [d, dir] = act.dataset.val.split(':').map(Number);
+        const dirs = altDirs(state.build, d);
+        const next = dirs.includes(dir) ? dirs.filter(x => x !== dir) : [...dirs, dir];
+        const alt = { ...state.build.alt, [d]: next };
+        if (!next.length) delete alt[d];
+        return place({ alt });
+      }
+      case 'b-bass': return place({ bass: Number(act.dataset.val) });
+      case 'b-voicing': {
+        const count = built(neck).voicings.length;
+        return count && place({ voicing: mod(state.build.voicing + Number(act.dataset.val), count) });
+      }
       case 'open': {
         audio.stop();
         const { kind, id } = act.dataset;
@@ -303,6 +469,11 @@ export function mountFinder(el, topEl) {
   // the instrument (filled on render) and Play; display: contents keeps them items of the top bar
   top.innerHTML = `<div class="top-slot" data-slot="instrument"></div><button type="button" class="btn start" data-act="play" data-i18n="ex.play"></button>`;
   root.addEventListener('click', onClick);
+  // the neck's toggles, shared with Explore
+  root.addEventListener('change', e => {
+    const act = e.target.dataset.act;
+    if (act === 'colorize' || act === 'ghosts') set({ [act]: e.target.checked });
+  });
   top.addEventListener('click', onClick);
   const stage = root.querySelector('.stage');
   // Same rule as Explore: a narrow screen gets the neck upright, a printout never does.

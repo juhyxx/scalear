@@ -1,5 +1,5 @@
 // Chord voicing finder. A voicing is { frets: [neck fret | -1 per string], pos, score }.
-// Rules: root as the lowest sounding pitch (except on re-entrant tunings, which have no real bass
+// Rules: root (or the given bass) as the lowest sounding pitch (except on re-entrant tunings, which have no real bass
 // string), every required tone present, at most one muted string inside the sounding range, four
 // frets of stretch and four fingers (a barre on the lowest fret counts as one).
 // Strings are { open, from }: a short string's "open" is its starting fret.
@@ -27,11 +27,14 @@ function fingersNeeded(frets, strings) {
   return 1 + fretted.filter(s => frets[s] > minF).length;
 }
 
-export function findVoicings(neck, maxFret, item) {
+// bassPc: the lowest note, the root unless it's an inversion or a chord over another bass (which
+// then sounds as well).
+export function findVoicings(neck, maxFret, item, bassPc = item.rootPc) {
   const { strings } = neck;
   const S = strings.length;
-  const tonePcs = new Set(item.tones.map(t => t.pc));
+  const tonePcs = new Set([...item.tones.map(t => t.pc), bassPc]);
   const optional = optionalPcs(item);
+  optional.delete(bassPc);
   const required = [...tonePcs].filter(pc => !optional.has(pc));
   const minStrings = tonePcs.size <= 2 ? 2 : Math.min(S >= 6 ? 4 : 3, S);
   const maxStrings = item.def.maxStrings || S;
@@ -42,7 +45,7 @@ export function findVoicings(neck, maxFret, item) {
     frets.forEach((f, s) => f >= 0 && sounding.push(s));
     if (sounding.length < minStrings || sounding.length > maxStrings) return;
     const pitches = sounding.map(s => pitchAt(strings[s], frets[s]));
-    if (!neck.reentrant && mod(Math.min(...pitches), 12) !== item.rootPc) return;
+    if (!neck.reentrant && mod(Math.min(...pitches), 12) !== bassPc) return;
     const gaps = sounding[sounding.length - 1] - sounding[0] + 1 - sounding.length;
     if (gaps > 1) return;
     const present = new Set(pitches.map(p => mod(p, 12)));

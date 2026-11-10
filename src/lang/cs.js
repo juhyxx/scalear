@@ -121,6 +121,16 @@ add('cs', {
   'fd.chords': 'Akordy, které tyto tóny obsahují',
   'fd.scales': 'Stupnice, které tyto tóny obsahují',
 
+  'bd.title': 'Sestavit akord',
+  'bd.type': 'Typ',
+  'bd.ext': 'Rozšíření',
+  'bd.add': 'Přidané tóny',
+  'bd.alt': 'Alterace',
+  'bd.bass': 'Bas',
+  'bd.voicing': 'Hmat {n} z {m}',
+  'bd.noVoicing': 'Na tomto hmatníku se hrát nedá.',
+  'bd.place': 'Dát tento hmat na hmatník',
+
   'inst.current': 'Hraješ na: {inst}, {tuning} ({notes}). Ladění změníš výběrem níže.',
   'inst.strings': '{n, plural, one {# struna} few {# struny} other {# strun}}',
   'inst.fretless': 'bez pražců',

@@ -121,6 +121,16 @@ add('es', {
   'fd.chords': 'Acordes que contienen estas notas',
   'fd.scales': 'Escalas que contienen estas notas',
 
+  'bd.title': 'Construir un acorde',
+  'bd.type': 'Tipo',
+  'bd.ext': 'Extensión',
+  'bd.add': 'Notas añadidas',
+  'bd.alt': 'Alteraciones',
+  'bd.bass': 'Bajo',
+  'bd.voicing': 'Digitación {n} de {m}',
+  'bd.noVoicing': 'No hay digitación tocable en este mástil.',
+  'bd.place': 'Poner esta digitación en el mástil',
+
   'inst.current': 'Tocas {inst}, {tuning} ({notes}). Elige una afinación para cambiar.',
   'inst.strings': '{n, plural, one {# cuerda} other {# cuerdas}}',
   'inst.fretless': 'sin trastes',

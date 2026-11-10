@@ -154,7 +154,7 @@ export function renderFretboard(o) {
     const attrs = `data-midi="${m.midi}" data-pos="${m.s}:${m.f}"`;
     const root = m.cls === 'root';
     if (m.ghost) {
-      out.push(shape(x, y, g.r * 0.36, root, `class="mk ghost${root ? ' root' : ''}" ${attrs}`));
+      out.push(shape(x, y, g.r * 0.36, root, `class="mk ghost ${m.cls}" ${attrs}`));
       continue;
     }
     const size = m.label.length > 2 ? ' small' : '';

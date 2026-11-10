@@ -1,6 +1,7 @@
 // App state: one object, persisted to localStorage, with the current selection mirrored in the URL hash.
 import { buildItem, spellRoot, asciiName, LETTERS } from './theory.js';
 import { findDef } from './catalog.js';
+import { DEFAULT_BUILD, migrateBuild } from './builder.js';
 
 const KEY = 'scalear:v1';
 
@@ -24,6 +25,7 @@ const DEFAULTS = {
   colorize: false,
   catalogTab: 'scale',
   finder: [], // Finder's tapped notes, as "string:fret"
+  build: DEFAULT_BUILD, // Finder's chord builder (see builder.js)
   favorites: [], // starred items, as "kind:id" (scale:dorian, chord:m7), in the order they were starred
   query: '',
   // instrument
@@ -62,7 +64,7 @@ function load() {
   // A Keys view was tried and removed: a browser left on it would start on a view that's gone.
   if (!['explore', 'catalog', 'finder', 'instruments'].includes(saved.view)) delete saved.view;
   for (const k of ['keyMode', 'keyChords', 'progression', 'keyArea', 'keyStep']) delete saved[k];
-  return { ...DEFAULTS, ...saved };
+  return { ...DEFAULTS, ...saved, build: migrateBuild({ ...DEFAULT_BUILD, ...saved.build }) };
 }
 
 export const state = load();
