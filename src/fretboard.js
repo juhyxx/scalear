@@ -4,9 +4,11 @@
 const INLAYS = [3, 5, 7, 9, 15, 17, 19, 21];
 const DOUBLE_INLAYS = [12, 24];
 
+// marks: the strip along the low string's edge holding the side dots (dot: their radius);
+// side: the margin past the edge with nothing beside it
 const GEOMETRY = {
-  h: { sp: 32, r: 12.5, fret: 66, ratio: 0.962, open: 46, names: 22, end: 14, side: 10, numbers: 24 },
-  v: { sp: 52, r: 16, fret: 60, ratio: 0.966, open: 50, names: 24, end: 14, side: 12, numbers: 26 },
+  h: { sp: 32, r: 12.5, fret: 66, ratio: 0.962, open: 46, names: 22, end: 14, side: 10, marks: 10, dot: 2.2, numbers: 20 },
+  v: { sp: 52, r: 16, fret: 60, ratio: 0.966, open: 50, names: 24, end: 14, side: 12, marks: 11, dot: 2.6, numbers: 24 },
 };
 
 /**
@@ -31,16 +33,24 @@ export function renderFretboard(o) {
   const edge = g.sp * 0.55;
   const start = g.names + g.open;
   const along = f => (f === 0 ? -g.open / 2 : (fretPos[f - 1] + fretPos[f]) / 2);
+  // Beside the neck: the side dots along the low string's edge, as on a real neck; the fret numbers
+  // above a neck lying down, and past the dots on an upright one. low and high are the strips past
+  // the low and the high string.
+  const marks = o.fretless ? 0 : g.marks; // a fretless neck has no side dots
+  const dotsAt = -edge - marks / 2;
+  const numbersAt = o.vertical ? -edge - marks - g.numbers / 2 : across + edge + g.numbers / 2;
+  const low = o.vertical ? marks + g.numbers : Math.max(marks, g.side);
+  const high = o.vertical ? g.side : g.numbers;
 
   let W, H, pt;
   if (!o.vertical) {
     W = start + neck + g.end;
-    H = g.side + across + 2 * edge + g.numbers;
-    pt = (u, v) => [o.lefty ? W - (start + u) : start + u, g.side + edge + across - v];
+    H = high + across + 2 * edge + low;
+    pt = (u, v) => [o.lefty ? W - (start + u) : start + u, high + edge + across - v];
   } else {
-    W = g.numbers + across + 2 * edge + g.side;
+    W = low + across + 2 * edge + high;
     H = start + neck + g.end;
-    pt = (u, v) => [o.lefty ? W - (g.numbers + edge + v) : g.numbers + edge + v, start + u];
+    pt = (u, v) => [o.lefty ? W - (low + edge + v) : low + edge + v, start + u];
   }
 
   const n = x => Math.round(x * 10) / 10;
@@ -103,9 +113,20 @@ export function renderFretboard(o) {
     }
   });
 
+  // Side dots on the edge of the neck, as players see them: one at the inlaid frets, two side by side
+  // at the 12th and 24th.
+  if (marks) {
+    for (const f of INLAYS) if (f <= o.frets) out.push(circle(along(f), dotsAt, g.dot, 'class="fb-side"'));
+    for (const f of DOUBLE_INLAYS) {
+      if (f > o.frets) continue;
+      out.push(circle(along(f) - g.dot * 1.7, dotsAt, g.dot, 'class="fb-side"'));
+      out.push(circle(along(f) + g.dot * 1.7, dotsAt, g.dot, 'class="fb-side"'));
+    }
+  }
+
   for (let i = 1; i <= o.frets; i++) {
     const strong = INLAYS.includes(i) || DOUBLE_INLAYS.includes(i);
-    out.push(text(along(i), -edge - g.numbers / 2, i, strong ? 'fb-num strong' : 'fb-num'));
+    out.push(text(along(i), numbersAt, i, strong ? 'fb-num strong' : 'fb-num'));
   }
 
   // Invisible hit areas so any fret position can be tapped to hear it.

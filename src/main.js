@@ -34,6 +34,7 @@ function applyLanguage() {
 
 function showView() {
   for (const v of VIEWS) $(`#${v}`).hidden = state.view !== v;
+  document.querySelectorAll('[data-top]').forEach(el => (el.hidden = el.dataset.top !== state.view));
   document.querySelectorAll('[data-nav]').forEach(a => {
     a.setAttribute('aria-current', a.dataset.nav === state.view ? 'page' : 'false');
     if (a.dataset.nav === state.view) a.href = hashFor();
@@ -53,10 +54,10 @@ function render(patch = null) {
 
 function start() {
   Object.assign(state, readHash());
-  const decideOrientation = mountExplore($('#explore'));
+  const decideOrientation = mountExplore($('#explore'), $('#exploreTop'));
   mountCatalog($('#catalog'));
   mountInstruments($('#instruments'));
-  mountFinder($('#finder'));
+  mountFinder($('#finder'), $('#finderTop'));
   mountSettings($('#settings'), $('#settingsBtn'));
   applyLanguage();
 

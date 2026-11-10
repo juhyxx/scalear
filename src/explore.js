@@ -46,6 +46,7 @@ const SKELETON = `
   </div>`;
 
 let root = null;
+let top = null; // this view's part of the top bar: the instrument and Play
 let current = null; // derived data of the last render
 let playing = false;
 let vertical = false;
@@ -184,11 +185,12 @@ function renderControls(d) {
   slot('labels').innerHTML = seg('labels', [['note', t('ex.labelNotes')], ['interval', t('ex.labelIntervals')], ['none', t('ex.labelNone')]], state.labels, 'keys') +
     toggle('colorize', state.colorize, t('ex.colorize')) + (ghostLabel ? toggle('ghosts', state.ghosts, ghostLabel) : '');
 
-  // Instrument and tuning rarely change, so Explore only shows what's in use; the Instruments view sets it.
+  // Instrument and tuning rarely change, so Explore only shows what's in use, in the top bar beside
+  // Play and Settings; the Instruments view sets it.
   const { neck } = d;
   const parts = [instrumentName(neck.instrument), tuningName(neck.instrument, neck.tuning), state.lefty ? t('ex.leftHanded') : null].filter(Boolean);
-  slot('instrument').innerHTML = `<button type="button" class="btn inst-summary" data-act="instruments" title="${esc(t('ex.changeInstrument'))}">
-    <span>${esc(parts.join(' · '))}</span><span class="inst-notes">${neck.strings.map(st => st.name).join(' ')}</span></button>`;
+  top.innerHTML = `<button type="button" class="btn inst-summary" data-act="instruments" title="${esc(t('ex.changeInstrument'))}">
+    <span class="inst-name">${esc(parts.join(' · '))}</span><span class="inst-notes">${neck.strings.map(st => st.name).join(' ')}</span></button>${playButton()}`;
 }
 
 const playButton = () =>
@@ -207,15 +209,14 @@ function renderHead(d) {
     `<button type="button" class="tone-chip ${toneClass(tone)}" data-act="tone" data-val="${tone.index}" title="${esc(t('ex.playNote', { note: tone.name }))}">
       <span class="tc-iv">${isRoot(tone) ? 'R' : tone.iv.label}</span><span class="tc-name">${tone.name}</span></button>`).join('');
 
-  // The display, with the root and accidentals beside it on top, and the notes, instrument and Play under those.
-  // (The [ and ] keys step through the catalogue.)
+  // The display, with the root and accidentals beside it on top and the notes under those; the
+  // instrument and Play are in the top bar. (The [ and ] keys step through the catalogue.)
   slot('head').innerHTML = `
     <button type="button" class="lcd" data-act="browse" title="${esc(t('ex.browse'))}">
       <h2>${itemTitleHtml(kind, item, state.chordStyle)}</h2>
       <p>${jazzGlyphs(esc(sub))}</p>
     </button>
     <div class="tone-chips">${chips}</div>
-    <div class="head-side"><div class="head-instrument" data-slot="instrument"></div>${playButton()}</div>
     ${favButton(isFavorite(kind, def.id), kind, def.id, t(isFavorite(kind, def.id) ? 'fav.remove' : 'fav.add'))}
     <div class="head-root" data-slot="root"></div>`;
 }
@@ -429,7 +430,7 @@ function togglePlay() {
 
 function setPlaying(on) {
   playing = on;
-  root.querySelector('[data-act="play"]')?.replaceWith(document.createRange().createContextualFragment(playButton()));
+  top.querySelector('[data-act="play"]')?.replaceWith(document.createRange().createContextualFragment(playButton()));
 }
 
 function stopPlayback() {
@@ -510,10 +511,13 @@ function onKey(e) {
   }
 }
 
-export function mountExplore(el) {
+// el: the view; topEl: its part of the top bar
+export function mountExplore(el, topEl) {
   root = el;
+  top = topEl;
   root.innerHTML = SKELETON;
   root.addEventListener('click', onClick);
+  top.addEventListener('click', onClick);
   root.addEventListener('change', onChange);
   document.addEventListener('keydown', onKey);
   const stage = root.querySelector('.stage');

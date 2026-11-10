@@ -88,6 +88,7 @@ h2, h3, h4, p { margin: 0; font-weight: inherit; }
 
 .top {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 16px 20px;
   max-width: var(--page-w);
@@ -99,6 +100,14 @@ h2, h3, h4, p { margin: 0; font-weight: inherit; }
 .brand-logo { display: block; height: 34px; width: auto; filter: drop-shadow(0 -1px 1px black) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5)); }
 .nav { display: flex; gap: 8px; }
 .top-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+/* The shown view's instrument and Play, in one row with Settings. Where the row is too narrow they
+   wrap onto the next line together, Settings included; a phone gives them a line of their own. */
+.top-view { display: flex; align-items: center; gap: 10px; min-width: 0; margin-left: auto; }
+.top:has(.top-view:not([hidden])) .top-actions { margin-left: 0; }
+.top-slot { display: contents; }
+.top-view .inst-summary { max-width: 320px; min-width: 0; }
+.top-view .start { min-height: 40px; }
+.inst-name { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ------------------------------------------------------------- controls */
 
@@ -243,7 +252,6 @@ main { max-width: var(--page-w); margin: 0 auto; padding: 4px 20px 24px; padding
 .finder-head .lcd { flex: 0 1 var(--lcd-w, 340px); min-height: 76px; cursor: default; }
 .finder-head .lcd:hover { box-shadow: var(--screen-shadow); }
 .finder-actions { display: flex; gap: 10px; margin-left: auto; }
-.finder-inst { margin-left: auto; }
 .btn:disabled { opacity: 0.4; cursor: default; }
 
 /* favorite star: an outline, filled and lit once starred */
@@ -315,8 +323,9 @@ main { max-width: var(--page-w); margin: 0 auto; padding: 4px 20px 24px; padding
 
 /* root picker: twelve keys (two rows of six on a phone); natural notes white, sharps and flats grey */
 .roots { display: grid; grid-template-columns: repeat(12, minmax(32px, 1fr)); border-radius: 2rem; }
-.roots .btn { min-height: 30px; padding: 0 4px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.roots .btn { min-height: 34px; padding: 0 4px; color: var(--muted); font-size: 16px; font-variant-numeric: tabular-nums; }
 .roots .btn.natural { color: var(--natural); }
+.roots .btn[aria-pressed="true"] { color: var(--led); } /* the chosen root is lit, natural or not */
 
 /* custom tuning: one stepper per string */
 .tuner { display: flex; gap: 6px; }
@@ -335,20 +344,20 @@ main { max-width: var(--page-w); margin: 0 auto; padding: 4px 20px 24px; padding
 
 /* ------------------------------------------------------------- item header */
 
-/* The display, then the root and accidentals on top, with the notes, instrument and Play under them.
-   The display has a fixed width so nothing moves while stepping through the catalogue. */
+/* The display, then the root and accidentals on top, with the notes under them (the instrument and
+   Play are in the top bar). The display has a fixed width so nothing moves while stepping through
+   the catalogue. */
 .item-head {
   --lcd-w: 340px;
   display: grid;
-  grid-template-columns: var(--lcd-w) minmax(0, 1fr) auto;
-  grid-template-areas: "lcd root root" "lcd chips side";
+  grid-template-columns: var(--lcd-w) minmax(0, 1fr);
+  grid-template-areas: "lcd root" "lcd chips";
   gap: 10px;
   align-items: center;
 }
 .item-head .lcd { grid-area: lcd; align-self: stretch; }
 .item-head .tone-chips { grid-area: chips; margin-left: 8px; }
 .item-head .tone-chip { min-width: 46px; }
-.head-side { grid-area: side; display: flex; align-items: center; gap: 10px; justify-self: end; }
 .head-root { grid-area: root; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-left: 8px; }
 .head-root .module-label, .root-row .module-label { margin-left: 4px; }
 /* the same picker in the Catalog, above the cards */
@@ -445,6 +454,7 @@ main { max-width: var(--page-w); margin: 0 auto; padding: 4px 20px 24px; padding
 .fb-string { stroke: rgba(255, 255, 255, 0.3); }
 .fb-sname { font-size: 10px; fill: var(--muted); }
 .fb-sub { font-size: 7px; fill: var(--faint); }
+.fb-side { fill: var(--muted); }
 .fb-num { font-size: 8px; fill: var(--faint); }
 .fb-num.strong { fill: var(--muted); }
 .fb-hit { fill: transparent; cursor: pointer; }
@@ -738,13 +748,10 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
 
 /* ------------------------------------------------------------- small screens */
 
-/* narrower: the display with the instrument and Play, then the root, then the notes */
+/* narrower: the display with the notes beside it, then the root under both */
 @media (max-width: 1180px) {
-  .item-head {
-    grid-template-columns: var(--lcd-w) minmax(0, 1fr);
-    grid-template-areas: "lcd side" "root root" "chips chips";
-  }
-  .item-head .tone-chips, .head-root { margin-left: 0; }
+  .item-head { grid-template-areas: "lcd chips" "root root"; }
+  .head-root { margin-left: 0; }
 }
 
 @media (max-width: 640px) {
@@ -753,14 +760,16 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
   .roots { grid-template-columns: repeat(6, minmax(0, 1fr)); width: 100%; border-radius: 18px; }
   .item-head {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "lcd" "root" "chips" "side";
+    grid-template-areas: "lcd" "root" "chips";
   }
+  .item-head .tone-chips { margin-left: 0; }
   .head-root .roots, .root-row .roots { width: 100%; }
-  .head-side { justify-self: stretch; }
-  .head-instrument { flex: 1; min-width: 0; }
-  .head-side .inst-summary { width: 100%; padding: 4px 12px; }
   .finder-head .lcd { flex-basis: 100%; min-height: 0; }
   .nav { order: 3; width: 100%; gap: 6px; }
+  /* Settings stays up by the logo; the instrument and Play get a line of their own under the menu */
+  .top:has(.top-view:not([hidden])) .top-actions { margin-left: auto; }
+  .top-view { order: 4; width: 100%; margin-left: 0; }
+  .top-view .inst-summary { flex: 1; max-width: none; padding: 4px 12px; }
   .nav .btn { flex: 1; padding: 0 8px; }
   main { padding: 4px 12px 16px; }
   .explore, .stage { gap: 16px; }
@@ -811,10 +820,12 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
   * { text-shadow: none !important; }
   main { max-width: none; padding: 0; }
 
-  /* app chrome and controls */
-  .top, .toast, dialog, .fav, .start, [data-act="clear"],
+  /* app chrome and controls; of the top bar only the instrument is kept */
+  .brand, .nav, .top-actions, .toast, dialog, .fav, .start, [data-act="clear"],
   .head-root, .fb-labels, .fb-toolbar > .seg, .stepper, [data-slot="wheelMode"],
-  .catalog-head, .root-row, [data-slot="hint"], .finder-head + .block .fb-toolbar > .module-label { display: none !important; }
+  .catalog-head, .root-row, [data-slot="hint"], #finder .fb-toolbar { display: none !important; }
+  .top { max-width: none; padding: 0 0 8px; }
+  .top-view { margin-left: 0; }
 
   /* surfaces: no panels or buttons, just a hairline where a box helps */
   .screen, .lcd, .cat-card, .egg, .voicing, .btn, .link-chip, .inst-summary, .cat-symbol, .tone-chips, .seg.keys, .roots {

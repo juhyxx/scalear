@@ -12,6 +12,7 @@ import * as audio from './audio.js';
 import { chordEgg } from './easter.js';
 
 let root = null;
+let top = null; // this view's part of the top bar: the instrument and Play, as in Explore
 let vertical = false;
 let printing = false; // a printout always gets the neck lying down, across the page
 
@@ -22,12 +23,11 @@ const SKELETON = `
       <div class="lcd static" data-slot="readout"></div>
       <div class="finder-actions">
         <button type="button" class="btn" data-act="clear" data-i18n="fd.clear"></button>
-        <button type="button" class="btn start" data-act="play" data-i18n="ex.play"></button>
       </div>
     </header>
     <div class="stage-main">
       <section class="block board">
-        <div class="fb-toolbar"><span class="module-label" data-i18n="fd.hint"></span><div class="finder-inst" data-slot="instrument"></div></div>
+        <div class="fb-toolbar"><span class="module-label" data-i18n="fd.hint"></span></div>
         <div class="screen fb-screen"><div class="fb-scroll" data-slot="fretboard"></div></div>
       </section>
     </div>
@@ -231,11 +231,11 @@ export function renderFinder() {
   const sub = notes.length ? `${pcsOf.map(name).join(' ')} · ${pcsOf.map(pc => read.degree(pc)).join(' ')}` : t('fd.empty');
   slot('readout').innerHTML = `<h2>${title}</h2><p>${esc(sub)}</p>`;
   root.querySelector('[data-act="clear"]').disabled = !notes.length;
-  root.querySelector('[data-act="play"]').disabled = !notes.length;
+  top.querySelector('[data-act="play"]').disabled = !notes.length;
 
   const parts = [instrumentName(neck.instrument), tuningName(neck.instrument, neck.tuning)];
-  slot('instrument').innerHTML = `<button type="button" class="btn inst-summary" data-act="instruments" title="${esc(t('ex.changeInstrument'))}">
-    <span>${esc(parts.join(' · '))}</span><span class="inst-notes">${neck.strings.map(st => st.name).join(' ')}</span></button>`;
+  top.querySelector('[data-slot="instrument"]').innerHTML = `<button type="button" class="btn inst-summary" data-act="instruments" title="${esc(t('ex.changeInstrument'))}">
+    <span class="inst-name">${esc(parts.join(' · '))}</span><span class="inst-notes">${neck.strings.map(st => st.name).join(' ')}</span></button>`;
 
   // The lowest note is drawn as the root square; once a shape is started, unplayed strings get a ×.
   const markers = notes.map((n, i) => ({ s: n.s, f: n.f, midi: n.midi, label: name(mod(n.midi, 12)), cls: i === 0 ? 'root' : 'tone' }));
@@ -295,10 +295,15 @@ function onClick(e) {
   if (spot) toggle(spot.dataset.pos, Number(spot.dataset.midi));
 }
 
-export function mountFinder(el) {
+// el: the view; topEl: its part of the top bar
+export function mountFinder(el, topEl) {
   root = el;
+  top = topEl;
   root.innerHTML = SKELETON;
+  // the instrument (filled on render) and Play; display: contents keeps them items of the top bar
+  top.innerHTML = `<div class="top-slot" data-slot="instrument"></div><button type="button" class="btn start" data-act="play" data-i18n="ex.play"></button>`;
   root.addEventListener('click', onClick);
+  top.addEventListener('click', onClick);
   const stage = root.querySelector('.stage');
   // Same rule as Explore: a narrow screen gets the neck upright, a printout never does.
   const decide = () => {
