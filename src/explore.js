@@ -20,25 +20,29 @@ import { esc, seg, icon, favButton } from './dom.js';
 import { t } from './i18n.js';
 import * as audio from './audio.js';
 
+// The neck and staff, then the note wheel and the details. Each pair has a wrapper, which only
+// becomes a column of its own on a wide screen (styles.css, "wide screens").
 const SKELETON = `
-  <div class="stage">
+  <div class="stage split">
     <header class="item-head" data-slot="head"></header>
-    <section class="block">
-      <div class="fb-toolbar" data-slot="toolbar"></div>
-      <div class="screen fb-screen"><div class="fb-scroll" data-slot="fretboard"></div></div>
-      <div class="fb-labels"><span class="module-label" data-i18n="ex.labels"></span><div class="module-row wrap" data-slot="labels"></div></div>
-    </section>
-    <div class="pair">
+    <div class="stage-main">
+      <section class="block board">
+        <div class="fb-toolbar" data-slot="toolbar"></div>
+        <div class="screen fb-screen"><div class="fb-scroll" data-slot="fretboard"></div></div>
+        <div class="fb-labels"><span class="module-label" data-i18n="ex.labels"></span><div class="module-row wrap" data-slot="labels"></div></div>
+      </section>
       <section class="block" data-slot="staffCard">
         <div class="block-head"><span class="module-label" data-i18n="ex.notation"></span><span class="module-label dim" data-slot="staffNote"></span></div>
         <div class="screen staff-screen"><div class="staff-scroll" data-slot="staff"></div></div>
       </section>
+    </div>
+    <div class="stage-side">
       <section class="block wheel-block">
         <div class="block-head"><span class="module-label" data-i18n="ex.wheel"></span><div data-slot="wheelMode"></div></div>
         <div class="screen wheel-screen" data-slot="wheel"></div>
       </section>
+      <section class="block info" data-slot="info"></section>
     </div>
-    <section class="block info" data-slot="info"></section>
   </div>`;
 
 let root = null;

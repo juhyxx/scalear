@@ -15,8 +15,9 @@ let root = null;
 let vertical = false;
 let printing = false; // a printout always gets the neck lying down, across the page
 
+// Laid out like Explore: on a wide screen the results go beside the neck.
 const SKELETON = `
-  <div class="stage">
+  <div class="stage split">
     <header class="finder-head">
       <div class="lcd static" data-slot="readout"></div>
       <div class="finder-actions">
@@ -24,11 +25,15 @@ const SKELETON = `
         <button type="button" class="btn start" data-act="play" data-i18n="ex.play"></button>
       </div>
     </header>
-    <section class="block">
-      <div class="fb-toolbar"><span class="module-label" data-i18n="fd.hint"></span><div class="finder-inst" data-slot="instrument"></div></div>
-      <div class="screen fb-screen"><div class="fb-scroll" data-slot="fretboard"></div></div>
-    </section>
-    <section class="block info" data-slot="results"></section>
+    <div class="stage-main">
+      <section class="block board">
+        <div class="fb-toolbar"><span class="module-label" data-i18n="fd.hint"></span><div class="finder-inst" data-slot="instrument"></div></div>
+        <div class="screen fb-screen"><div class="fb-scroll" data-slot="fretboard"></div></div>
+      </section>
+    </div>
+    <div class="stage-side">
+      <section class="block info" data-slot="results"></section>
+    </div>
   </div>`;
 
 const slot = name => root.querySelector(`[data-slot="${name}"]`);

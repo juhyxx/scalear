@@ -52,6 +52,11 @@
 
   --font: "Silkscreen", "Scalear Pixel CE", ui-monospace, monospace;
 
+  /* the page, header included; wider on a wide screen */
+  --page-w: 1480px;
+  /* the note wheel's column beside the staff */
+  --wheel-col: 280px;
+
   color-scheme: dark;
 }
 
@@ -85,6 +90,8 @@ h2, h3, h4, p { margin: 0; font-weight: inherit; }
   display: flex;
   align-items: center;
   gap: 16px 20px;
+  max-width: var(--page-w);
+  margin: 0 auto;
   padding: 16px 20px 12px;
   padding-top: max(16px, env(safe-area-inset-top));
 }
@@ -216,8 +223,20 @@ input[type="range"]::-moz-range-thumb {
 
 /* ------------------------------------------------------------- layout */
 
-main { max-width: 1480px; margin: 0 auto; padding: 4px 20px 24px; padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
+main { max-width: var(--page-w); margin: 0 auto; padding: 4px 20px 24px; padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
 .stage { display: grid; gap: 18px; min-width: 0; align-content: start; }
+
+/* Explore and the Finder: the display on top, the neck (and the staff), then the note wheel and the
+   details (the Finder's results), in one column. From 1200px the staff and the wheel sit side by side,
+   or with the staff off the wheel and the details; from 1700px the wheel and the details have a column
+   of their own (see "wide screens"). Until then their wrappers stay out of the layout. */
+.stage-main, .stage-side { display: contents; }
+@media print, screen and (min-width: 1200px) and (max-width: 1699.98px) {
+  .stage.split { grid-template-columns: minmax(0, 1fr) var(--wheel-col); align-items: start; }
+  .split > .item-head, .split > .finder-head, .split .board, .split .info { grid-column: 1 / -1; }
+  .stage.split:has([data-slot="staffCard"][hidden]) { grid-template-columns: var(--wheel-col) minmax(0, 1fr); }
+  .split:has([data-slot="staffCard"][hidden]) .info { grid-column: 2; }
+}
 
 /* Finder: a readout with Clear and Play, then the neck to tap */
 .finder-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
@@ -482,11 +501,6 @@ main { max-width: 1480px; margin: 0 auto; padding: 4px 20px 24px; padding-bottom
 
 /* ------------------------------------------------------------- note wheel */
 
-.pair { display: grid; gap: 18px; min-width: 0; }
-@media (min-width: 1200px) {
-  .pair { grid-template-columns: minmax(0, 1fr) 280px; align-items: start; }
-  .pair:has([data-slot="staffCard"][hidden]) { grid-template-columns: 280px; }
-}
 .wheel-screen { display: grid; place-items: center; padding: 10px; }
 .wheel { display: block; width: 100%; max-width: 280px; height: auto; font-family: var(--font); user-select: none; -webkit-user-select: none; }
 .wheel text { text-anchor: middle; dominant-baseline: central; pointer-events: none; text-shadow: none; }
@@ -708,6 +722,20 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
 }
 .noscript { padding: 24px; text-align: center; text-transform: uppercase; }
 
+/* ------------------------------------------------------------- wide screens */
+
+/* The page grows to 2400px, the header with it. In Explore and the Finder the note wheel and the
+   details (the results) move beside the neck and the staff, so the neck stays about as wide as on a
+   laptop and a whole scale or chord fits on one screen instead of running on below it. */
+@media screen and (min-width: 1700px) {
+  :root { --page-w: 2400px; --side-w: clamp(360px, 22vw, 520px); }
+  .top, main { padding-left: 32px; padding-right: 32px; }
+  .stage.split { grid-template-columns: minmax(0, 1fr) var(--side-w); gap: 18px 28px; align-items: start; }
+  .split > .item-head, .split > .finder-head { grid-column: 1 / -1; }
+  .stage-main, .stage-side { display: grid; gap: 18px; align-content: start; min-width: 0; }
+  .stage-side .wheel { max-width: 340px; }
+}
+
 /* ------------------------------------------------------------- small screens */
 
 /* narrower: the display with the instrument and Play, then the root, then the notes */
@@ -774,6 +802,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
     --raised: none;
     --sunken: none;
     --screen-shadow: none;
+    --wheel-col: 200px;
     color-scheme: light;
   }
   html, body { background: #fff; }
@@ -833,10 +862,9 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
   .pc-clock { box-shadow: none; border: 1px solid #ccc; }
   .pc-off { fill: #ddd; }
 
-  /* keep things whole across pages; staff and wheel side by side to save paper */
+  /* keep things whole across pages; staff and wheel side by side to save paper (the 1200px layout,
+     with a narrower wheel) */
   .block, .info, .cat-card, .cat-item, .egg, .voicing, .item-head, .finder-head { break-inside: avoid; }
   .cat-group h3 { break-after: avoid; }
-  .pair { grid-template-columns: minmax(0, 1fr) 200px; align-items: start; }
-  .pair:has([data-slot="staffCard"][hidden]) { grid-template-columns: 200px; }
   .stage, .explore, .catalog { gap: 12px; }
 }
